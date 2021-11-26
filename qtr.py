@@ -1,5 +1,60 @@
 import wiringpi as wp
 
+# def op1():
+#     sensors = [37, 36, 33, 32, 31, 29, 22, 18]
+#     led_enable = 16
+#     GPIO.setmode(GPIO.BOARD)
+
+#     for s in sensors:
+#         GPIO.setup(s, GPIO.IN)
+
+#     GPIO.setup(led_enable, GPIO.OUT)
+#     GPIO.output(led_enable, 1)
+
+#     counter = 0
+#     while counter<70:
+#         print("loop #", counter)
+#         counter+=1
+#         for s in sensors:
+#             if GPIO.input(s):
+#                 print("on: ", s)
+#         time.sleep(2)
+#     GPIO.cleanup()
+
+
+# def op1_5():
+#     s = 31
+#     # led_enable = 16
+#     GPIO.setmode(GPIO.BOARD)
+#     GPIO.setup(s, GPIO.IN)
+
+#     # GPIO.setup(led_enable, GPIO.OUT)
+#     # GPIO.output(led_enable, 1)
+
+#     counter = 0
+#     while counter<70:
+#         counter+=1
+#         print("singel sensor val: ", GPIO.read(s))
+#         time.sleep(1)
+#     GPIO.cleanup()
+
+
+# def op2():
+
+#     from gpiozero import Robot, LineSensor
+    
+#     left_sensor = LineSensor(37)
+#     right_sensor = LineSensor(25)
+
+#     counter = 0
+#     while counter<70:
+#         # print("loop #", counter)
+#         counter+=1
+#         print("left:", int(left_sensor.value), ", right:", int(right_sensor.value))
+#         time.sleep(1)
+#     GPIO.cleanup()
+
+
 class QTR_8RC:
 
     def __init__(self):
@@ -7,8 +62,12 @@ class QTR_8RC:
         self.wp = wp
         self.wp.wiringPiSetupGpio()
 
-        self.LEDON_PIN = 21
-        self.SENSOR_PINS = [23, 24, 25, 8, 7, 16, 20, 21]
+        # self.LEDON_PIN = 21
+        # self.LEDON_PIN = 16  # if GPIO.BOARD
+        self.LEDON_PIN = 23  # if GPIO.BCM
+        # self.SENSOR_PINS = [23, 24, 25, 8, 7, 16, 20, 21]
+        # self.SENSOR_PINS = [37, 36, 33, 32, 31, 29, 22, 18]  # if GPIO.BOARD
+        self.SENSOR_PINS = [26, 16, 13, 12, 6, 5, 25, 24]  # if GPIO.BCM
         self.NUM_SENSORS = len(self.SENSOR_PINS)
         self.CHARGE_TIME = 10 #us to charge the capacitors
         self.READING_TIMEOUT = 1000 #us, assume reading is black
@@ -194,7 +253,8 @@ class QTR_8RC:
 #Example ussage:
 if __name__ == "__main__":
     try:
-        qtr = MrBit_QTR_8RC()
+        # qtr = MrBit_QTR_8RC()
+        qtr = QTR_8RC()
 
         approveCal = False
         while not approveCal:
