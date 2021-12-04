@@ -1,6 +1,6 @@
 import multiprocessing
 import os
-
+import firebase_admin
 from flask import Flask, request
 from flask_cors import CORS, cross_origin
 
