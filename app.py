@@ -12,13 +12,13 @@ from robot_control import follow_line
 app = Flask(__name__)
 cors = CORS(app)
 app.config['CORS_HEADERS'] = 'Content-Type'
-default_app = firebase_admin.initialize_app(credential=None, options={'storageBucket': STORAGE_BUCKET})
 
 ACTIVE_THREAD = None
 
 
 @app.route('/')
 def hello_world():  # put application's code here
+    print('RECEIVED REQ')
     return 'Hello World!'
 
 
@@ -62,6 +62,6 @@ def send_convert_request_to_server():
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
-    get_command_from_app({'command': 'start', 'num_objects': 3})
+    app.run(debug=True, host='0.0.0.0')
+    # get_command_from_app({'command': 'start', 'num_objects': 3})
 
