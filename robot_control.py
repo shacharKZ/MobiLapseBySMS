@@ -6,12 +6,28 @@ import video_dir as vid
 import QTR_8RC as ir
 import tests
 import time
+from datetime import datetime
 
-wall_speed = 40  # when connected to the power source directly
+# 0 to suppress, 1 to print
+DEBUG = 0
+
+wall_speed = 50  # when connected to the power source directly
 battery_speed = 80  # when connected to batteries only
 battery_slow_speed = 55  # when connected to batteries only
 
-cap = cv2.VideoCapture(0) 
+# def stop_line(dummy_arg):
+#     print("all 8 sensors see the line")
+#     motor.stop()
+#     motor.setSpeed(0)
+#     motor.forward()
+#     time.sleep(0.1)
+#     motor.stop()   
+#     motor.stop()
+
+#     print("exit for now...")
+#     exit()  # TODO
+
+cap = cv2.VideoCapture(1) # TODO 
 
 
 class Position():
@@ -28,13 +44,14 @@ class Position():
         return 'point(x='+str(self._x) + ', y=' + str(self._y)+') #' + str(self._counter)
 
 
-def take_a_pic(pic_label: str):
+def take_a_pic(pic_label: str = str(datetime.now())):
     ret, frame = cap.read()
+    print(f"PIC! {ret}, {pic_label}")
     if not ret:
         return False
     # cv2.imshow("imshow", frame)
     # key=cv2.waitKey(30)
-    return cv2.imwrite('./cap_imgs/'+pic_label+'.png', frame)
+    return cv2.imwrite('./cap_imgs2/'+pic_label+'.png', frame)
 
 
 def aim_and_take_a_photo(p: Position, label: str = ""):
@@ -46,7 +63,104 @@ def aim_and_take_a_photo(p: Position, label: str = ""):
         take_a_pic(label)
 
 
+def stop_line(dummy_arg):
+    print("all 8 sensors see the line")
+    motor.stop()
+    time.sleep(1.5)
+    take_a_pic()
+    time.sleep(1.5)
+    motor.forward()
+    time.sleep(0.07)
+
+
+actions_dir = {
+        '00000000': (print,"car don't see the line"),
+        '00011000': (dir.home, None),
+        '00001000': (dir.home, None),
+        '00010000': (dir.home, None),
+        '00111100': (dir.home, None),
+        '10111101': (dir.home, None),
+        '10011001': (dir.home, None),
+        '10010001': (dir.home, None),
+        '10001001': (dir.home, None),
+        '11111111': (stop_line, None),
+
+        '00001100': (dir.turn_left, dir.TURN_15),
+        '00000100': (dir.turn_left, dir.TURN_15),
+        '00000110': (dir.turn_left, dir.TURN_25),
+        '00000010': (dir.turn_left, dir.TURN_35),
+        '00000111': (dir.turn_left, dir.TURN_35),
+        '00000011': (dir.turn_left, dir.TURN_35),
+        '00000001': (dir.turn_left, dir.TURN_45),
+
+        '00110000': (dir.turn_right, dir.TURN_15),
+        '00100000': (dir.turn_right, dir.TURN_15),
+        '01100000': (dir.turn_right, dir.TURN_25),
+        '01000000': (dir.turn_right, dir.TURN_25),
+        '01000000': (dir.turn_right, dir.TURN_35),
+        '11100000': (dir.turn_right, dir.TURN_35),
+        '11000000': (dir.turn_right, dir.TURN_35),
+        '10000000': (dir.turn_right, dir.TURN_45),
+    }
+
+
+def test_dir1():
+    ir.setup_IR()
+    dir.setup_direction()
+    dir.home()
+    
+    # while True:
+    for itt in range(3000):
+        ir.check_above_line()
+        print(f"{itt}:\t {ir.last_status_str}  ---> ", end="")
+        if ir.last_status_str in actions_dir:
+            print(f"{actions_dir[ir.last_status_str]}")
+            action_to_exe, params = actions_dir[ir.last_status_str]
+        else:
+            print("action not set", ir.last_status_str)
+        time.sleep(1)
+
+
+# action_needed = {
+#         '00000000': (print,"car don't see the line"),
+#         '00011000': (dir.home, None),
+#         '00111100': (dir.home, None),
+#         '11111111': (print, "all 8 sensors see the line"),
+
+#         '00001000': (dir.turn_left, dir.TURN_15),
+#         '00011100': (dir.turn_left, dir.TURN_15),
+#         '00111110': (dir.turn_left, dir.TURN_15),
+#         '00111111': (dir.turn_left, dir.TURN_15),
+#         '00001100': (dir.turn_left, dir.TURN_15),
+#         '00001110': (dir.turn_left, dir.TURN_25),
+#         '00000100': (dir.turn_left, dir.TURN_25),
+#         '00000110': (dir.turn_left, dir.TURN_35),
+#         '00001111': (dir.turn_left, dir.TURN_35),
+#         '00000010': (dir.turn_left, dir.TURN_45),
+#         '00000111': (dir.turn_left, dir.TURN_45),
+#         '00000011': (dir.turn_left, dir.TURN_60),
+#         '00000001': (dir.turn_left, dir.TURN_60),
+
+#         '00010000': (dir.turn_right, dir.TURN_15),
+#         '00111000': (dir.turn_right, dir.TURN_15),
+#         '01111000': (dir.turn_right, dir.TURN_15),
+#         '00110000': (dir.turn_right, dir.TURN_15),
+#         '01110000': (dir.turn_right, dir.TURN_25),
+#         '11111000': (dir.turn_right, dir.TURN_25),
+#         '00100000': (dir.turn_right, dir.TURN_25),
+#         '01100000': (dir.turn_right, dir.TURN_35),
+#         '11110000': (dir.turn_right, dir.TURN_35),
+#         '01000000': (dir.turn_right, dir.TURN_45),
+#         '11100000': (dir.turn_right, dir.TURN_45),
+#         '11000000': (dir.turn_right, dir.TURN_60),
+#         '10000000': (dir.turn_right, dir.TURN_60),
+#     }
+
+
+
+
 def follow_line():
+    ir.setup_IR()
     motor.setup_motor()
     dir.setup_direction()
     vid.setup_vid()
@@ -55,48 +169,26 @@ def follow_line():
     time.sleep(1)
     motor.stop()  # TODO
     dir.home()
-    ir.setup_IR()
-    action_needed = {
-        '00000000': (print,"car don't see the line"),
-        '00011000': (dir.home, None),
-        '00111100': (dir.home, None),
-        '11111111': (print, "all 8 sensors see the line"),
+    
 
-        '00001000': (dir.turn_right, dir.TURN_15),
-        '00011100': (dir.turn_right, dir.TURN_15),
-        '00001100': (dir.turn_right, dir.TURN_15),
-        '00001110': (dir.turn_right, dir.TURN_25),
-        '00000100': (dir.turn_right, dir.TURN_25),
-        '00000110': (dir.turn_right, dir.TURN_35),
-        '00001111': (dir.turn_right, dir.TURN_35),
-        '00000010': (dir.turn_right, dir.TURN_45),
-        '00000111': (dir.turn_right, dir.TURN_45),
-        '00000011': (dir.turn_right, dir.TURN_60),
-        '00000001': (dir.turn_right, dir.TURN_60),
-
-        '00010000': (dir.turn_left, dir.TURN_15),
-        '00111000': (dir.turn_left, dir.TURN_15),
-        '00110000': (dir.turn_left, dir.TURN_15),
-        '01110000': (dir.turn_left, dir.TURN_25),
-        '00100000': (dir.turn_left, dir.TURN_25),
-        '01100000': (dir.turn_left, dir.TURN_35),
-        '11110000': (dir.turn_left, dir.TURN_35),
-        '01000000': (dir.turn_left, dir.TURN_45),
-        '11100000': (dir.turn_left, dir.TURN_45),
-        '11000000': (dir.turn_left, dir.TURN_60),
-        '10000000': (dir.turn_left, dir.TURN_60),
-    }
-
-    motor.forward()
-    while True:
+    time.sleep(4)
+    motor.forward()  # TODO
+    # while True:
+    for itt in range(4000):
         ir.check_above_line()
-        if ir.last_status_str in action_needed:
-            action_to_exe, params = action_needed[ir.last_status_str]
-            # print(action_to_exe, params)
+        if ir.last_status_str in actions_dir:
+            action_to_exe, params = actions_dir[ir.last_status_str]
+            if DEBUG:
+                print(action_to_exe, params)
+                print(ir.last_status_str)
             action_to_exe(params)
         else:
-            print("car: ???", ir.last_status_str)
-        time.sleep(0.05)
+            if DEBUG:
+                print("car: ???", ir.last_status_str)
+        time.sleep(0.000002)
+    
+    motor.stop()
+
 
 def test2():
     print("DEBUG: start test2 (func)")
@@ -136,5 +228,8 @@ if __name__ == '__main__':
 
     # test2()
     # time.sleep(5)
-    # test3()
+    #test3()
+    # test_dir1()
+
     follow_line()
+    # take_a_pic()

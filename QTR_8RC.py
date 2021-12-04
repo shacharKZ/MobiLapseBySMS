@@ -4,8 +4,8 @@ import time
 
 led = 16
 sensors = [37, 36, 33, 32, 31, 29, 22, 18]
-min_color = 1000  # this value is changing a bit from time to time. try adjust it
-max_color = 100000
+min_color = None  # this value is changing a bit from time to time. try adjust it
+max_color = None
 last_status = [0, 0, 0, 0, 0, 0, 0, 0]
 last_status_str = '00000000'
 
@@ -13,31 +13,56 @@ def setup_IR():
     global led, sensors, min_color, max_color, last_status,last_status_str
     led = 16
     sensors = [37, 36, 33, 32, 31, 29, 22, 18]
-    min_color = 1000  # this value is changing a bit from time to time. try adjust it
-    max_color = 100000
+    min_color = 91  # this value is changing a bit from time to time. try adjust it
+    max_color = 200
     # last_status = [0, 0, 0, 0, 0, 0, 0, 0]
     last_status_str = '00000000'
     GPIO.setmode(GPIO.BOARD)
     GPIO.setup(led, GPIO.OUT)
 
 
+# def check_above_line():
+#     global led, sensors, min_color, max_color, last_status, last_status_str
+#     last_status_str = ""
+#     for index, s in enumerate(sensors):
+#         GPIO.setup(s, GPIO.OUT)
+#         GPIO.output(s, GPIO.HIGH)
+#         time.sleep(0.01)
+#         GPIO.setup(s, GPIO.IN)
+#         counter = 0
+#         while GPIO.input(s) and counter < min_color:
+#             counter += 1
+#             # GPIO.output(led, GPIO.HIGH)
+#         GPIO.output(led, GPIO.LOW)
+#         # last_status[index] =  int(counter == min_color)
+#         last_status_str += '1' if counter == min_color else '0'
+#     return last_status_str
+
 def check_above_line():
     global led, sensors, min_color, max_color, last_status, last_status_str
     last_status_str = ""
-    for index, s in enumerate(sensors):
+    for s in sensors:
         GPIO.setup(s, GPIO.OUT)
         GPIO.output(s, GPIO.HIGH)
-        time.sleep(0.01)
-        GPIO.setup(s, GPIO.IN)
-        counter = 0
-        while GPIO.input(s) and counter < min_color:
-            counter += 1
-            GPIO.output(led, GPIO.HIGH)
-        GPIO.output(led, GPIO.LOW)
-        # last_status[index] =  int(counter == min_color)
-        last_status_str += '1' if counter == min_color else '0'
-    return last_status
 
+    time.sleep(0.01)
+    
+    for s in sensors:
+        GPIO.setup(s, GPIO.IN)
+
+    res = [0, 0, 0, 0, 0, 0, 0, 0]
+    for _ in range(max_color):
+        for index, s in enumerate(sensors):
+            res[index] += GPIO.input(s)
+    
+    last_status = res
+
+    res_str = ""
+    for color in res:
+        res_str += ('1' if color >= min_color else '0')
+
+    last_status_str = res_str
+    return last_status_str
 
 def check_color():
     global led, sensors, min_color, max_color, last_status
@@ -131,8 +156,9 @@ def op4():
 def op5():
     setup_IR()
     while True:
-        # print(check_above_line())
-        print(check_color())
+        print(check_above_line())
+        print(last_status)
+        time.sleep(1)
 
 if __name__ == '__main__':
 

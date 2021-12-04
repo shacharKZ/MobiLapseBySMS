@@ -3,7 +3,7 @@ import PCA9685 as servo
 import time                # Import necessary modules
 
 
-TURN_15, TURN_25, TURN_35, TURN_45, TURN_60 = 20, 30, 42, 55, 72
+TURN_15, TURN_25, TURN_35, TURN_45, TURN_60 = 35, 45, 60, 75, 90
 pwm = servo.PWM() 
 
 def Map(x, in_min, in_max, out_min, out_max):
