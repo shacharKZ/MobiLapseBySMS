@@ -6,9 +6,6 @@ from datetime import datetime
 
 from config import ROOT_CAPTURES_FOLDER_PATH, API_REQUEST_DATETIME_FORMAT, CAMERA_PATH
 
-cap = cv2.VideoCapture(0)
-
-
 
 def create_capture_folders(num_objects: int = 3):
     curr_session_timestamp = datetime.now()
@@ -21,6 +18,7 @@ def create_capture_folders(num_objects: int = 3):
 
 
 def take_a_pic(curr_object_num: int, curr_picture_num: int, session_timestamp_string: str):
+    cap = cv2.VideoCapture(0)
     ret, frame = cap.read()
     target_path = os.path.join(ROOT_CAPTURES_FOLDER_PATH,
                                f'object{curr_object_num}CaptureSession-{session_timestamp_string}')
