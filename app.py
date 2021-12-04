@@ -19,12 +19,13 @@ ACTIVE_THREAD = None
 @app.route('/')
 def hello_world():  # put application's code here
     print('RECEIVED REQ')
-    return 'Hello World!'
+    return {'message': 'Hello World!'}, 200
 
 
 @app.get('/capture')
 @cross_origin()
 def get_command_from_app_in_get():
+    print('RECEIVED CAPTURE GET REQ')
     return {'message': 'all good from get capture!'}, 200
 
 
@@ -63,5 +64,5 @@ def send_convert_request_to_server():
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0')
+    print('API NOW RUNNING')
     # get_command_from_app({'command': 'start', 'num_objects': 3})
-
