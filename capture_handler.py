@@ -4,10 +4,10 @@ import cv2
 
 from datetime import datetime
 
-from config import ROOT_CAPTURES_FOLDER_PATH, API_REQUEST_DATETIME_FORMAT
+from config import ROOT_CAPTURES_FOLDER_PATH, API_REQUEST_DATETIME_FORMAT, CAMERA_PATH
 
-cap = cv2.VideoCapture(1)
-
+cap = cv2.VideoCapture
+cap.open(CAMERA_PATH)
 
 def create_capture_folders(num_objects: int = 3):
     curr_session_timestamp = datetime.now()
