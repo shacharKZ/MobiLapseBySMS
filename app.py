@@ -9,6 +9,8 @@ from config import STORAGE_BUCKET, ROOT_CAPTURES_FOLDER_PATH
 from file_uploader import upload_image
 from robot_control import follow_line
 
+# TODO: something in the more complex features is blocking API requests, need to figure out what
+
 app = Flask(__name__)
 cors = CORS(app)
 app.config['CORS_HEADERS'] = 'Content-Type'
