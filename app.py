@@ -30,16 +30,19 @@ def get_command_from_app_in_get():
 
 @app.post('/capture')
 @cross_origin()
-def get_command_from_app():
+def get_command_from_app(args):
     global ACTIVE_THREAD
-    data = request.get_json()
-    print(data)
-    num_objects = data.get(['numObjects'], 3)
+    # data = request.get_json()
+    # print(data)
+    # num_objects = data.get(['numObjects'], 3)
+    num_objects = args.get(['numObjects'], 3)
     session_timestamp = create_capture_folders(num_objects)
-    if data['command'] == 'start':
+    # if data['command'] == 'start':
+    if args['command'] == 'start':
         ACTIVE_THREAD = multiprocessing.Process(target=follow_line, args=(num_objects, session_timestamp))
         ACTIVE_THREAD.start()
-    elif data['command'] == 'stop':
+    # elif data['command'] == 'stop':
+    elif args['command'] == 'stop':
         ACTIVE_THREAD.terminate()
         upload_new_captures(session_timestamp)
         send_convert_request_to_server()
@@ -60,3 +63,5 @@ def send_convert_request_to_server():
 
 if __name__ == '__main__':
     app.run(debug=True)
+    get_command_from_app({'command': 'start', 'num_objects': 3})
+
