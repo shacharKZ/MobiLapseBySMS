@@ -1,4 +1,4 @@
-import cv2 # Import the OpenCV library
+import cv2  # Import the OpenCV library
 # import numpy as np # Import Numpy library
 import motor
 import car_dir as dir
@@ -12,6 +12,7 @@ battery_slow_speed = 55  # when connected to batteries only
 
 cap = cv2.VideoCapture(0)  # TODO
 
+
 class Position():
     def __init__(self, x, y) -> None:
         self._x = x
@@ -19,11 +20,11 @@ class Position():
         self._counter = 0
 
     def get_label_and_increase_counter(self) -> str:
-        self._counter+=1
-        return 'point(x='+str(self._x) + ', y=' + str(self._y)+') #' + str(self._counter)
+        self._counter += 1
+        return 'point(x=' + str(self._x) + ', y=' + str(self._y) + ') #' + str(self._counter)
 
     def __str__(self) -> str:
-        return 'point(x='+str(self._x) + ', y=' + str(self._y)+') #' + str(self._counter)
+        return 'point(x=' + str(self._x) + ', y=' + str(self._y) + ') #' + str(self._counter)
 
 
 def take_a_pic(pic_label: str):
@@ -32,7 +33,7 @@ def take_a_pic(pic_label: str):
         return False
     # cv2.imshow("imshow", frame)
     # key=cv2.waitKey(30)
-    return cv2.imwrite('./cap_imgs/'+pic_label+'.png', frame)
+    return cv2.imwrite('./cap_imgs/' + pic_label + '.png', frame)
 
 
 def aim_and_take_a_photo(p: Position, label: str = ""):
@@ -57,6 +58,7 @@ def party():
             vid.move_decrease_x()
             vid.move_decrease_y()
             time.sleep(0.5)
+
 
 def test2():
     print("DEBUG: start test2 (func)")
@@ -89,7 +91,8 @@ def test2():
     time.sleep(1)
     vid.set_dir(370, 300)
     time.sleep(1)
-    for (x,y) in [(350, 250), (500, 200), (270, 300), (370, 300), (370, 250), (320, 380), (330, 500), (400, 400), (255, 350), (330, 330)]:
+    for (x, y) in [(350, 250), (500, 200), (270, 300), (370, 300), (370, 250), (320, 380), (330, 500), (400, 400),
+                   (255, 350), (330, 330)]:
         vid.set_dir(x, y)
         time.sleep(1)
 
@@ -115,29 +118,31 @@ def test2():
     motor.setSpeed(battery_slow_speed)
     counter = 0
     for _ in range(2):
-        for (x,y) in [(350, 250), (500, 200), (270, 300), (370, 250), (320, 380), (330, 500), (330, 450), (400, 400), (255, 350), (330, 330)]:
+        for (x, y) in [(350, 250), (500, 200), (270, 300), (370, 250), (320, 380), (330, 500), (330, 450), (400, 400),
+                       (255, 350), (330, 330)]:
             vid.set_dir(x, y)
             time.sleep(0.5)
-            counter+=1
-            if counter%4 == 1:
+            counter += 1
+            if counter % 4 == 1:
                 motor.forward()
-            elif counter%4 == 3:
+            elif counter % 4 == 3:
                 motor.backward()
-            
+
             # time.sleep(0.5)
-            if counter%5 == 1:
+            if counter % 5 == 1:
                 dir.turn_right()
-            elif counter%5 == 2:
+            elif counter % 5 == 2:
                 dir.turn_left()
-            elif counter%3 == 1:
+            elif counter % 3 == 1:
                 dir.home()
             time.sleep(0.7)
             motor.stop()
-    
+
     motor.stop()
     time.sleep(1)
     dir.home()
     vid.home_x_y()
+
 
 def test3():
     vid.setup_vid()
@@ -147,17 +152,16 @@ def test3():
             vid.set_dir(x, y)
             time.sleep(0.5)
         for x in range(550, 250, -10):
-            vid.set_dir(x, y+20)
+            vid.set_dir(x, y + 20)
             time.sleep(0.5)
-    
+
     for y in range(400, 200, -40):
         for x in range(250, 550, 10):
             vid.set_dir(x, y)
             time.sleep(0.5)
         for x in range(550, 250, -10):
-            vid.set_dir(x, y-20)
+            vid.set_dir(x, y - 20)
             time.sleep(0.5)
-    
 
 
 def test_everything(p_list):
@@ -172,7 +176,7 @@ def test_everything(p_list):
 
     flag = True
     for i in range(1, 4):
-        motor.setSpeed(22*i)
+        motor.setSpeed(22 * i)
         for p in p_list:
             if flag:
                 dir.turn_left()
@@ -180,9 +184,10 @@ def test_everything(p_list):
                 dir.turn_right()
             flag = not flag
             aim_and_take_a_photo(p)
-    
+
     dir.home()
     motor.stop()
+
 
 def test_showoff():
     print("DEBUG: start testing showoff!\ncount to 10 and run!")

@@ -9,8 +9,9 @@ max_color = None
 last_status = [0, 0, 0, 0, 0, 0, 0, 0]
 last_status_str = '00000000'
 
+
 def setup_IR():
-    global led, sensors, min_color, max_color, last_status,last_status_str
+    global led, sensors, min_color, max_color, last_status, last_status_str
     led = 16
     sensors = [37, 36, 33, 32, 31, 29, 22, 18]
     min_color = 91  # this value is changing a bit from time to time. try adjust it
@@ -46,7 +47,7 @@ def check_above_line():
         GPIO.output(s, GPIO.HIGH)
 
     time.sleep(0.01)
-    
+
     for s in sensors:
         GPIO.setup(s, GPIO.IN)
 
@@ -54,7 +55,7 @@ def check_above_line():
     for _ in range(max_color):
         for index, s in enumerate(sensors):
             res[index] += GPIO.input(s)
-    
+
     last_status = res
 
     res_str = ""
@@ -63,6 +64,7 @@ def check_above_line():
 
     last_status_str = res_str
     return last_status_str
+
 
 def check_color():
     global led, sensors, min_color, max_color, last_status
@@ -96,7 +98,6 @@ class IR_array_sensor:
         GPIO.setmode(GPIO.BOARD)
         GPIO.setup(self._led, GPIO.OUT)
 
-
     def check_above_line(self):
         for index, s in enumerate(self._sensors):
             GPIO.setup(s, GPIO.OUT)
@@ -108,9 +109,8 @@ class IR_array_sensor:
                 counter += 1
                 GPIO.output(self._led, GPIO.HIGH)
             GPIO.output(self._led, GPIO.LOW)
-            self._last_status[index] =  int(counter > self._min)
+            self._last_status[index] = int(counter > self._min)
         return self._last_status
-
 
     def check_color(self):
         res = []
@@ -127,7 +127,6 @@ class IR_array_sensor:
             res.append(counter)
         return res
 
-
     def print_status(self):
         return self._last_status
 
@@ -135,7 +134,7 @@ class IR_array_sensor:
 def read_color(pin_sensor, pin_led):
     GPIO.setup(pin_sensor, GPIO.OUT)
     GPIO.setup(pin_led, GPIO.OUT)
-    GPIO.output(pin_sensor,1)
+    GPIO.output(pin_sensor, 1)
     time.sleep(0.01)
     GPIO.setup(pin_sensor, GPIO.IN)
     counter = 0
@@ -144,14 +143,14 @@ def read_color(pin_sensor, pin_led):
         GPIO.output(pin_led, GPIO.HIGH)
     GPIO.output(pin_led, 0)
     return counter
-    
+
 
 def op4():
-
     ir = IR_array_sensor()
     while True:
         print(ir.check_above_line())
         # print(ir.check_color())
+
 
 def op5():
     setup_IR()
@@ -160,11 +159,10 @@ def op5():
         print(last_status)
         time.sleep(1)
 
-if __name__ == '__main__':
 
+if __name__ == '__main__':
     # op1_5()
     # op2()
     # op3()
     # op4()
     op5()
-

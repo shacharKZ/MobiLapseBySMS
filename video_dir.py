@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 import PCA9685 as servo
-import time                  # Import necessary modules
+import time  # Import necessary modules
 
 MinPulse = 200  # original that was 200. we changed it
 MaxPulse = 700  # original that was 700. we changed it
@@ -31,14 +31,15 @@ def setup_vid(busnum=None):
     # print("???x?", offset_x, "???y?", offset_y)
     # print('max are: Xmax', Xmax, ', Ymax', Ymax)
     # print('min are: Xmin', Xmin, ', Ymin', Ymin)
-	# print('max are: Xmax', Xmax, ', Ymax', Ymax)
-    home_x = (Xmax + Xmin)/2
+    # print('max are: Xmax', Xmax, ', Ymax', Ymax)
+    home_x = (Xmax + Xmin) / 2
     home_y = Ymin + 80
     if busnum == None:
-        pwm = servo.PWM()                  # Initialize the servo controller.
+        pwm = servo.PWM()  # Initialize the servo controller.
     else:
         pwm = servo.PWM(bus_number=busnum)  # Initialize the servo controller.
     pwm.frequency = 60
+
 
 # ==========================================================================================
 # Control the servo connected to channel 14 of the servo control board to make the camera
@@ -53,6 +54,8 @@ def move_decrease_x():
         Current_x = Xmax
     pwm.write(14, 0, Current_x)
     # ==========================================================================================
+
+
 # Control the servo connected to channel 14 of the servo control board to make the camera
 # turning towards the negative direction of the x axis.
 # ==========================================================================================
@@ -64,6 +67,8 @@ def move_increase_x():
     if Current_x <= Xmin:
         Current_x = Xmin
     pwm.write(14, 0, Current_x)
+
+
 # ==========================================================================================
 # Control the servo connected to channel 15 of the servo control board to make the camera
 # turning towards the positive direction of the y axis.
@@ -75,7 +80,9 @@ def move_increase_y():
     Current_y += 25
     if Current_y > Ymax:
         Current_y = Ymax
-    pwm.write(15, 0, Current_y)   # CH15 <---> Y axis
+    pwm.write(15, 0, Current_y)  # CH15 <---> Y axis
+
+
 # ==========================================================================================
 # Control the servo connected to channel 15 of the servo control board to make the camera
 # turning towards the negative direction of the y axis.
@@ -88,6 +95,8 @@ def move_decrease_y():
     if Current_y <= Ymin:
         Current_y = Ymin
     pwm.write(15, 0, Current_y)
+
+
 # ==========================================================================================
 # Control the servos connected with channel 14 and 15 at the same time to make the camera
 # move forward.
@@ -104,8 +113,8 @@ def home_x_y():
 
 
 def calibrate(x, y):
-    pwm.write(14, 0, (MaxPulse+MinPulse)/2+x)
-    pwm.write(15, 0, (MaxPulse+MinPulse)/2+y)
+    pwm.write(14, 0, (MaxPulse + MinPulse) / 2 + x)
+    pwm.write(15, 0, (MaxPulse + MinPulse) / 2 + y)
 
 
 def test():
@@ -123,28 +132,28 @@ def test():
 
 
 def set_dir(x, y):
-	# print("(x,y): ", '(', x, ',', y, ')')
-	global Current_y
-	Current_y = y
-	if Current_y < Ymin:
-		Current_y = Ymin
-	elif Current_y > Ymax:
-		Current_y = Ymax
-	pwm.write(15, 0, Current_y)
+    # print("(x,y): ", '(', x, ',', y, ')')
+    global Current_y
+    Current_y = y
+    if Current_y < Ymin:
+        Current_y = Ymin
+    elif Current_y > Ymax:
+        Current_y = Ymax
+    pwm.write(15, 0, Current_y)
 
-	global Current_x
-	Current_x = x
-	if Current_x < Xmin:
-		Current_x = Xmin
-	elif Current_x > Xmax:
-		Current_x = Xmax
-	pwm.write(14, 0, Current_x)
+    global Current_x
+    Current_x = x
+    if Current_x < Xmin:
+        Current_x = Xmin
+    elif Current_x > Xmax:
+        Current_x = Xmax
+    pwm.write(14, 0, Current_x)
 
 
 def get_dir():
-	global Current_x
-	global Current_y
-	return Current_x, Current_y
+    global Current_x
+    global Current_y
+    return Current_x, Current_y
 
 
 if __name__ == '__main__':
