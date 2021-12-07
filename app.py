@@ -53,7 +53,8 @@ def get_command_from_app():
         stop_all_robot_actions()
         upload_new_captures(num_objects, CURR_SESSION_TIMESTAMP)
         send_convert_request_to_server(num_objects, CURR_SESSION_TIMESTAMP)
-    return {'message': f'Finished processing {data["command"]} action'}, 200
+    message = f'Finished processing {data["command"]} action'
+    return {'message': message}, 200
 
 
 def upload_new_captures(num_objects: int, session_timestamp: str):
