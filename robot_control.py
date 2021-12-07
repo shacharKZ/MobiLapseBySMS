@@ -57,6 +57,7 @@ def stop_line(curr_object_num: int, curr_picture_num: int, session_timestamp: st
     print("all 8 sensors see the line")
     motor.stop()
     time.sleep(1.5)
+    print('curr obj is:', curr_picture_num)
     take_a_pic(curr_object_num, curr_picture_num, session_timestamp)
     time.sleep(1.5)
     motor.forward()
@@ -108,42 +109,6 @@ def test_dir1():
         else:
             print("action not set", ir.last_status_str)
         time.sleep(1)
-
-
-# action_needed = {
-#         '00000000': (print,"car don't see the line"),
-#         '00011000': (dir.home, None),
-#         '00111100': (dir.home, None),
-#         '11111111': (print, "all 8 sensors see the line"),
-
-#         '00001000': (dir.turn_left, dir.TURN_15),
-#         '00011100': (dir.turn_left, dir.TURN_15),
-#         '00111110': (dir.turn_left, dir.TURN_15),
-#         '00111111': (dir.turn_left, dir.TURN_15),
-#         '00001100': (dir.turn_left, dir.TURN_15),
-#         '00001110': (dir.turn_left, dir.TURN_25),
-#         '00000100': (dir.turn_left, dir.TURN_25),
-#         '00000110': (dir.turn_left, dir.TURN_35),
-#         '00001111': (dir.turn_left, dir.TURN_35),
-#         '00000010': (dir.turn_left, dir.TURN_45),
-#         '00000111': (dir.turn_left, dir.TURN_45),
-#         '00000011': (dir.turn_left, dir.TURN_60),
-#         '00000001': (dir.turn_left, dir.TURN_60),
-
-#         '00010000': (dir.turn_right, dir.TURN_15),
-#         '00111000': (dir.turn_right, dir.TURN_15),
-#         '01111000': (dir.turn_right, dir.TURN_15),
-#         '00110000': (dir.turn_right, dir.TURN_15),
-#         '01110000': (dir.turn_right, dir.TURN_25),
-#         '11111000': (dir.turn_right, dir.TURN_25),
-#         '00100000': (dir.turn_right, dir.TURN_25),
-#         '01100000': (dir.turn_right, dir.TURN_35),
-#         '11110000': (dir.turn_right, dir.TURN_35),
-#         '01000000': (dir.turn_right, dir.TURN_45),
-#         '11100000': (dir.turn_right, dir.TURN_45),
-#         '11000000': (dir.turn_right, dir.TURN_60),
-#         '10000000': (dir.turn_right, dir.TURN_60),
-#     }
 
 
 def follow_line(num_objects: int = 3, session_timestamp: str = str(datetime.now())):

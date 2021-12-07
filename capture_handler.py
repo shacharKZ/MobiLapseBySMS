@@ -16,4 +16,4 @@ def take_a_pic(curr_object_num: int, curr_picture_num: int, session_timestamp_st
     print(f"Picture attempt result: {ret}, Resulting picture name: {pic_label}")
     if not ret:
         return False
-    return cv2.imwrite(target_path + pic_label, frame)
+    return cv2.imwrite(target_path + os.path.sep + pic_label, frame)
