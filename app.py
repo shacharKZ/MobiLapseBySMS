@@ -16,7 +16,7 @@ cors = CORS(app)
 app.config['CORS_HEADERS'] = 'Content-Type'
 
 ACTIVE_THREAD = None
-
+CURR_SESSION_TIMESTAMP = None
 
 @app.route('/')
 def hello_world():  # put application's code here
@@ -34,21 +34,21 @@ def get_command_from_app_in_get():
 @app.post('/capture')
 @cross_origin()
 def get_command_from_app():
-    global ACTIVE_THREAD
+    global ACTIVE_THREAD, CURR_SESSION_TIMESTAMP
     data = request.get_json()
     print(data)
     num_objects = data.get('numObjects', 3)
     # num_objects = args.get(['numObjects'], 3)
-    session_timestamp = create_capture_folders(num_objects)
     if data['command'] == 'start':
+        CURR_SESSION_TIMESTAMP = create_capture_folders(num_objects)
     # if args['command'] == 'start':
     #     ACTIVE_THREAD = multiprocessing.Process(target=follow_line, args=(num_objects, session_timestamp))
     #     ACTIVE_THREAD.start()
-        follow_line(num_objects, session_timestamp)
+        follow_line(num_objects, CURR_SESSION_TIMESTAMP)
     elif data['command'] == 'stop':
     # elif args['command'] == 'stop':
     #     ACTIVE_THREAD.terminate()
-        upload_new_captures(session_timestamp)
+        upload_new_captures(CURR_SESSION_TIMESTAMP)
         send_convert_request_to_server()
     return {'message': 'all good from capture posttt!'}, 200
 
