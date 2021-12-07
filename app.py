@@ -51,7 +51,7 @@ def get_command_from_app():
         # follow_line(num_objects, CURR_SESSION_TIMESTAMP)
     elif data['command'] == 'stop':
         # elif args['command'] == 'stop':
-        ACTIVE_THREAD.terminate()
+        # ACTIVE_THREAD.terminate()
         upload_new_captures(num_objects ,CURR_SESSION_TIMESTAMP)
         send_convert_request_to_server()
     return {'message': 'all good from capture posttt!'}, 200
