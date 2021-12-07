@@ -11,6 +11,7 @@ from filesystem_handler import create_capture_folders
 from robot_control import follow_line
 
 # TODO: something in the more complex features is blocking API requests, need to figure out what
+from stop import stop_all_robot_actions
 
 app = Flask(__name__)
 cors = CORS(app)
@@ -52,6 +53,7 @@ def get_command_from_app():
     elif data['command'] == 'stop':
         # elif args['command'] == 'stop':
         ACTIVE_THREAD.terminate()
+        stop_all_robot_actions()
         upload_new_captures(num_objects, CURR_SESSION_TIMESTAMP)
         send_convert_request_to_server()
     return {'message': 'all good from capture posttt!'}, 200
