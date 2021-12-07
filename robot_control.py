@@ -17,19 +17,6 @@ battery_speed = 80  # when connected to batteries only
 battery_slow_speed = 55  # when connected to batteries only
 
 
-# def stop_line(dummy_arg):
-#     print("all 8 sensors see the line")
-#     motor.stop()
-#     motor.setSpeed(0)
-#     motor.forward()
-#     time.sleep(0.1)
-#     motor.stop()   
-#     motor.stop()
-
-#     print("exit for now...")
-#     exit()  # TODO
-
-
 class Position():
     def __init__(self, x, y) -> None:
         self._x = x
@@ -61,7 +48,7 @@ def stop_line(curr_object_num: int, curr_picture_num: int, session_timestamp: st
     take_a_pic(curr_object_num, curr_picture_num, session_timestamp)
     time.sleep(3)
     motor.forward()
-    time.sleep(0.07)
+    time.sleep(0.12)
 
 
 actions_dir = {
