@@ -48,7 +48,7 @@ def get_command_from_app():
         # if args['command'] == 'start':
         ACTIVE_THREAD = multiprocessing.Process(target=follow_line, args=(num_objects, CURR_SESSION_TIMESTAMP))
         ACTIVE_THREAD.start()
-        follow_line(num_objects, CURR_SESSION_TIMESTAMP)
+        # follow_line(num_objects, CURR_SESSION_TIMESTAMP)
     elif data['command'] == 'stop':
         # elif args['command'] == 'stop':
         ACTIVE_THREAD.terminate()
