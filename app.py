@@ -59,8 +59,10 @@ def upload_new_captures(session_timestamp: str):
     for dirpath, _, files in os.walk(ROOT_CAPTURES_FOLDER_PATH):
         curr_file_path = ''
         for file in files:
-
+            print(os.path.join(dirpath, file))
             for i in range(1, 4):
+                print(
+                    f'Checking if object{i}CaptureSession-{session_timestamp} is in {str(os.path.join(dirpath, file))}')
                 if f'object{i}CaptureSession-{session_timestamp}' in os.path.join(dirpath, file):
                     curr_upload_dir_name = f'object{i}CaptureSession-{session_timestamp}/'
                     break
