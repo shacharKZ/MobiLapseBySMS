@@ -144,8 +144,6 @@ def follow_line(num_objects: int = 3, session_timestamp: str = str(datetime.now(
                 picture_progress_list[curr_object] += 1
                 # Updating the index of the next object to take an image for
                 curr_object = (curr_object + 1) % num_objects
-                motor.stop()
-                return
             else:
                 action_to_exe(params)
         else:
