@@ -17,8 +17,9 @@ cors = CORS(app)
 app.config['CORS_HEADERS'] = 'Content-Type'
 
 ACTIVE_THREAD = None
-tstamp = datetime.datetime(2021, 12, 7, 12, 19, 37)
-CURR_SESSION_TIMESTAMP = tstamp.strftime(API_REQUEST_DATETIME_FORMAT)
+# tstamp = datetime.datetime(2021, 12, 7, 12, 19, 37)
+# CURR_SESSION_TIMESTAMP = tstamp.strftime(API_REQUEST_DATETIME_FORMAT)
+CURR_SESSION_TIMESTAMP = None
 
 
 @app.route('/')
@@ -45,12 +46,12 @@ def get_command_from_app():
     if data['command'] == 'start':
         CURR_SESSION_TIMESTAMP = create_capture_folders(num_objects)
         # if args['command'] == 'start':
-        #     ACTIVE_THREAD = multiprocessing.Process(target=follow_line, args=(num_objects, session_timestamp))
-        #     ACTIVE_THREAD.start()
+        ACTIVE_THREAD = multiprocessing.Process(target=follow_line, args=(num_objects, session_timestamp))
+        ACTIVE_THREAD.start()
         follow_line(num_objects, CURR_SESSION_TIMESTAMP)
     elif data['command'] == 'stop':
         # elif args['command'] == 'stop':
-        #     ACTIVE_THREAD.terminate()
+        ACTIVE_THREAD.terminate()
         upload_new_captures(CURR_SESSION_TIMESTAMP)
         send_convert_request_to_server()
     return {'message': 'all good from capture posttt!'}, 200
