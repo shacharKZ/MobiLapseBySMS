@@ -1,10 +1,11 @@
+import datetime
 import multiprocessing
 import os
 import firebase_admin
 from flask import Flask, request
 from flask_cors import CORS, cross_origin
 
-from config import STORAGE_BUCKET, ROOT_CAPTURES_FOLDER_PATH
+from config import STORAGE_BUCKET, ROOT_CAPTURES_FOLDER_PATH, API_REQUEST_DATETIME_FORMAT
 from file_uploader import upload_image
 from filesystem_handler import create_capture_folders
 from robot_control import follow_line
@@ -16,7 +17,8 @@ cors = CORS(app)
 app.config['CORS_HEADERS'] = 'Content-Type'
 
 ACTIVE_THREAD = None
-CURR_SESSION_TIMESTAMP = None
+tstamp = datetime.datetime(2021, 12, 7, 12, 19, 37)
+CURR_SESSION_TIMESTAMP = tstamp.strftime(API_REQUEST_DATETIME_FORMAT)
 
 
 @app.route('/')
