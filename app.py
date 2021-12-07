@@ -17,9 +17,9 @@ cors = CORS(app)
 app.config['CORS_HEADERS'] = 'Content-Type'
 
 ACTIVE_THREAD = None
-# tstamp = datetime.datetime(2021, 12, 7, 12, 19, 37)
-# CURR_SESSION_TIMESTAMP = tstamp.strftime(API_REQUEST_DATETIME_FORMAT)
-CURR_SESSION_TIMESTAMP = None
+tstamp = datetime.datetime(2021, 12, 7, 12, 19, 37)
+CURR_SESSION_TIMESTAMP = tstamp.strftime(API_REQUEST_DATETIME_FORMAT)
+# CURR_SESSION_TIMESTAMP = None
 
 
 @app.route('/')
@@ -52,27 +52,33 @@ def get_command_from_app():
     elif data['command'] == 'stop':
         # elif args['command'] == 'stop':
         ACTIVE_THREAD.terminate()
-        upload_new_captures(CURR_SESSION_TIMESTAMP)
+        upload_new_captures(num_objects ,CURR_SESSION_TIMESTAMP)
         send_convert_request_to_server()
     return {'message': 'all good from capture posttt!'}, 200
 
 
-def upload_new_captures(session_timestamp: str):
+def upload_new_captures(num_objects: int, session_timestamp: str):
     curr_upload_dir_name = ''
-    for dirpath, _, files in os.walk(ROOT_CAPTURES_FOLDER_PATH):
-        curr_file_path = ''
-        for file in files:
-            print(os.path.join(dirpath, file))
-            for i in range(1, 4):
-                print(
-                    f'Checking if object{i}CaptureSession-{session_timestamp} is in {str(os.path.join(dirpath, file))}')
-                if f'object{i}CaptureSession-{session_timestamp}' in os.path.join(dirpath, file):
-                    curr_upload_dir_name = f'object{i}CaptureSession-{session_timestamp}/'
-                    break
+    for i in range(1,num_objects+1):
+        capture_dir_path = os.path.join(ROOT_CAPTURES_FOLDER_PATH, f'object{i}CaptureSession-{session_timestamp}')
 
-            # print(os.path.join(dirpath, file))
-            # print(file)
-            upload_image(curr_upload_dir_name + file, os.path.join(dirpath, file))
+        for file in os.listdir(capture_dir_path):
+            print(file)
+
+    # for dirpath, _, files in os.walk(ROOT_CAPTURES_FOLDER_PATH):
+    #     curr_file_path = ''
+    #     for file in files:
+    #         print(os.path.join(dirpath, file))
+    #         for i in range(1, 4):
+    #             print(
+    #                 f'Checking if object{i}CaptureSession-{session_timestamp} is in {str(os.path.join(dirpath, file))}')
+    #             if f'object{i}CaptureSession-{session_timestamp}' in os.path.join(dirpath, file):
+    #                 curr_upload_dir_name = f'object{i}CaptureSession-{session_timestamp}/'
+    #                 break
+    #
+    #         # print(os.path.join(dirpath, file))
+    #         # print(file)
+    #         upload_image(curr_upload_dir_name + file, os.path.join(dirpath, file))
 
 
 def send_convert_request_to_server():
