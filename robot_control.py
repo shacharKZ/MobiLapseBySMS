@@ -59,7 +59,7 @@ def stop_line(curr_object_num: int, curr_picture_num: int, session_timestamp: st
     time.sleep(1.5)
     print('curr obj is:', curr_picture_num)
     take_a_pic(curr_object_num, curr_picture_num, session_timestamp)
-    time.sleep(1.5)
+    time.sleep(3)
     motor.forward()
     time.sleep(0.07)
 
