@@ -147,6 +147,7 @@ def test_dir1():
 
 
 def follow_line(num_objects: int = 3, session_timestamp: str = str(datetime.now())):
+    print('Starting follow line')
     curr_object = 0
     picture_progress_list = [1 * num_objects]
     ir.setup_IR()
@@ -166,9 +167,9 @@ def follow_line(num_objects: int = 3, session_timestamp: str = str(datetime.now(
         ir.check_above_line()
         if ir.last_status_str in actions_dir:
             action_to_exe, params = actions_dir[ir.last_status_str]
-            if DEBUG:
-                print(action_to_exe, params)
-                print(ir.last_status_str)
+            # if DEBUG:
+            print(action_to_exe, params)
+            print(ir.last_status_str)
             if ir.last_status_str == '1111111':
                 # We encountered a stop line so we need to take a picture
                 # Sending the number of the current picture of the current object to the image capture function
