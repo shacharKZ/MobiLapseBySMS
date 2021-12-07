@@ -114,7 +114,7 @@ def test_dir1():
 def follow_line(num_objects: int = 3, session_timestamp: str = str(datetime.now())):
     print('Starting follow line')
     curr_object = 0
-    picture_progress_list = [1 * num_objects]
+    picture_progress_list = [1] * num_objects
     ir.setup_IR()
     motor.setup_motor()
     dir.setup_direction()
