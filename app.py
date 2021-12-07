@@ -37,7 +37,7 @@ def get_command_from_app():
     global ACTIVE_THREAD
     data = request.get_json()
     print(data)
-    num_objects = data.get(['numObjects'], 3)
+    num_objects = data.get('numObjects', 3)
     # num_objects = args.get(['numObjects'], 3)
     session_timestamp = create_capture_folders(num_objects)
     if data['command'] == 'start':
