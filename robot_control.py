@@ -171,7 +171,7 @@ def follow_line(num_objects: int = 3, session_timestamp: str = str(datetime.now(
             print(action_to_exe, params)
             print(ir.last_status_str)
             # if ir.last_status_str == '1111111':
-            if stop_line:
+            if action_to_exe == stop_line:
                 # We encountered a stop line so we need to take a picture
                 # Sending the number of the current picture of the current object to the image capture function
                 action_to_exe(curr_object + 1, picture_progress_list[curr_object], session_timestamp)
