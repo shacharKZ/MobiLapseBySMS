@@ -43,20 +43,16 @@ def get_command_from_app():
     data = request.get_json()
     print(data)
     num_objects = data.get('numObjects', 3)
-    # num_objects = args.get(['numObjects'], 3)
     if data['command'] == 'start':
         CURR_SESSION_TIMESTAMP = create_capture_folders(num_objects)
-        # if args['command'] == 'start':
         ACTIVE_THREAD = multiprocessing.Process(target=follow_line, args=(num_objects, CURR_SESSION_TIMESTAMP))
         ACTIVE_THREAD.start()
-        # follow_line(num_objects, CURR_SESSION_TIMESTAMP)
     elif data['command'] == 'stop':
-        # elif args['command'] == 'stop':
         ACTIVE_THREAD.terminate()
         stop_all_robot_actions()
         upload_new_captures(num_objects, CURR_SESSION_TIMESTAMP)
         send_convert_request_to_server()
-    return {'message': 'all good from capture posttt!'}, 200
+    return {'message': f'Finished processing {data["command"]} action'}, 200
 
 
 def upload_new_captures(num_objects: int, session_timestamp: str):
