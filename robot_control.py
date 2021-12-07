@@ -115,7 +115,7 @@ def follow_line(num_objects: int = 3, session_timestamp: str = str(datetime.now(
     time.sleep(4)
     motor.forward()  # TODO
     # while True:
-    for itt in range(4000):
+    for itt in range(10000):
         ir.check_above_line()
         if ir.last_status_str in actions_dir:
             action_to_exe, params = actions_dir[ir.last_status_str]
