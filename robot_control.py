@@ -8,7 +8,7 @@ import video_dir as vid
 print('importing from robot control3')
 import QTR_8RC as ir
 print('importing from robot control4')
-import tests
+# import tests
 print('importing from robot control5')
 import time
 print('importing from robot control6')
