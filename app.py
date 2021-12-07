@@ -4,10 +4,10 @@ import firebase_admin
 from flask import Flask, request
 from flask_cors import CORS, cross_origin
 
-from capture_handler import create_capture_folders
 from config import STORAGE_BUCKET, ROOT_CAPTURES_FOLDER_PATH
 from file_uploader import upload_image
-# from robot_control import follow_line
+from filesystem_handler import create_capture_folders
+from robot_control import follow_line
 
 # TODO: something in the more complex features is blocking API requests, need to figure out what
 
