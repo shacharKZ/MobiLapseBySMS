@@ -46,7 +46,7 @@ def get_command_from_app():
     if data['command'] == 'start':
         CURR_SESSION_TIMESTAMP = create_capture_folders(num_objects)
         # if args['command'] == 'start':
-        ACTIVE_THREAD = multiprocessing.Process(target=follow_line, args=(num_objects, session_timestamp))
+        ACTIVE_THREAD = multiprocessing.Process(target=follow_line, args=(num_objects, CURR_SESSION_TIMESTAMP))
         ACTIVE_THREAD.start()
         follow_line(num_objects, CURR_SESSION_TIMESTAMP)
     elif data['command'] == 'stop':
