@@ -4,7 +4,7 @@ import firebase_admin
 from flask import Flask, request
 from flask_cors import CORS, cross_origin
 
-# from capture_handler import create_capture_folders
+from capture_handler import create_capture_folders
 from config import STORAGE_BUCKET, ROOT_CAPTURES_FOLDER_PATH
 from file_uploader import upload_image
 # from robot_control import follow_line
