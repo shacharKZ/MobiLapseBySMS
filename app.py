@@ -56,9 +56,9 @@ def get_command_from_app():
 def upload_new_captures(session_timestamp: str):
     for dirpath, _, files in os.walk(ROOT_CAPTURES_FOLDER_PATH):
         for file in files:
-            print(os.path.join(dirpath, file))
-            print(file)
-            # upload_image(file, os.path.join(dirpath, file))
+            # print(os.path.join(dirpath, file))
+            # print(file)
+            upload_image(file, os.path.join(dirpath, file))
 
 
 def send_convert_request_to_server():
