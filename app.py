@@ -33,7 +33,7 @@ def get_command_from_app_in_get():
 
 @app.post('/capture')
 @cross_origin()
-def get_command_from_app(args):
+def get_command_from_app():
     global ACTIVE_THREAD
     data = request.get_json()
     print(data)
