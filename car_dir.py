@@ -2,7 +2,7 @@
 import PCA9685 as servo
 import time  # Import necessary modules
 
-TURN_15, TURN_25, TURN_35, TURN_45, TURN_60 = 35, 45, 60, 75, 90
+TURN_15, TURN_25, TURN_35, TURN_45, TURN_60 = 35, 45, 60, 80, 95
 pwm = servo.PWM()
 
 
