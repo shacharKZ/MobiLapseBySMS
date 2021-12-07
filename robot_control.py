@@ -1,11 +1,19 @@
 # import numpy as np # Import Numpy library
+print('importing from robot control')
 import motor
+print('importing from robot control1')
 import car_dir as dir
+print('importing from robot control2')
 import video_dir as vid
+print('importing from robot control3')
 import QTR_8RC as ir
+print('importing from robot control4')
 import tests
+print('importing from robot control5')
 import time
+print('importing from robot control6')
 from datetime import datetime
+print('importing from robot control7')
 
 # 0 to suppress, 1 to print
 from capture_handler import take_a_pic
