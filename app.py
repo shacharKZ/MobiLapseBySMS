@@ -18,6 +18,7 @@ app.config['CORS_HEADERS'] = 'Content-Type'
 ACTIVE_THREAD = None
 CURR_SESSION_TIMESTAMP = None
 
+
 @app.route('/')
 def hello_world():  # put application's code here
     print('RECEIVED REQ')
@@ -41,24 +42,32 @@ def get_command_from_app():
     # num_objects = args.get(['numObjects'], 3)
     if data['command'] == 'start':
         CURR_SESSION_TIMESTAMP = create_capture_folders(num_objects)
-    # if args['command'] == 'start':
-    #     ACTIVE_THREAD = multiprocessing.Process(target=follow_line, args=(num_objects, session_timestamp))
-    #     ACTIVE_THREAD.start()
+        # if args['command'] == 'start':
+        #     ACTIVE_THREAD = multiprocessing.Process(target=follow_line, args=(num_objects, session_timestamp))
+        #     ACTIVE_THREAD.start()
         follow_line(num_objects, CURR_SESSION_TIMESTAMP)
     elif data['command'] == 'stop':
-    # elif args['command'] == 'stop':
-    #     ACTIVE_THREAD.terminate()
+        # elif args['command'] == 'stop':
+        #     ACTIVE_THREAD.terminate()
         upload_new_captures(CURR_SESSION_TIMESTAMP)
         send_convert_request_to_server()
     return {'message': 'all good from capture posttt!'}, 200
 
 
 def upload_new_captures(session_timestamp: str):
+    curr_upload_dir_name = ''
     for dirpath, _, files in os.walk(ROOT_CAPTURES_FOLDER_PATH):
+        curr_file_path = ''
         for file in files:
+
+            for i in range(1, 4):
+                if f'object{i}CaptureSession-{session_timestamp}' in os.path.join(dirpath, file):
+                    curr_upload_dir_name = f'object{i}CaptureSession-{session_timestamp}/'
+                    break
+
             # print(os.path.join(dirpath, file))
             # print(file)
-            upload_image(file, os.path.join(dirpath, file))
+            upload_image(curr_upload_dir_name + file, os.path.join(dirpath, file))
 
 
 def send_convert_request_to_server():
