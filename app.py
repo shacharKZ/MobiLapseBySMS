@@ -42,12 +42,12 @@ def get_command_from_app():
     session_timestamp = create_capture_folders(num_objects)
     if data['command'] == 'start':
     # if args['command'] == 'start':
-        ACTIVE_THREAD = multiprocessing.Process(target=follow_line, args=(num_objects, session_timestamp))
-        ACTIVE_THREAD.start()
-        # follow_line(num_objects, session_timestamp)
+    #     ACTIVE_THREAD = multiprocessing.Process(target=follow_line, args=(num_objects, session_timestamp))
+    #     ACTIVE_THREAD.start()
+        follow_line(num_objects, session_timestamp)
     elif data['command'] == 'stop':
     # elif args['command'] == 'stop':
-        ACTIVE_THREAD.terminate()
+    #     ACTIVE_THREAD.terminate()
         upload_new_captures(session_timestamp)
         send_convert_request_to_server()
     return {'message': 'all good from capture posttt!'}, 200
