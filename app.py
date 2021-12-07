@@ -2,6 +2,7 @@ import datetime
 import multiprocessing
 import os
 import firebase_admin
+import requests
 from flask import Flask, request
 from flask_cors import CORS, cross_origin
 
@@ -51,7 +52,7 @@ def get_command_from_app():
         ACTIVE_THREAD.terminate()
         stop_all_robot_actions()
         upload_new_captures(num_objects, CURR_SESSION_TIMESTAMP)
-        send_convert_request_to_server()
+        send_convert_request_to_server(num_objects, CURR_SESSION_TIMESTAMP)
     return {'message': f'Finished processing {data["command"]} action'}, 200
 
 
@@ -67,9 +68,19 @@ def upload_new_captures(num_objects: int, session_timestamp: str):
             upload_image(curr_upload_dir_name + file, full_path)
 
 
-def send_convert_request_to_server():
-    pass
+def send_convert_request_to_server(num_objects: int, session_timestamp: str):
+    body = {
+        "objects": num_objects,
+        "datetime": session_timestamp
+    }
+    res = requests.post('https://mobiapicr-4hioxusaea-ew.a.run.app:443/convert', json=body)
+    if res.status_code == 200:
+        print('Conversion finished successfully!')
+    else:
+        print(f'An error has occurred, status code is {res.status_code}')
 
+
+pass
 
 if __name__ == '__main__':
     print('API NOW RUNNING')
