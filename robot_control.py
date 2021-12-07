@@ -12,7 +12,7 @@ from capture_handler import take_a_pic
 
 DEBUG = 0
 
-wall_speed = 50  # when connected to the power source directly
+wall_speed = 35  # when connected to the power source directly
 battery_speed = 80  # when connected to batteries only
 battery_slow_speed = 55  # when connected to batteries only
 
@@ -170,7 +170,8 @@ def follow_line(num_objects: int = 3, session_timestamp: str = str(datetime.now(
             # if DEBUG:
             print(action_to_exe, params)
             print(ir.last_status_str)
-            if ir.last_status_str == '1111111':
+            # if ir.last_status_str == '1111111':
+            if stop_line:
                 # We encountered a stop line so we need to take a picture
                 # Sending the number of the current picture of the current object to the image capture function
                 action_to_exe(curr_object + 1, picture_progress_list[curr_object], session_timestamp)
