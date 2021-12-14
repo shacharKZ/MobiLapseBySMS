@@ -143,8 +143,7 @@ def test():
             move_decrease_y()
             time.sleep(0.5)
 
-
-def set_dir(x, y):
+def set_dir(x, y=home_y):
     # print("(x,y): ", '(', x, ',', y, ')')
     global Current_y
     Current_y = y
@@ -161,6 +160,14 @@ def set_dir(x, y):
     elif Current_x > Xmax:
         Current_x = Xmax
     pwm.write(14, 0, Current_x)
+
+
+def set_dir_according_to_home(x, y=0):
+    global home_y
+    y = home_y + y
+    global home_x
+    x = home_x + x
+    set_dir(x, y)
 
 
 def get_dir():
