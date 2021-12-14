@@ -2,7 +2,7 @@
 import RPi.GPIO as GPIO
 import time
 
-led = 16
+led = 16  # TODO currently unsupported
 sensors = [37, 36, 33, 32, 31, 29, 22, 18]
 min_color = None  # this value is changing a bit from time to time. try adjust it
 max_color = None
@@ -14,7 +14,7 @@ def setup_IR():
     global led, sensors, min_color, max_color, last_status, last_status_str
     led = 16
     sensors = [37, 36, 33, 32, 31, 29, 22, 18]
-    min_color = 91  # this value is changing a bit from time to time. try adjust it
+    min_color = 81  # this value is changing a bit from time to time. try adjust it
     max_color = 200
     # last_status = [0, 0, 0, 0, 0, 0, 0, 0]
     last_status_str = '00000000'

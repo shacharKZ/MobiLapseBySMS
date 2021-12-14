@@ -12,7 +12,7 @@ from capture_handler import take_a_pic
 
 DEBUG = 0
 
-wall_speed = 35  # when connected to the power source directly
+wall_speed = 37  # when connected to the power source directly
 battery_speed = 80  # when connected to batteries only
 battery_slow_speed = 55  # when connected to batteries only
 
@@ -48,7 +48,7 @@ def stop_line(curr_object_num: int, curr_picture_num: int, session_timestamp: st
     take_a_pic(curr_object_num, curr_picture_num, session_timestamp)
     time.sleep(3)
     motor.forward()
-    time.sleep(0.12)
+    time.sleep(0.15)
 
 
 actions_dir = {
@@ -66,7 +66,7 @@ actions_dir = {
     '00001100': (dir.turn_left, dir.TURN_15),
     '00000100': (dir.turn_left, dir.TURN_15),
     '00000110': (dir.turn_left, dir.TURN_25),
-    '00000010': (dir.turn_left, dir.TURN_35),
+    '00000010': (dir.turn_left, dir.TURN_25),
     '00000111': (dir.turn_left, dir.TURN_35),
     '00000011': (dir.turn_left, dir.TURN_35),
     '00000001': (dir.turn_left, dir.TURN_45),
@@ -74,7 +74,7 @@ actions_dir = {
     '00110000': (dir.turn_right, dir.TURN_15),
     '00100000': (dir.turn_right, dir.TURN_15),
     '01100000': (dir.turn_right, dir.TURN_25),
-    '01000000': (dir.turn_right, dir.TURN_35),
+    '01000000': (dir.turn_right, dir.TURN_25),
     '11100000': (dir.turn_right, dir.TURN_35),
     '11000000': (dir.turn_right, dir.TURN_35),
     '10000000': (dir.turn_right, dir.TURN_45),
