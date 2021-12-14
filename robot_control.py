@@ -40,7 +40,7 @@ def aim_and_take_a_photo(p: Position, label: str = ""):
         take_a_pic(label)
 
 
-def stop_line(curr_object_num: int, curr_object_angle: int, curr_picture_num: int, session_timestamp: str):
+def stop_line(curr_object_num: int, curr_object_angle: str, curr_picture_num: int, session_timestamp: str):
     print("all 8 sensors see the line")
     motor.stop()
     vid.set_camera_to_angle(curr_object_angle)
@@ -99,9 +99,9 @@ def test_dir1():
         time.sleep(1)
 
 
-def follow_line(num_objects: int = 3, object_angle_list=None, session_timestamp: str = 'tmpRun'):
+def follow_line(num_objects: int = 3, object_angle_list: list[str] = None, session_timestamp: str = 'tmpRun'):
     if object_angle_list is None:
-        object_angle_list = [90, 90, 90]
+        object_angle_list = ['HARD_RIGHT', 'HARD_RIGHT', 'HARD_RIGHT']
     print('Starting follow line')
     curr_object = 0
     picture_progress_list = [1] * num_objects

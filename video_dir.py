@@ -9,11 +9,11 @@ Current_x = 0  # original that was 0. we changed it
 Current_y = 0  # original that was 0. we changed it
 
 ANGLE_T0_DIR_DICT = {
-    -90: (180, 0),
-    -45: (88, 0),
-    0: (0, 0),
-    45: (-88, 0),
-    90: (-180, 0)
+    'HARD_RIGHT': (180, 0),
+    'SOFT_RIGHT': (88, 0),
+    'STRAIGHT': (0, 0),
+    'SOFT_LEFT': (-88, 0),
+    'HARD_LEFT': (-180, 0)
 }
 
 
@@ -125,10 +125,10 @@ def calibrate(x, y):
     pwm.write(15, 0, (MaxPulse + MinPulse) / 2 + y)
 
 
-def set_camera_to_angle(angle: int):
+def set_camera_to_angle(angle: str):
     x, y = ANGLE_T0_DIR_DICT.get(angle, (0, 0))
     print(f'x={x}, y={y}')
-    set_dir_according_to_home(x,y)
+    set_dir_according_to_home(x, y)
 
 
 def test():
@@ -143,6 +143,7 @@ def test():
             move_decrease_x()
             move_decrease_y()
             time.sleep(0.5)
+
 
 def set_dir(x, y):
     # print("(x,y): ", '(', x, ',', y, ')')
@@ -180,13 +181,13 @@ def get_dir():
 if __name__ == '__main__':
     setup_vid()
     home_x_y()
-    set_camera_to_angle(90)
+    set_camera_to_angle('HARD_LEFT')
     time.sleep(2)
-    set_camera_to_angle(-90)
+    set_camera_to_angle('HARD_RIGHT')
     time.sleep(2)
-    set_camera_to_angle(45)
+    set_camera_to_angle('SOFT_RIGHT')
     time.sleep(2)
-    set_camera_to_angle(-45)
+    set_camera_to_angle('SOFT_LEFT')
     time.sleep(2)
-    set_camera_to_angle(0)
+    set_camera_to_angle('STRAIGHT')
     time.sleep(2)
