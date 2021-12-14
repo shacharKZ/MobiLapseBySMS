@@ -100,7 +100,7 @@ def test_dir1():
         time.sleep(1)
 
 
-def follow_line(num_objects: int = 3, object_angle_list: list[str] = None, session_timestamp: str = 'tmpRun'):
+def follow_line(num_objects: int = 3, object_angle_list = None, session_timestamp: str = 'tmpRun'):
     if object_angle_list is None:
         object_angle_list = ['HARD_RIGHT', 'HARD_RIGHT', 'HARD_RIGHT']
     print('Starting follow line')
