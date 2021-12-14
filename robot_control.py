@@ -40,9 +40,10 @@ def aim_and_take_a_photo(p: Position, label: str = ""):
         take_a_pic(label)
 
 
-def stop_line(curr_object_num: int, curr_picture_num: int, session_timestamp: str):
+def stop_line(curr_object_num: int, curr_object_angle: int, curr_picture_num: int, session_timestamp: str):
     print("all 8 sensors see the line")
     motor.stop()
+    vid.set_camera_to_angle(curr_object_angle)
     time.sleep(1.5)
     print('curr obj is:', curr_picture_num)
     take_a_pic(curr_object_num, curr_picture_num, session_timestamp)
@@ -98,7 +99,9 @@ def test_dir1():
         time.sleep(1)
 
 
-def follow_line(num_objects: int = 3, session_timestamp: str = str(datetime.now())):
+def follow_line(num_objects: int = 3, object_angle_list=None, session_timestamp: str = str(datetime.now())):
+    if object_angle_list is None:
+        object_angle_list = [90, 90, 90]
     print('Starting follow line')
     curr_object = 0
     picture_progress_list = [1] * num_objects
@@ -126,7 +129,8 @@ def follow_line(num_objects: int = 3, session_timestamp: str = str(datetime.now(
             if action_to_exe == stop_line:
                 # We encountered a stop line so we need to take a picture
                 # Sending the number of the current picture of the current object to the image capture function
-                action_to_exe(curr_object + 1, picture_progress_list[curr_object], session_timestamp)
+                action_to_exe(curr_object + 1, object_angle_list[curr_object], picture_progress_list[curr_object],
+                              session_timestamp)
                 # Incrementing the number of images for the current object
                 picture_progress_list[curr_object] += 1
                 # Updating the index of the next object to take an image for

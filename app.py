@@ -44,9 +44,11 @@ def get_command_from_app():
     data = request.get_json()
     print(data)
     num_objects = data.get('numObjects', 3)
+    object_angle_list: list[int] = data.get('objectAngleList', [90, 90, 90])
+    num_objects = len(object_angle_list)
     if data['command'] == 'start':
         CURR_SESSION_TIMESTAMP = create_capture_folders(num_objects)
-        ACTIVE_THREAD = multiprocessing.Process(target=follow_line, args=(num_objects, CURR_SESSION_TIMESTAMP))
+        ACTIVE_THREAD = multiprocessing.Process(target=follow_line, args=(num_objects, object_angle_list, CURR_SESSION_TIMESTAMP))
         ACTIVE_THREAD.start()
     elif data['command'] == 'stop':
         ACTIVE_THREAD.terminate()

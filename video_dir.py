@@ -8,6 +8,14 @@ MaxPulse = 700  # original that was 700. we changed it
 Current_x = 0  # original that was 0. we changed it
 Current_y = 0  # original that was 0. we changed it
 
+ANGLE_T0_DIR_DICT = {
+    -90: (0, 0),
+    -45: (30, 0),
+    0: (50, 0),
+    45: (70, 0),
+    90: (90, 0)
+}
+
 
 def setup_vid(busnum=None):
     global Xmin, Ymin, Xmax, Ymax, home_x, home_y, pwm
@@ -115,6 +123,11 @@ def home_x_y():
 def calibrate(x, y):
     pwm.write(14, 0, (MaxPulse + MinPulse) / 2 + x)
     pwm.write(15, 0, (MaxPulse + MinPulse) / 2 + y)
+
+
+def set_camera_to_angle(angle: int):
+    x, y = ANGLE_T0_DIR_DICT.get(angle, (0, 0))
+    set_dir(x, y)
 
 
 def test():
