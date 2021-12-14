@@ -127,7 +127,7 @@ def calibrate(x, y):
 
 def set_camera_to_angle(angle: int):
     x, y = ANGLE_T0_DIR_DICT.get(angle, (0, 0))
-    set_dir(x, y)
+    set_dir_according_to_home(x,y)
 
 
 def test():
