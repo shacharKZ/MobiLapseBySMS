@@ -49,8 +49,9 @@ def stop_line(curr_object_num: int, curr_object_angle: str, curr_picture_num: in
     print('curr obj is:', curr_picture_num)
     take_a_pic(curr_object_num, curr_picture_num, session_timestamp)
     time.sleep(3)
+    vid.home_x_y()
     motor.forward()
-    time.sleep(0.15)
+    time.sleep(0.3)
 
 
 actions_dir = {
