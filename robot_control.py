@@ -32,7 +32,7 @@ def stop_line(curr_object_num: int, curr_object_angle: str, curr_picture_num: in
 
 
 actions_dir = {
-    '00000000': (print, "car don't see the line"),
+    '00000000': (print, "car don't see the line", 1),
     '00011000': (dir.home, None, 1),
     '00001000': (dir.home, None, 1),
     '00010000': (dir.home, None, 1),
@@ -47,17 +47,17 @@ actions_dir = {
     '00000100': (dir.turn_left, dir.TURN_15, 1),
     '00000110': (dir.turn_left, dir.TURN_25, 1),
     '00000010': (dir.turn_left, dir.TURN_25, 1),
-    '00000111': (dir.turn_left, dir.TURN_35, 1.15),
-    '00000011': (dir.turn_left, dir.TURN_35, 1.15),
-    '00000001': (dir.turn_left, dir.TURN_45, 1.3),
+    '00000111': (dir.turn_left, dir.TURN_35, 1.2),
+    '00000011': (dir.turn_left, dir.TURN_35, 1.2),
+    '00000001': (dir.turn_left, dir.TURN_45, 1.5),
 
     '00110000': (dir.turn_right, dir.TURN_15, 1),
     '00100000': (dir.turn_right, dir.TURN_15, 1),
     '01100000': (dir.turn_right, dir.TURN_25, 1),
     '01000000': (dir.turn_right, dir.TURN_25, 1),
-    '11100000': (dir.turn_right, dir.TURN_35, 1.15),
-    '11000000': (dir.turn_right, dir.TURN_35, 1.15),
-    '10000000': (dir.turn_right, dir.TURN_45, 1.3),
+    '11100000': (dir.turn_right, dir.TURN_35, 1.2),
+    '11000000': (dir.turn_right, dir.TURN_35, 1.2),
+    '10000000': (dir.turn_right, dir.TURN_45, 1.5),
 }
 
 
@@ -118,8 +118,8 @@ def follow_line(num_objects: int = 3, object_angle_list = None, session_timestam
                 # Updating the index of the next object to take an image for
                 curr_object = (curr_object + 1) % num_objects
             else:
-                action_to_exe(params)
                 motor.setSpeed(int(speed_power*speed_factor))
+                action_to_exe(params)
                 prev_state = last_status_str
         else:
             if DEBUG:
@@ -128,33 +128,6 @@ def follow_line(num_objects: int = 3, object_angle_list = None, session_timestam
 
     motor.stop()
 
-
-def test2():
-    print("DEBUG: start test2 (func)")
-    motor.setup_motor()
-    dir.setup_direction()
-    vid.setup_vid()
-    vid.home_x_y()
-    motor.setSpeed(battery_speed)
-    time.sleep(1)
-    dir.home()
-
-    dir.turn_right()
-    time.sleep(2)
-    dir.turn_left()
-    time.sleep(2)
-    dir.turn_right()
-    time.sleep(2)
-    dir.home()
-    time.sleep(2)
-    motor.forward()
-    time.sleep(2)
-    motor.stop()
-    time.sleep(1.5)
-    motor.backward()
-    time.sleep(4)
-    motor.stop()
-    time.sleep(3)
 
 
 if __name__ == '__main__':
