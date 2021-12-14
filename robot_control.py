@@ -42,6 +42,7 @@ def aim_and_take_a_photo(p: Position, label: str = ""):
 
 def stop_line(curr_object_num: int, curr_object_angle: str, curr_picture_num: int, session_timestamp: str):
     print("all 8 sensors see the line")
+    print(f'Calling take a pic with angle {curr_object_angle}')
     motor.stop()
     vid.set_camera_to_angle(curr_object_angle)
     time.sleep(1.5)
