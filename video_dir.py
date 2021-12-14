@@ -9,11 +9,11 @@ Current_x = 0  # original that was 0. we changed it
 Current_y = 0  # original that was 0. we changed it
 
 ANGLE_T0_DIR_DICT = {
-    -90: (0, 0),
-    -45: (30, 0),
-    0: (50, 0),
-    45: (70, 0),
-    90: (90, 0)
+    -90: (180, 0),
+    -45: (88, 0),
+    0: (0, 0),
+    45: (-88, 0),
+    90: (-180, 0)
 }
 
 
@@ -127,6 +127,7 @@ def calibrate(x, y):
 
 def set_camera_to_angle(angle: int):
     x, y = ANGLE_T0_DIR_DICT.get(angle, (0, 0))
+    print(f'x={x}, y={y}')
     set_dir_according_to_home(x,y)
 
 
@@ -143,7 +144,7 @@ def test():
             move_decrease_y()
             time.sleep(0.5)
 
-def set_dir(x, y=home_y):
+def set_dir(x, y):
     # print("(x,y): ", '(', x, ',', y, ')')
     global Current_y
     Current_y = y
@@ -179,3 +180,13 @@ def get_dir():
 if __name__ == '__main__':
     setup_vid()
     home_x_y()
+    set_camera_to_angle(90)
+    time.sleep(2)
+    set_camera_to_angle(-90)
+    time.sleep(2)
+    set_camera_to_angle(45)
+    time.sleep(2)
+    set_camera_to_angle(-45)
+    time.sleep(2)
+    set_camera_to_angle(0)
+    time.sleep(2)
