@@ -17,29 +17,6 @@ battery_speed = 80  # when connected to batteries only
 battery_slow_speed = 55  # when connected to batteries only
 
 
-class Position():
-    def __init__(self, x, y) -> None:
-        self._x = x
-        self._y = y
-        self._counter = 0
-
-    def get_label_and_increase_counter(self) -> str:
-        self._counter += 1
-        return 'point(x=' + str(self._x) + ', y=' + str(self._y) + ') #' + str(self._counter)
-
-    def __str__(self) -> str:
-        return 'point(x=' + str(self._x) + ', y=' + str(self._y) + ') #' + str(self._counter)
-
-
-def aim_and_take_a_photo(p: Position, label: str = ""):
-    vid.set_dir(p._x, p._y)
-    time.sleep(1)
-    if label == "":
-        take_a_pic(p.get_label_and_increase_counter())
-    else:
-        take_a_pic(label)
-
-
 def stop_line(curr_object_num: int, curr_object_angle: str, curr_picture_num: int, session_timestamp: str):
     print("all 8 sensors see the line")
     print(f'Calling take a pic with angle {curr_object_angle}')
@@ -56,31 +33,31 @@ def stop_line(curr_object_num: int, curr_object_angle: str, curr_picture_num: in
 
 actions_dir = {
     '00000000': (print, "car don't see the line"),
-    '00011000': (dir.home, None),
-    '00001000': (dir.home, None),
-    '00010000': (dir.home, None),
-    '00111100': (dir.home, None),
-    '10111101': (dir.home, None),
-    '10011001': (dir.home, None),
-    '10010001': (dir.home, None),
-    '10001001': (dir.home, None),
-    '11111111': (stop_line, None),
+    '00011000': (dir.home, None, 1),
+    '00001000': (dir.home, None, 1),
+    '00010000': (dir.home, None, 1),
+    '00111100': (dir.home, None, 1),
+    '10111101': (dir.home, None, 1),
+    '10011001': (dir.home, None, 1),
+    '10010001': (dir.home, None, 1),
+    '10001001': (dir.home, None, 1),
+    '11111111': (stop_line, None, 1),
 
-    '00001100': (dir.turn_left, dir.TURN_15),
-    '00000100': (dir.turn_left, dir.TURN_15),
-    '00000110': (dir.turn_left, dir.TURN_25),
-    '00000010': (dir.turn_left, dir.TURN_25),
-    '00000111': (dir.turn_left, dir.TURN_35),
-    '00000011': (dir.turn_left, dir.TURN_35),
-    '00000001': (dir.turn_left, dir.TURN_45),
+    '00001100': (dir.turn_left, dir.TURN_15, 1),
+    '00000100': (dir.turn_left, dir.TURN_15, 1),
+    '00000110': (dir.turn_left, dir.TURN_25, 1),
+    '00000010': (dir.turn_left, dir.TURN_25, 1),
+    '00000111': (dir.turn_left, dir.TURN_35, 1.15),
+    '00000011': (dir.turn_left, dir.TURN_35, 1.15),
+    '00000001': (dir.turn_left, dir.TURN_45, 1.3),
 
-    '00110000': (dir.turn_right, dir.TURN_15),
-    '00100000': (dir.turn_right, dir.TURN_15),
-    '01100000': (dir.turn_right, dir.TURN_25),
-    '01000000': (dir.turn_right, dir.TURN_25),
-    '11100000': (dir.turn_right, dir.TURN_35),
-    '11000000': (dir.turn_right, dir.TURN_35),
-    '10000000': (dir.turn_right, dir.TURN_45),
+    '00110000': (dir.turn_right, dir.TURN_15, 1),
+    '00100000': (dir.turn_right, dir.TURN_15, 1),
+    '01100000': (dir.turn_right, dir.TURN_25, 1),
+    '01000000': (dir.turn_right, dir.TURN_25, 1),
+    '11100000': (dir.turn_right, dir.TURN_35, 1.15),
+    '11000000': (dir.turn_right, dir.TURN_35, 1.15),
+    '10000000': (dir.turn_right, dir.TURN_45, 1.3),
 }
 
 
@@ -102,6 +79,8 @@ def test_dir1():
 
 
 def follow_line(num_objects: int = 3, object_angle_list = None, session_timestamp: str = 'tmpRun'):
+    speed_power = wall_speed
+
     if object_angle_list is None:
         object_angle_list = ['HARD_RIGHT', 'HARD_RIGHT', 'HARD_RIGHT']
     print('Starting follow line')
@@ -112,18 +91,19 @@ def follow_line(num_objects: int = 3, object_angle_list = None, session_timestam
     dir.setup_direction()
     vid.setup_vid()
     vid.home_x_y()
-    motor.setSpeed(wall_speed)
+    motor.setSpeed(speed_power)
     time.sleep(1)
     motor.stop()  # TODO
     dir.home()
+    prev_state = '00000000'
 
     time.sleep(4)
     motor.forward()  # TODO
     # while True:
     for itt in range(10000):
-        ir.check_above_line()
-        if ir.last_status_str in actions_dir:
-            action_to_exe, params = actions_dir[ir.last_status_str]
+        last_status_str = ir.check_above_line()
+        if last_status_str in actions_dir:
+            action_to_exe, params, speed_factor = actions_dir[last_status_str]
             # if DEBUG:
             print(action_to_exe, params)
             print(ir.last_status_str)
@@ -139,9 +119,11 @@ def follow_line(num_objects: int = 3, object_angle_list = None, session_timestam
                 curr_object = (curr_object + 1) % num_objects
             else:
                 action_to_exe(params)
+                motor.setSpeed(int(speed_power*speed_factor))
+                prev_state = last_status_str
         else:
             if DEBUG:
-                print("car: ???", ir.last_status_str)
+                print("car: ???", last_status_str)
         time.sleep(0.000002)
 
     motor.stop()
