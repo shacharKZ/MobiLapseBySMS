@@ -1,4 +1,4 @@
-from cv2 import PROJ_SPHERICAL_EQRECT
+from cv2 import PROJ_SPHERICAL_EQRECT  # TODO what is that??
 import motor
 import car_dir as dir
 import video_dir as vid
@@ -32,7 +32,10 @@ def stop_line(curr_object_num: int, curr_object_angle: str, curr_picture_num: in
     vid.home_x_y()
     motor.setSpeed(speed_power)
     motor.forward()
+    # sleep for a few second so we won't stop again on the stopping line
     time.sleep(0.18)
+    # adjust the sensativity of the ir sensor according to the current light
+    ir.adjust_thershold()
 
 
 actions_dir = {
