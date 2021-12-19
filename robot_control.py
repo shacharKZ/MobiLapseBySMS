@@ -106,7 +106,7 @@ def follow_line(num_objects: int = 4, object_angle_list=None, session_timestamp:
 
         same_ir_as_prev = 0
         for ir1, ir2 in zip(prev_state, last_status_str):
-            if ir1 == ir2:
+            if ir1 == ir2 == '1':
                 same_ir_as_prev += 1
 
         if last_status_str in actions_dir:
@@ -124,7 +124,9 @@ def follow_line(num_objects: int = 4, object_angle_list=None, session_timestamp:
                 picture_progress_list[curr_object] += 1
                 # Updating the index of the next object to take an image for
                 curr_object = (curr_object + 1) % num_objects
-            elif same_ir_as_prev >= 6:
+            elif last_status_str == '':
+
+            elif same_ir_as_prev < 4:
                 print(same_ir_as_prev)
                 motor.setSpeed(int(speed_power*speed_factor))
                 action_to_exe(params)
