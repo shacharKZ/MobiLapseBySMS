@@ -32,32 +32,32 @@ def stop_line(curr_object_num: int, curr_object_angle: str, curr_picture_num: in
 
 
 actions_dir = {
-    '00000000': (print, "car don't see the line", 1),
-    '00011000': (dir.home, None, 1),
-    '00001000': (dir.home, None, 1),
-    '00010000': (dir.home, None, 1),
-    '00111100': (dir.home, None, 1),
-    '10111101': (dir.home, None, 1),
-    '10011001': (dir.home, None, 1),
-    '10010001': (dir.home, None, 1),
-    '10001001': (dir.home, None, 1),
-    '11111111': (stop_line, None, 1),
+    # '00000000': (print, "car don't see the line", 1),
+    '00011000': (0, 1),
+    '00001000': (0, 1),
+    '00010000': (0, 1),
+    '00111100': (0, 1),
+    # '10111101': (0, 1),
+    # '10011001': (0, 1),
+    # '10010001': (0, 1),
+    # '10001001': (0, 1),
+    '11111111': (0, 1),
 
-    '00001100': (dir.turn_left, dir.TURN_15, 1),
-    '00000100': (dir.turn_left, dir.TURN_15, 1),
-    '00000110': (dir.turn_left, dir.TURN_25, 1),
-    '00000010': (dir.turn_left, dir.TURN_25, 1),
-    '00000111': (dir.turn_left, dir.TURN_35, 1.2),
-    '00000011': (dir.turn_left, dir.TURN_35, 1.2),
-    '00000001': (dir.turn_left, dir.TURN_45, 1.5),
+    '00001100': (-dir.TURN_15, 1),
+    '00000100': (-dir.TURN_15, 1),
+    '00000110': (-dir.TURN_25, 1),
+    '00000010': (-dir.TURN_25, 1),
+    '00000111': (-dir.TURN_35, 1.2),
+    '00000011': (-dir.TURN_35, 1.2),
+    '00000001': (-dir.TURN_45, 1.5),
 
-    '00110000': (dir.turn_right, dir.TURN_15, 1),
-    '00100000': (dir.turn_right, dir.TURN_15, 1),
-    '01100000': (dir.turn_right, dir.TURN_25, 1),
-    '01000000': (dir.turn_right, dir.TURN_25, 1),
-    '11100000': (dir.turn_right, dir.TURN_35, 1.2),
-    '11000000': (dir.turn_right, dir.TURN_35, 1.2),
-    '10000000': (dir.turn_right, dir.TURN_45, 1.5),
+    '00110000': (dir.TURN_15, 1),
+    '00100000': (dir.TURN_15, 1),
+    '01100000': (dir.TURN_25, 1),
+    '01000000': (dir.TURN_25, 1),
+    '11100000': (dir.TURN_35, 1.2),
+    '11000000': (dir.TURN_35, 1.2),
+    '10000000': (dir.TURN_45, 1.5),
 }
 
 
@@ -96,44 +96,44 @@ def follow_line(num_objects: int = 4, object_angle_list=None, session_timestamp:
     time.sleep(1)
     motor.stop()  # TODO
     dir.home()
-    prev_state = '00011000'
+    prev_exe_angle = 0  # last angle the take aim to. helps with "softer" directions change
 
     time.sleep(4)
     motor.forward()  # TODO
     # while True:
     for itt in range(10000):
-        last_status_str = ir.check_above_line()
+        ir_status_str = ir.check_above_line()
 
-        same_ir_as_prev = 0
-        for ir1, ir2 in zip(prev_state, last_status_str):
-            if ir1 == ir2 == '1':
-                same_ir_as_prev += 1
+        # same_ir_as_prev = 0
+        # for ir1, ir2 in zip(prev_state, last_status_str):
+        #     if ir1 == ir2 == '1':
+        #         same_ir_as_prev += 1
 
-        if last_status_str in actions_dir:
-            action_to_exe, params, speed_factor = actions_dir[last_status_str]
+        if ir_status_str in actions_dir:
+            exe_angle, speed_factor = actions_dir[ir_status_str]
             # if DEBUG:
-            print(action_to_exe, params)
             print(ir.last_status_str)
             # if ir.last_status_str == '1111111':
-            if action_to_exe == stop_line:
+            if ir_status_str == '11111111':
                 # We encountered a stop line so we need to take a picture
                 # Sending the number of the current picture of the current object to the image capture function
-                action_to_exe(curr_object + 1, object_angle_list[curr_object], picture_progress_list[curr_object],
-                              session_timestamp)
+                stop_line(curr_object + 1, object_angle_list[curr_object], picture_progress_list[curr_object],
+                          session_timestamp)
                 # Incrementing the number of images for the current object
                 picture_progress_list[curr_object] += 1
                 # Updating the index of the next object to take an image for
                 curr_object = (curr_object + 1) % num_objects
-            elif last_status_str == '':
-
-            elif same_ir_as_prev < 4:
-                print(same_ir_as_prev)
+            elif (prev_exe_angle < 0 and exe_angle > 0) or (prev_exe_angle > 0 and exe_angle < 0):
+                # in this case the turn was to "hard". might be a flake
+                print('DID NOT TURN NOW!')
+                print(f'curr angle={exe_angle}, prev angle={prev_exe_angle}')
+            else:
                 motor.setSpeed(int(speed_power*speed_factor))
-                action_to_exe(params)
-                prev_state = last_status_str
+                dir.turn_with_angle(exe_angle)
+                prev_exe_angle = exe_angle
         else:
             if DEBUG:
-                print("car: ???", last_status_str)
+                print("DEBUG DIR EXE: ???", ir_status_str)
         time.sleep(0.000002)
 
     motor.stop()

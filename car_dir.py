@@ -17,7 +17,8 @@ def setup_direction(busnum=None):
     leftPWM = 400
     homePWM = 450
     rightPWM = 500
-    offset = 0  # the offest is taken from the gile "config" (line 3 is the offest we looking for)
+    # the offest is taken from the gile "config" (line 3 is the offest we looking for)
+    offset = 0
     try:
         for line in open('config'):
             if line[0:8] == 'offset =':
@@ -37,7 +38,7 @@ def setup_direction(busnum=None):
 
 
 # ==========================================================================================
-# Control the servo connected to channel 0 of the servo control board, so as to make the 
+# Control the servo connected to channel 0 of the servo control board, so as to make the
 # car turn left.
 # ==========================================================================================
 def turn_left():
@@ -70,6 +71,11 @@ def turn_right(add_angle=0):
 def turn(angle):
     angle = Map(angle, 0, 255, leftPWM, rightPWM)
     pwm.write(0, 0, angle)
+
+
+def turn_with_angle(add_angle=0):
+    global homePWM, pwm
+    pwm.write(0, 0, homePWM + add_angle)
 
 
 def home(dummy_param=None):
