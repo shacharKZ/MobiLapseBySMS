@@ -82,7 +82,7 @@ def follow_line(num_objects: int = 4, object_angle_list=None, session_timestamp:
     speed_power = wall_speed
 
     if object_angle_list is None:
-        object_angle_list = ['HARD_RIGHT', 'HARD_RIGHT', 'HARD_RIGHT']
+        object_angle_list = ['HARD_RIGHT', 'HARD_RIGHT', 'HARD_RIGHT', 'HARD_RIGHT']
     print('Starting follow line')
     curr_object = 0
     picture_progress_list = [1] * num_objects
