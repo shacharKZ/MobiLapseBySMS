@@ -28,7 +28,7 @@ def stop_line(curr_object_num: int, curr_object_angle: str, curr_picture_num: in
     time.sleep(3)
     vid.home_x_y()
     motor.forward()
-    time.sleep(0.3)
+    time.sleep(0.15)
 
 
 actions_dir = {
