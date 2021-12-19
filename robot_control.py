@@ -78,7 +78,7 @@ def test_dir1():
         time.sleep(1)
 
 
-def follow_line(num_objects: int = 3, object_angle_list = None, session_timestamp: str = 'tmpRun'):
+def follow_line(num_objects: int = 4, object_angle_list=None, session_timestamp: str = 'tmpRun'):
     speed_power = wall_speed
 
     if object_angle_list is None:
