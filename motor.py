@@ -28,9 +28,10 @@ pins = [Motor0_A, Motor0_B, Motor1_A, Motor1_B]
 # Adjust the duty cycle of the square waves output from channel 4 and 5 of
 # the servo driver IC, so as to control the speed of the car.
 # ===========================================================================
-def setSpeed(speed):
+def setSpeed(speed, print_flag=False):
     speed *= 40
-    print(('speed is: ', speed))
+    if print_flag:
+        print('speed is: ', speed)
     pwm.write(EN_M0, 0, speed)
     pwm.write(EN_M1, 0, speed)
 

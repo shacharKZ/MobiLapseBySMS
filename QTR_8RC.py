@@ -8,14 +8,15 @@ min_color = None  # this value is changing a bit from time to time. try adjust i
 max_color = None
 last_status_arr = [0, 0, 0, 0, 0, 0, 0, 0]
 last_status_str = '00000000'
-
+init_min_color = 80
+init_max_color = 222
 
 def setup_IR():
-    global led, sensors, min_color, max_color, last_status_arr, last_status_str
+    global led, sensors, min_color, max_color, init_min_color, init_max_color, last_status_arr, last_status_str
     led = 16
     sensors = [37, 36, 33, 32, 31, 29, 22, 18]
-    min_color = 80  # this value is changing a bit from time to time. try adjust it
-    max_color = 150
+    min_color = init_min_color  # this value is changing a bit from time to time. try adjust it
+    max_color = init_max_color
     # last_status = [0, 0, 0, 0, 0, 0, 0, 0]
     last_status_str = '00000000'
     GPIO.setmode(GPIO.BOARD)
@@ -67,7 +68,7 @@ def check_above_line():
 
 
 def adjust_thershold():
-    global led, sensors, min_color, max_color, last_status_arr, last_status_str
+    global led, sensors, min_color, max_color, init_max_color, init_max_color, last_status_arr, last_status_str
     for s in sensors:
         GPIO.setup(s, GPIO.OUT)
         GPIO.output(s, GPIO.HIGH)
@@ -82,14 +83,13 @@ def adjust_thershold():
         for index, s in enumerate(sensors):
             color_list[index] += GPIO.input(s)
 
-    print(color_list)
-    if color_list[-1] > color_list[-2] + 23:
-        min_color = color_list[-1] - 17
-    elif color_list[-2] > color_list[-3] + 30:
-        min_color = color_list[-2] - 17
-    max_color = min_color + 70
-
-    print(f'new min={min_color}, new max={max_color}')
+    color_list.sort()
+    if color_list[-1] > color_list[-2] + 40:
+        min_color = min(init_min_color, color_list[-1] - 7)
+    elif color_list[-1] < color_list[-2] + 15 and color_list[-2] > color_list[-3] + 40:
+        min_color = min(init_min_color, color_list[-2] - 7)
+    
+    print(f'Adjust IR sensor threshold: new min={min_color}, new max={max_color}. color_list was:{color_list}')
 
 
 def check_color():

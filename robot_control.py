@@ -29,14 +29,7 @@ def stop_line(curr_object_num: int, curr_object_angle: str, curr_picture_num: in
     print('curr obj is:', curr_picture_num)
     take_a_pic(curr_object_num, curr_picture_num, session_timestamp)
     time.sleep(3)
-    vid.home_x_y()
-    motor.setSpeed(speed_power)
-    motor.forward()
-    # sleep for a few second so we won't stop again on the stopping line
-    time.sleep(0.18)
-    # adjust the sensativity of the ir sensor according to the current light
-    ir.adjust_thershold()
-
+    
 
 actions_dir = {
     # '00000000': (print, "car don't see the line", 1),
@@ -97,7 +90,7 @@ def follow_line(num_objects: int = 4, object_angle_list=None, session_timestamp:
     dir.setup_direction()
     vid.setup_vid()
     vid.home_x_y()
-    motor.setSpeed(speed_power)
+    motor.setSpeed(speed_power, print_flag=True)
     time.sleep(1)
     motor.stop()  # TODO
     dir.home()
@@ -117,7 +110,7 @@ def follow_line(num_objects: int = 4, object_angle_list=None, session_timestamp:
         if ir_status_str in actions_dir:
             exe_angle, speed_factor = actions_dir[ir_status_str]
             # if DEBUG:
-            print(ir.last_status_str)
+            # print(ir.last_status_str)
             # if ir.last_status_str == '1111111':
             if ir_status_str == '11111111':
                 # We encountered a stop line so we need to take a picture
@@ -125,6 +118,15 @@ def follow_line(num_objects: int = 4, object_angle_list=None, session_timestamp:
                 prev_exe_angle = 0
                 stop_line(curr_object + 1, object_angle_list[curr_object], picture_progress_list[curr_object],
                           session_timestamp)
+                vid.home_x_y()
+                dir.home()
+                motor.setSpeed(speed_power)
+                motor.forward()
+                # sleep for a few second so we won't stop again on the stopping line
+                time.sleep(0.18)
+                # adjust the sensativity of the ir sensor according to the current light
+                ir.adjust_thershold()
+
                 # Incrementing the number of images for the current object
                 picture_progress_list[curr_object] += 1
                 # Updating the index of the next object to take an image for
