@@ -1,3 +1,4 @@
+from cv2 import PROJ_SPHERICAL_EQRECT
 import motor
 import car_dir as dir
 import video_dir as vid
@@ -16,6 +17,8 @@ wall_speed = 37  # when connected to the power source directly
 battery_speed = 80  # when connected to batteries only
 battery_slow_speed = 55  # when connected to batteries only
 
+speed_power = wall_speed
+
 
 def stop_line(curr_object_num: int, curr_object_angle: str, curr_picture_num: int, session_timestamp: str):
     print("all 8 sensors see the line")
@@ -27,6 +30,7 @@ def stop_line(curr_object_num: int, curr_object_angle: str, curr_picture_num: in
     take_a_pic(curr_object_num, curr_picture_num, session_timestamp)
     time.sleep(3)
     vid.home_x_y()
+    motor.setSpeed(speed_power)
     motor.forward()
     time.sleep(0.15)
 
@@ -79,8 +83,6 @@ def test_dir1():
 
 
 def follow_line(num_objects: int = 4, object_angle_list=None, session_timestamp: str = 'tmpRun'):
-    speed_power = wall_speed
-
     if object_angle_list is None:
         object_angle_list = ['HARD_RIGHT',
                              'HARD_RIGHT', 'HARD_RIGHT', 'HARD_RIGHT']
@@ -117,17 +119,18 @@ def follow_line(num_objects: int = 4, object_angle_list=None, session_timestamp:
             if ir_status_str == '11111111':
                 # We encountered a stop line so we need to take a picture
                 # Sending the number of the current picture of the current object to the image capture function
+                prev_exe_angle = 0
                 stop_line(curr_object + 1, object_angle_list[curr_object], picture_progress_list[curr_object],
                           session_timestamp)
                 # Incrementing the number of images for the current object
                 picture_progress_list[curr_object] += 1
                 # Updating the index of the next object to take an image for
                 curr_object = (curr_object + 1) % num_objects
-                prev_exe_angle = 0
             elif (prev_exe_angle < 0 and exe_angle > 0) or (prev_exe_angle > 0 and exe_angle < 0):
                 # in this case the turn was to "hard". might be a flake
                 print('DID NOT TURN NOW!')
                 print(f'curr angle={exe_angle}, prev angle={prev_exe_angle}')
+                continue
             else:
                 motor.setSpeed(int(speed_power*speed_factor))
                 dir.turn_with_angle(exe_angle)
@@ -141,18 +144,4 @@ def follow_line(num_objects: int = 4, object_angle_list=None, session_timestamp:
 
 
 if __name__ == '__main__':
-    # p1 = Position(330, 20)
-    # p2 = Position(250, 400)
-    # p3 = Position(350, 250)
-    # p_list = [Position(350, 250), Position(350, 300), Position(450, 300), Position(450, 200), \
-    #     Position(320, 300), Position(500, 300), Position(500, 200), Position(300, 300)]
-    # # test_everything(p_list)
-    # test_showoff()
-
-    # test2()
-    # time.sleep(5)
-    # test3()
-    # test_dir1()
-
     follow_line()
-    # take_a_pic()
