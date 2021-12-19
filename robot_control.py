@@ -123,6 +123,7 @@ def follow_line(num_objects: int = 4, object_angle_list=None, session_timestamp:
                 picture_progress_list[curr_object] += 1
                 # Updating the index of the next object to take an image for
                 curr_object = (curr_object + 1) % num_objects
+                prev_exe_angle = 0
             elif (prev_exe_angle < 0 and exe_angle > 0) or (prev_exe_angle > 0 and exe_angle < 0):
                 # in this case the turn was to "hard". might be a flake
                 print('DID NOT TURN NOW!')
