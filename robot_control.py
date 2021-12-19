@@ -82,7 +82,8 @@ def follow_line(num_objects: int = 4, object_angle_list=None, session_timestamp:
     speed_power = wall_speed
 
     if object_angle_list is None:
-        object_angle_list = ['HARD_RIGHT', 'HARD_RIGHT', 'HARD_RIGHT', 'HARD_RIGHT']
+        object_angle_list = ['HARD_RIGHT',
+                             'HARD_RIGHT', 'HARD_RIGHT', 'HARD_RIGHT']
     print('Starting follow line')
     curr_object = 0
     picture_progress_list = [1] * num_objects
@@ -95,13 +96,19 @@ def follow_line(num_objects: int = 4, object_angle_list=None, session_timestamp:
     time.sleep(1)
     motor.stop()  # TODO
     dir.home()
-    prev_state = '00000000'
+    prev_state = '00011000'
 
     time.sleep(4)
     motor.forward()  # TODO
     # while True:
     for itt in range(10000):
         last_status_str = ir.check_above_line()
+
+        same_ir_as_prev = 0
+        for ir1, ir2 in zip(prev_state, last_status_str):
+            if ir1 == ir2:
+                same_ir_as_prev += 1
+
         if last_status_str in actions_dir:
             action_to_exe, params, speed_factor = actions_dir[last_status_str]
             # if DEBUG:
@@ -117,7 +124,8 @@ def follow_line(num_objects: int = 4, object_angle_list=None, session_timestamp:
                 picture_progress_list[curr_object] += 1
                 # Updating the index of the next object to take an image for
                 curr_object = (curr_object + 1) % num_objects
-            else:
+            elif same_ir_as_prev >= 6:
+                print(same_ir_as_prev)
                 motor.setSpeed(int(speed_power*speed_factor))
                 action_to_exe(params)
                 prev_state = last_status_str
@@ -127,7 +135,6 @@ def follow_line(num_objects: int = 4, object_angle_list=None, session_timestamp:
         time.sleep(0.000002)
 
     motor.stop()
-
 
 
 if __name__ == '__main__':
