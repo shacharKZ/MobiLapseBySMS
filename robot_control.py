@@ -13,7 +13,7 @@ from capture_handler import take_a_pic
 
 DEBUG = 0
 
-wall_speed = 37  # when connected to the power source directly
+wall_speed = 34  # when connected to the power source directly
 battery_speed = 80  # when connected to batteries only
 battery_slow_speed = 55  # when connected to batteries only
 
@@ -32,7 +32,7 @@ def stop_line(curr_object_num: int, curr_object_angle: str, curr_picture_num: in
     vid.home_x_y()
     motor.setSpeed(speed_power)
     motor.forward()
-    time.sleep(0.15)
+    time.sleep(0.18)
 
 
 actions_dir = {
