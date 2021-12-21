@@ -36,7 +36,7 @@ def get_command_from_app_in_get():
     print('RECEIVED CAPTURE GET REQ')
     return {'message': 'all good from get capture!'}, 200
 
-
+# TODO: upload each photo when it is captured, not when getting the order to finish capture
 @app.post('/capture')
 @cross_origin()
 def get_command_from_app():
