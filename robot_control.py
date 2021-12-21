@@ -13,7 +13,7 @@ from capture_handler import take_a_pic
 
 DEBUG = 0
 
-wall_speed = 34  # when connected to the power source directly
+wall_speed = 33  # when connected to the power source directly
 battery_speed = 80  # when connected to batteries only
 battery_slow_speed = 55  # when connected to batteries only
 
@@ -49,7 +49,7 @@ actions_dir = {
     '00000010': (-dir.TURN_25, 1),
     '00000111': (-dir.TURN_35, 1.2),
     '00000011': (-dir.TURN_35, 1.2),
-    '00000001': (-dir.TURN_45, 1.5),
+    '00000001': (-dir.TURN_45, 1.35),
 
     '00110000': (dir.TURN_15, 1),
     '00100000': (dir.TURN_15, 1),
@@ -57,7 +57,7 @@ actions_dir = {
     '01000000': (dir.TURN_25, 1),
     '11100000': (dir.TURN_35, 1.2),
     '11000000': (dir.TURN_35, 1.2),
-    '10000000': (dir.TURN_45, 1.5),
+    '10000000': (dir.TURN_45, 1.35),
 }
 
 
