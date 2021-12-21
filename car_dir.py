@@ -119,7 +119,8 @@ def test2():
 
 if __name__ == '__main__':
     setup_direction()
-    test2()
+    # test2()
+    home()
 
     # for i in range(homePWM, leftPWM-100, -10):
     # 	print(i)
