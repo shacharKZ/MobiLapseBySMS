@@ -9,11 +9,11 @@ Current_x = 0  # original that was 0. we changed it
 Current_y = 0  # original that was 0. we changed it
 
 ANGLE_T0_DIR_DICT = {
-    'HARD_RIGHT': (180, 0),
-    'SOFT_RIGHT': (88, 0),
+    'HARD_RIGHT': (-180, 0),
+    'SOFT_RIGHT': (-88, 0),
     'STRAIGHT': (0, 0),
-    'SOFT_LEFT': (-88, 0),
-    'HARD_LEFT': (-180, 0)
+    'SOFT_LEFT': (88, 0),
+    'HARD_LEFT': (180, 0)
 }
 
 
@@ -181,13 +181,18 @@ def get_dir():
 if __name__ == '__main__':
     setup_vid()
     home_x_y()
+    time.sleep(2)
     set_camera_to_angle('HARD_LEFT')
     time.sleep(2)
     set_camera_to_angle('HARD_RIGHT')
     time.sleep(2)
-    set_camera_to_angle('SOFT_RIGHT')
-    time.sleep(2)
-    set_camera_to_angle('SOFT_LEFT')
-    time.sleep(2)
+    # set_camera_to_angle('SOFT_RIGHT')
+    # time.sleep(2)
+    # set_camera_to_angle('SOFT_LEFT')
+    # time.sleep(2)
     set_camera_to_angle('STRAIGHT')
     time.sleep(2)
+
+    home_x_y()
+    time.sleep(1)
+    setup_vid()
