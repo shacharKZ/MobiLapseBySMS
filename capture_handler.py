@@ -20,6 +20,7 @@ def take_a_pic(curr_object_num: int, curr_picture_num: int, session_timestamp_st
         return False
     generated_image = cv2.imwrite(target_path + os.path.sep + pic_label, frame)
     x = threading.Thread(target=upload_image, args=(target_dir + pic_label, target_path + os.path.sep + pic_label))
+    x.start()
     print('created thread', x.ident)
     # upload_image(target_dir + pic_label, target_path + os.path.sep + pic_label)
     return generated_image
