@@ -92,8 +92,10 @@ def send_convert_request_to_server(num_objects: int, session_timestamp: str):
 def write_api_address_to_db():
     print('getting DB reference')
     ref = db.reference('/')
-    hostname = socket.gethostname()
-    local_ip = socket.gethostbyname(hostname)
+    s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    s.connect(("8.8.8.8", 80))
+    local_ip = s.getsockname()[0]
+    s.close()
     ref.set({"ROBOT_IP": local_ip})
     print(f'added IP {local_ip} to firebase DB')
 
