@@ -1,6 +1,8 @@
 import datetime
 import multiprocessing
 import os
+import time
+
 import firebase_admin
 import requests
 from flask import Flask, request
@@ -54,7 +56,7 @@ def get_command_from_app():
     elif data['command'] == 'stop':
         ACTIVE_THREAD.terminate()
         stop_all_robot_actions()
-        upload_new_captures(num_objects, CURR_SESSION_TIMESTAMP)
+        # upload_new_captures(num_objects, CURR_SESSION_TIMESTAMP)
         send_convert_request_to_server(num_objects, CURR_SESSION_TIMESTAMP)
     message = "Finished processing " + data['command'] + " action"
     return {'message': message}, 200
@@ -73,6 +75,8 @@ def upload_new_captures(num_objects: int, session_timestamp: str):
 
 
 def send_convert_request_to_server(num_objects: int, session_timestamp: str):
+    # Waiting for final upload to finish
+    time.sleep(3)
     body = {
         "objects": num_objects,
         "datetime": session_timestamp
