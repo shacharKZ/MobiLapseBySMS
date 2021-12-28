@@ -96,7 +96,8 @@ def write_api_address_to_db():
     s.connect(("8.8.8.8", 80))
     local_ip = s.getsockname()[0]
     s.close()
-    ref.set({"ROBOT_IP": local_ip})
+    ref.set({"ROBOT_IP": local_ip,
+             "lastUpdated": str(datetime.datetime.now())})
     print(f'added IP {local_ip} to firebase DB')
 
 
