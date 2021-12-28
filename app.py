@@ -7,7 +7,7 @@ from flask import Flask, request
 from flask_cors import CORS, cross_origin
 
 from config import STORAGE_BUCKET, ROOT_CAPTURES_FOLDER_PATH, API_REQUEST_DATETIME_FORMAT
-from file_uploader import upload_image
+# from file_uploader import upload_image
 from filesystem_handler import create_capture_folders
 from robot_control import follow_line
 
@@ -69,7 +69,7 @@ def upload_new_captures(num_objects: int, session_timestamp: str):
             full_path = os.path.join(ROOT_CAPTURES_FOLDER_PATH, f'object{i}CaptureSession-{session_timestamp}', file)
             print(f'Uploading file {file} from path {full_path}')
             print(f'Uploading to path robotImages/{curr_upload_dir_name}{file}')
-            upload_image(curr_upload_dir_name + file, full_path)
+            # upload_image(curr_upload_dir_name + file, full_path)
 
 
 def send_convert_request_to_server(num_objects: int, session_timestamp: str):
