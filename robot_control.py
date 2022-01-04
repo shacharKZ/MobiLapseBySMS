@@ -122,8 +122,8 @@ def follow_line(num_objects: int = 4, object_angle_list=None, session_timestamp:
                 dir.home()
                 motor.setSpeed(speed_power)
                 motor.forward()
-                # sleep for a few second so we won't stop again on the stopping line
-                time.sleep(0.18)
+                # sleep for a few seconds so we won't stop again on the stopping line
+                time.sleep(0.5)
                 # adjust the sensativity of the ir sensor according to the current light
                 ir.adjust_thershold()
 
