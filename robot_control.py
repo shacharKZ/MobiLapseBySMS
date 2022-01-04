@@ -99,7 +99,8 @@ def follow_line(num_objects: int = 4, object_angle_list=None, session_timestamp:
     time.sleep(4)
     motor.forward()  # TODO
     # while True:
-    for itt in range(10000):
+    # for itt in range(10000):
+    while True:
         ir_status_str = ir.check_above_line()
 
         # same_ir_as_prev = 0
