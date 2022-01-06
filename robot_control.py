@@ -61,7 +61,9 @@ def stop_line(curr_object_num: int, curr_object_angle: str, curr_picture_num: in
 # }
 
 
-# option 2
+# option 2: bias to one direction. two reason for that:
+# 1) due to different speed of the wheels (one if faster then the other)
+# 2) center the car on the 5th ir sensor (insted of the 4th+5th ones)
 actions_dir = {
     '00001000': (0, 1),  # bias to the left
     '11111111': (0, 1),
@@ -70,9 +72,9 @@ actions_dir = {
     '00000100': (-dir.TURN_15, 1),
     '00000110': (-dir.TURN_25, 1),
     '00000010': (-dir.TURN_25, 1),
-    '00000111': (-dir.TURN_35, 1.2),
-    '00000011': (-dir.TURN_35, 1.2),
-    '00000001': (-dir.TURN_45, 1.29),  # this is bias to the left
+    '00000111': (-dir.TURN_35, 1.17),  # this is bias to the left
+    '00000011': (-dir.TURN_35, 1.17),  # this is bias to the left
+    '00000001': (-dir.TURN_45, 1.27),  # this is bias to the left
 
     '00010000': (dir.TURN_10, 1),  # this is bias to the left
     '00010000': (dir.TURN_10, 1),  # this is bias to the left
