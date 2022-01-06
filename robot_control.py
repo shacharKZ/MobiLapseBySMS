@@ -3,19 +3,15 @@ import motor
 import car_dir as dir
 import video_dir as vid
 import QTR_8RC as ir
-# The tests import causes an issue, we probably don't need it anyway so it's commented out
-# import tests
 import time
 from datetime import datetime
-
-# 0 to suppress, 1 to print
 from capture_handler import take_a_pic
 
+# 0 to suppress, 1 to print debuggin messages
 DEBUG = 0
 
 wall_speed = 33  # when connected to the power source directly
-battery_speed = 80  # when connected to batteries only
-battery_slow_speed = 55  # when connected to batteries only
+battery_speed = 55  # when connected to batteries only
 
 speed_power = wall_speed
 
@@ -30,7 +26,7 @@ def stop_line(curr_object_num: int, curr_object_angle: str, curr_picture_num: in
     take_a_pic(curr_object_num, curr_picture_num, session_timestamp)
     time.sleep(3)
 
-# # option 1
+# # option 1 (old version. used until 6.1.22)
 # actions_dir = {
 #     # '00000000': (print, "car don't see the line", 1),
 #     '00011000': (0, 1),
@@ -65,7 +61,7 @@ def stop_line(curr_object_num: int, curr_object_angle: str, curr_picture_num: in
 # 1) due to different speed of the wheels (one if faster then the other)
 # 2) center the car on the 5th ir sensor (insted of the 4th+5th ones)
 actions_dir = {
-    '00001000': (0, 1),  # bias to the left
+    '00001000': (0, 1),  # staight forward. bias to the left
     '11111111': (0, 1),  # this is never been use (only for improving codeing)
 
     '00001100': (-dir.TURN_15, 1),
@@ -88,7 +84,7 @@ actions_dir = {
 }
 
 
-def test_dir1():
+def test_dir1():  # TODO for debugging only
     ir.setup_IR()
     dir.setup_direction()
     dir.home()
@@ -121,8 +117,8 @@ def follow_line(num_objects: int = 4, object_angle_list=None, session_timestamp:
     time.sleep(1)
     motor.stop()
     dir.home()
-    prev_exe_angle = 0  # last angle the take aim to. helps with "softer" directions change
-    count_const_not_on_line = 0
+    prev_exe_angle = 0  # last angle the car dir aim to. helps with "softer" directions change
+    count_const_not_on_line = 0  # if more then few sec the car out of track: stop the car
 
     time.sleep(4)
     motor.forward()
@@ -169,15 +165,16 @@ def follow_line(num_objects: int = 4, object_angle_list=None, session_timestamp:
             if DEBUG:
                 print("DEBUG DIR EXE: ???", ir_status_str)
             count_const_not_on_line += 1
+            # if the car more then few seconds out of the track: stop on goes into zombie mode
             if count_const_not_on_line > 432:
                 motor.stop()
                 dir.home()
                 vid.make_gesture()
-                break  # TODO
+                break  # TODO !!!! Zombie mode  !!!!
         time.sleep(0.000002)
 
     motor.stop()
-    while True:  # TODO !!!!
+    while True:  # TODO !!!! Zombie mode  !!!!
         time.sleep(5)
 
 
