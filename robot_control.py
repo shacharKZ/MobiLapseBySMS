@@ -146,7 +146,7 @@ def follow_line(num_objects: int = 4, object_angle_list=None, session_timestamp:
                 motor.stop()
                 dir.home()
                 vid.make_gesture()
-                break
+                break  # TODO
         time.sleep(0.000002)
 
     motor.stop()
