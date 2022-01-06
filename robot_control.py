@@ -29,7 +29,7 @@ def stop_line(curr_object_num: int, curr_object_angle: str, curr_picture_num: in
     print('curr obj is:', curr_picture_num)
     take_a_pic(curr_object_num, curr_picture_num, session_timestamp)
     time.sleep(3)
-    
+
 
 actions_dir = {
     # '00000000': (print, "car don't see the line", 1),
@@ -92,39 +92,32 @@ def follow_line(num_objects: int = 4, object_angle_list=None, session_timestamp:
     vid.home_x_y()
     motor.setSpeed(speed_power, print_flag=True)
     time.sleep(1)
-    motor.stop()  # TODO
+    motor.stop()
     dir.home()
     prev_exe_angle = 0  # last angle the take aim to. helps with "softer" directions change
+    count_const_not_on_line = 0
 
     time.sleep(4)
-    motor.forward()  # TODO
-    # while True:
-    # for itt in range(10000):
+    motor.forward()
+
     while True:
         ir_status_str = ir.check_above_line()
 
-        # same_ir_as_prev = 0
-        # for ir1, ir2 in zip(prev_state, last_status_str):
-        #     if ir1 == ir2 == '1':
-        #         same_ir_as_prev += 1
-
         if ir_status_str in actions_dir:
             exe_angle, speed_factor = actions_dir[ir_status_str]
-            # if DEBUG:
-            # print(ir.last_status_str)
-            # if ir.last_status_str == '1111111':
             if ir_status_str == '11111111':
                 # We encountered a stop line so we need to take a picture
                 # Sending the number of the current picture of the current object to the image capture function
                 prev_exe_angle = 0
                 stop_line(curr_object + 1, object_angle_list[curr_object], picture_progress_list[curr_object],
                           session_timestamp)
-                vid.home_x_y()
+                vid.home_x_y()  # back from taking a picture we want to continue staight for a few seconds
                 dir.home()
                 motor.setSpeed(speed_power)
                 motor.forward()
                 # sleep for a few seconds so we won't stop again on the stopping line
-                time.sleep(0.25)
+                # this size may be change according to the road we build
+                time.sleep(0.2)
                 # adjust the sensativity of the ir sensor according to the current light
                 ir.adjust_thershold()
 
@@ -134,16 +127,24 @@ def follow_line(num_objects: int = 4, object_angle_list=None, session_timestamp:
                 curr_object = (curr_object + 1) % num_objects
             elif (prev_exe_angle < 0 and exe_angle > 0) or (prev_exe_angle > 0 and exe_angle < 0):
                 # in this case the turn was to "hard". might be a flake
-                print('DID NOT TURN NOW!')
-                print(f'curr angle={exe_angle}, prev angle={prev_exe_angle}')
+                if DEBUG:
+                    print('DID NOT TURN NOW!')
+                    print(
+                        f'curr angle={exe_angle}, prev angle={prev_exe_angle}')
+                count_const_not_on_line += 1
                 continue
             else:
                 motor.setSpeed(int(speed_power*speed_factor))
                 dir.turn_with_angle(exe_angle)
                 prev_exe_angle = exe_angle
+                count_const_not_on_line = 0
         else:
             if DEBUG:
                 print("DEBUG DIR EXE: ???", ir_status_str)
+            count_const_not_on_line += 1
+            if count_const_not_on_line > 1000:
+                motor.stop()
+                break
         time.sleep(0.000002)
 
     motor.stop()
