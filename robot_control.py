@@ -66,15 +66,15 @@ def stop_line(curr_object_num: int, curr_object_angle: str, curr_picture_num: in
 # 2) center the car on the 5th ir sensor (insted of the 4th+5th ones)
 actions_dir = {
     '00001000': (0, 1),  # bias to the left
-    '11111111': (0, 1),
+    '11111111': (0, 1),  # this is never been use (only for improving codeing)
 
     '00001100': (-dir.TURN_15, 1),
     '00000100': (-dir.TURN_15, 1),
     '00000110': (-dir.TURN_25, 1),
     '00000010': (-dir.TURN_25, 1),
-    '00000111': (-dir.TURN_35, 1.17),  # this is bias to the left
-    '00000011': (-dir.TURN_35, 1.17),  # this is bias to the left
-    '00000001': (-dir.TURN_45, 1.27),  # this is bias to the left
+    '00000111': (-dir.TURN_35, 1.165),  # this is bias to the left
+    '00000011': (-dir.TURN_35, 1.165),  # this is bias to the left
+    '00000001': (-dir.TURN_45, 1.25),  # this is bias to the left
 
     '00010000': (dir.TURN_10, 1),  # this is bias to the left
     '00010000': (dir.TURN_10, 1),  # this is bias to the left
@@ -144,7 +144,7 @@ def follow_line(num_objects: int = 4, object_angle_list=None, session_timestamp:
                 motor.forward()
                 # sleep for a few seconds so we won't stop again on the stopping line
                 # this size may be change according to the road we build
-                time.sleep(0.2)
+                time.sleep(0.15)
                 # adjust the sensativity of the ir sensor according to the current light
                 ir.adjust_thershold()
 
@@ -177,7 +177,7 @@ def follow_line(num_objects: int = 4, object_angle_list=None, session_timestamp:
         time.sleep(0.000002)
 
     motor.stop()
-    while True:  # TODO
+    while True:  # TODO !!!!
         time.sleep(5)
 
 

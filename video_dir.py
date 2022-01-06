@@ -132,24 +132,33 @@ def set_camera_to_angle(angle: str):
 
 
 # dance with the head of the car
-def make_gesture():
+def make_gesture(times=2):
     home_x_y()
     time.sleep(0.5)
     move_decrease_x()
     time.sleep(0.3)
     move_decrease_x()
     time.sleep(0.3)
+    for itt in range(times):
+        move_increase_x()
+        time.sleep(0.3)
+        move_increase_x()
+        time.sleep(0.3)
+        move_increase_x()
+        time.sleep(0.3)
+        move_increase_x()
+        time.sleep(0.3)
+        move_decrease_x()
+        time.sleep(0.3)
+        move_decrease_x()
+        time.sleep(0.3)
+        move_decrease_x()
+        time.sleep(0.3)
+        move_decrease_x()
+        time.sleep(0.3)
     move_increase_x()
     time.sleep(0.3)
     move_increase_x()
-    time.sleep(0.3)
-    move_increase_x()
-    time.sleep(0.3)
-    move_increase_x()
-    time.sleep(0.3)
-    move_decrease_x()
-    time.sleep(0.3)
-    move_decrease_x()
     time.sleep(0.3)
     home_x_y()
 
