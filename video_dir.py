@@ -131,6 +131,29 @@ def set_camera_to_angle(angle: str):
     set_dir_according_to_home(x, y)
 
 
+# dance with the head of the car
+def make_gesture():
+    home_x_y()
+    time.sleep(0.5)
+    move_decrease_x()
+    time.sleep(0.3)
+    move_decrease_x()
+    time.sleep(0.3)
+    move_increase_x()
+    time.sleep(0.3)
+    move_increase_x()
+    time.sleep(0.3)
+    move_increase_x()
+    time.sleep(0.3)
+    move_increase_x()
+    time.sleep(0.3)
+    move_decrease_x()
+    time.sleep(0.3)
+    move_decrease_x()
+    time.sleep(0.3)
+    home_x_y()
+
+
 def test():
     while True:
         home_x_y()
