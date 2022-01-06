@@ -175,6 +175,8 @@ def follow_line(num_objects: int = 4, object_angle_list=None, session_timestamp:
         time.sleep(0.000002)
 
     motor.stop()
+    while True:  # TODO
+        time.sleep(5)
 
 
 if __name__ == '__main__':
