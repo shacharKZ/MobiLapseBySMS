@@ -142,7 +142,7 @@ def follow_line(num_objects: int = 4, object_angle_list=None, session_timestamp:
             if DEBUG:
                 print("DEBUG DIR EXE: ???", ir_status_str)
             count_const_not_on_line += 1
-            if count_const_not_on_line > 500:
+            if count_const_not_on_line > 432:
                 motor.stop()
                 dir.home()
                 vid.make_gesture()
