@@ -41,7 +41,7 @@ def setup_vid(busnum=None):
     # print('min are: Xmin', Xmin, ', Ymin', Ymin)
     # print('max are: Xmax', Xmax, ', Ymax', Ymax)
     home_x = (Xmax + Xmin) / 2
-    home_y = Ymin + 80
+    home_y = Ymin + 50
     if busnum == None:
         pwm = servo.PWM()  # Initialize the servo controller.
     else:
