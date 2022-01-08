@@ -11,7 +11,7 @@ from capture_handler import take_a_pic
 DEBUG = 0
 
 wall_speed = 33  # when connected to the power source directly
-battery_speed = 45  # when connected to batteries only
+battery_speed = 44  # when connected to batteries only
 
 # speed_power = wall_speed
 speed_power = battery_speed
