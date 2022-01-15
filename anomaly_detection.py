@@ -27,10 +27,10 @@ def diff_pix(flat_pix1, flat_pix2, threshold=100) -> int:
     for val in pix_diff:
         if val > threshold:
             curr_diff += 1
-    return curr_diff
+    return max(curr_diff, 100)
 
 
-def check_anomaly_last_cap(imgs: [str], threshold=100) -> bool:
+def check_anomaly_last_cap(imgs: [str], diff_rate=1.3) -> bool:
     number_of_prev_imgs = 4
     if len(imgs) < number_of_prev_imgs:
         return False
@@ -47,7 +47,7 @@ def check_anomaly_last_cap(imgs: [str], threshold=100) -> bool:
     last_diff = diff_pix(prev_img, relevant_pixs[-1])
     print(f'&&&&&&&&&&&&&&& LAST DIFF IS: {last_diff}')
 
-    if last_diff > avg_diff*1.2:  # TODO
+    if last_diff > avg_diff*diff_rate or last_diff < avg_diff/diff_rate:  # TODO
         return True
 
     return False

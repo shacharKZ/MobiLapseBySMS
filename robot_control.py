@@ -176,7 +176,7 @@ def follow_line(num_objects: int = 4, object_angle_list=None, session_timestamp:
             if count_const_not_on_line > 432:
                 motor.stop()
                 dir.home()
-                vid.make_gesture()
+                vid.make_gesture(4)
                 break  # TODO !!!! Zombie mode  !!!!
         time.sleep(0.000002)
 
