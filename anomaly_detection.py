@@ -1,9 +1,8 @@
-import os
 import numpy as np
 import cv2
 
 
-def pixelate_rgb(img, window=32, normalize=False):
+def pixelate_img(img, window=32, normalize=False):
     n, m = img.shape
     n, m = n - n % window, m - m % window
     pix_img = np.zeros((n, m, 3))
@@ -34,20 +33,19 @@ def check_anomaly_last_cap(imgs: [str], num_of_non_anomaly, diff_rate=1.3) -> bo
     number_of_prev_imgs = 5
     if len(imgs) < number_of_prev_imgs or num_of_non_anomaly < number_of_prev_imgs:
         print(f'Anomaly detection: skip this time since comparing last {number_of_prev_imgs} images but only had '
-              f'{num_of_non_anomaly+1} images after starting/last detection')
+              f'{num_of_non_anomaly} images after starting/last detection')
         return False
-    relevant_pixs = [pixelate_rgb(cv2.imread(c_img, cv2.IMREAD_GRAYSCALE)) for c_img in imgs[-number_of_prev_imgs:]]
+    relevant_pixs = [pixelate_img(cv2.imread(c_img, cv2.IMREAD_GRAYSCALE)) for c_img in imgs[-number_of_prev_imgs:]]
 
     sum_diff = 0
     i = 0
     while i < len(relevant_pixs) - 2:
-        print("!!!")
         sum_diff += diff_pix(relevant_pixs[i], relevant_pixs[i + 1])
         i += 1
 
     avg_diff = sum_diff/(number_of_prev_imgs-2)
     last_diff = diff_pix(relevant_pixs[-2], relevant_pixs[-1])
-    print(f'Anomaly detection: SUM DIFF: {sum_diff}, AVG DIFF: {avg_diff}, LAST DIFF: {last_diff}')
+    print(f'Anomaly detection: avg pixelate diff: {avg_diff}, last pixelate diff: {last_diff}')
 
     if last_diff > avg_diff*diff_rate or last_diff < avg_diff/diff_rate:  # TODO
         return True
