@@ -17,15 +17,16 @@ battery_speed = 50  # when connected to batteries only
 speed_power = battery_speed
 
 
-def stop_line(curr_object_num: int, curr_object_angle: str, curr_picture_num: int, session_timestamp: str):
+def stop_line(curr_object_num: int, curr_object_angle: str, curr_picture_num: int, session_timestamp: str, prev_imgs: [str]):
     print("all 8 sensors see the line")
     print(f'Calling take a pic with angle {curr_object_angle}')
     motor.stop()
     vid.set_camera_to_angle(curr_object_angle)
     time.sleep(1.5)
     print('curr obj is:', curr_picture_num)
-    take_a_pic(curr_object_num, curr_picture_num, session_timestamp)
+    take_a_pic(curr_object_num, curr_picture_num, session_timestamp, prev_imgs)
     time.sleep(3)
+
 
 # # option 1 (old version. used until 6.1.22)
 # actions_dir = {
@@ -74,7 +75,6 @@ actions_dir = {
     '00000001': (-dir.TURN_45, 1.25),  # this is bias to the left
 
     '00010000': (dir.TURN_10, 1),  # this is bias to the left
-    '00010000': (dir.TURN_10, 1),  # this is bias to the left
     '00110000': (dir.TURN_15, 1),
     '00100000': (dir.TURN_15, 1),
     '01100000': (dir.TURN_25, 1),
@@ -107,6 +107,9 @@ def follow_line(num_objects: int = 4, object_angle_list=None, session_timestamp:
         object_angle_list = ['HARD_RIGHT',
                              'HARD_RIGHT', 'HARD_RIGHT', 'HARD_RIGHT']
     print('Starting follow line')
+    img_dic = {}
+    for obj_n in range(1, num_objects+1):
+        img_dic[obj_n] = []
     curr_object = 0
     picture_progress_list = [1] * num_objects
     ir.setup_IR()
@@ -134,7 +137,7 @@ def follow_line(num_objects: int = 4, object_angle_list=None, session_timestamp:
                 # Sending the number of the current picture of the current object to the image capture function
                 prev_exe_angle = 0
                 stop_line(curr_object + 1, object_angle_list[curr_object], picture_progress_list[curr_object],
-                          session_timestamp)
+                          session_timestamp, img_dic[curr_object + 1])
                 vid.home_x_y()  # back from taking a picture we want to continue staight for a few seconds
                 dir.home()
                 motor.setSpeed(speed_power)
