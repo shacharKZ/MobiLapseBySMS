@@ -33,8 +33,8 @@ def diff_pix(flat_pix1, flat_pix2, threshold=100) -> int:
 def check_anomaly_last_cap(imgs: [str], num_of_non_anomaly, diff_rate=1.3) -> bool:
     number_of_prev_imgs = 5
     if len(imgs) < number_of_prev_imgs or num_of_non_anomaly < number_of_prev_imgs:
-        print(f'Anomaly detection: skip, since comparing last {number_of_prev_imgs} but only had '
-              f'{number_of_prev_imgs+1} images after starting/last detection')
+        print(f'Anomaly detection: skip this time since comparing last {number_of_prev_imgs} images but only had '
+              f'{num_of_non_anomaly+1} images after starting/last detection')
         return False
     relevant_pixs = [pixelate_rgb(cv2.imread(c_img, cv2.IMREAD_GRAYSCALE)) for c_img in imgs[-number_of_prev_imgs:]]
 
