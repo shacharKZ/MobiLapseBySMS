@@ -91,7 +91,7 @@ def send_convert_request_to_server(num_objects: int, session_timestamp: str):
 
 def write_api_address_to_db():
     print('getting DB reference')
-    ref = db.reference('/')
+    ref = db.reference('/RobotData')
     s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     s.connect(("8.8.8.8", 80))
     local_ip = s.getsockname()[0]
