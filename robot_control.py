@@ -18,7 +18,8 @@ battery_speed = 50  # when connected to batteries only
 speed_power = battery_speed
 
 
-def stop_line(curr_object_num: int, curr_object_angle: str, curr_picture_num: int, session_timestamp: str, prev_imgs: [str]):
+def stop_line(curr_object_num: int, curr_object_angle: str, curr_picture_num: int, session_timestamp: str,
+              prev_imgs: [str], num_of_non_anomaly):
     print("all 8 sensors see the line")
     print(f'Calling take a pic with angle {curr_object_angle}')
     motor.stop()
@@ -26,9 +27,11 @@ def stop_line(curr_object_num: int, curr_object_angle: str, curr_picture_num: in
     time.sleep(1.5)
     print('curr obj is:', curr_picture_num)
     take_a_pic(curr_object_num, curr_picture_num, session_timestamp, prev_imgs)
-    if check_anomaly_last_cap(prev_imgs):
+    detected_anomaly = check_anomaly_last_cap(prev_imgs, num_of_non_anomaly)
+    if detected_anomaly:
         vid.make_gesture(1)  # TODO replace with REST CALL
     time.sleep(3)
+    return detected_anomaly
 
 
 # # option 1 (old version. used until 6.1.22)
@@ -111,8 +114,10 @@ def follow_line(num_objects: int = 4, object_angle_list=None, session_timestamp:
                              'HARD_RIGHT', 'HARD_RIGHT', 'HARD_RIGHT']
     print('Starting follow line')
     img_dic = {}
+    anomaly_dic = {}
     for obj_n in range(1, num_objects+1):
         img_dic[obj_n] = []
+        anomaly_dic[obj_n] = 0
     curr_object = 0
     picture_progress_list = [1] * num_objects
     ir.setup_IR()
@@ -139,15 +144,19 @@ def follow_line(num_objects: int = 4, object_angle_list=None, session_timestamp:
                 # We encountered a stop line so we need to take a picture
                 # Sending the number of the current picture of the current object to the image capture function
                 prev_exe_angle = 0
-                stop_line(curr_object + 1, object_angle_list[curr_object], picture_progress_list[curr_object],
-                          session_timestamp, img_dic[curr_object + 1])
+                stop_res = stop_line(curr_object + 1, object_angle_list[curr_object], picture_progress_list[curr_object]
+                                     , session_timestamp, img_dic[curr_object + 1], anomaly_dic[curr_object + 1])
+                if stop_res:
+                    anomaly_dic[curr_object + 1] = 0
+                else:
+                    anomaly_dic[curr_object + 1] += 1
                 vid.home_x_y()  # back from taking a picture we want to continue staight for a few seconds
                 dir.home()
                 motor.setSpeed(speed_power)
                 motor.forward()
                 # sleep for a few seconds so we won't stop again on the stopping line
                 # this size may be change according to the road we build
-                time.sleep(0.15)
+                time.sleep(0.17)
                 # adjust the sensativity of the ir sensor according to the current light
                 ir.adjust_thershold()
 

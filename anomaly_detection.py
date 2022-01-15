@@ -30,9 +30,9 @@ def diff_pix(flat_pix1, flat_pix2, threshold=100) -> int:
     return max(curr_diff, 100)
 
 
-def check_anomaly_last_cap(imgs: [str], diff_rate=1.3) -> bool:
-    number_of_prev_imgs = 4
-    if len(imgs) < number_of_prev_imgs:
+def check_anomaly_last_cap(imgs: [str], num_of_non_anomaly, diff_rate=1.3) -> bool:
+    number_of_prev_imgs = 5
+    if len(imgs) < number_of_prev_imgs or num_of_non_anomaly < number_of_prev_imgs:
         return False
     relevant_pixs = [pixelate_rgb(cv2.imread(c_img, cv2.IMREAD_GRAYSCALE)) for c_img in imgs[-number_of_prev_imgs:]]
 
