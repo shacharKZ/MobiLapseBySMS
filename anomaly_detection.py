@@ -42,10 +42,9 @@ def check_anomaly_last_cap(imgs: [str], diff_rate=1.3) -> bool:
         sum_diff += diff_pix(prev_img, curr_img)
         prev_img = curr_img
 
-    avg_diff = sum_diff/(number_of_prev_imgs-1)
-    print(f'&&&&&&&&&&&&&&& AVG DIFF IS: {avg_diff}')
+    avg_diff = sum_diff/(number_of_prev_imgs-2)
     last_diff = diff_pix(prev_img, relevant_pixs[-1])
-    print(f'&&&&&&&&&&&&&&& LAST DIFF IS: {last_diff}')
+    print(f'&&&&&&&&&&&&&&& SUM DIFF: {sum_diff}, AVG DIFF: {avg_diff}, LAST DIFF: {last_diff}')
 
     if last_diff > avg_diff*diff_rate or last_diff < avg_diff/diff_rate:  # TODO
         return True
