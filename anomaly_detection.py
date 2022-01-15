@@ -33,18 +33,21 @@ def diff_pix(flat_pix1, flat_pix2, threshold=100) -> int:
 def check_anomaly_last_cap(imgs: [str], num_of_non_anomaly, diff_rate=1.3) -> bool:
     number_of_prev_imgs = 5
     if len(imgs) < number_of_prev_imgs or num_of_non_anomaly < number_of_prev_imgs:
+        print(f'Anomaly detection: skip, since comparing last {number_of_prev_imgs} but only had '
+              f'{number_of_prev_imgs+1} images after starting/last detection')
         return False
     relevant_pixs = [pixelate_rgb(cv2.imread(c_img, cv2.IMREAD_GRAYSCALE)) for c_img in imgs[-number_of_prev_imgs:]]
 
     sum_diff = 0
-    prev_img = relevant_pixs[0]
-    for curr_img in relevant_pixs[1:-1]:
-        sum_diff += diff_pix(prev_img, curr_img)
-        prev_img = curr_img
+    i = 0
+    while i < len(relevant_pixs) - 2:
+        print("!!!")
+        sum_diff += diff_pix(relevant_pixs[i], relevant_pixs[i + 1])
+        i += 1
 
     avg_diff = sum_diff/(number_of_prev_imgs-2)
-    last_diff = diff_pix(prev_img, relevant_pixs[-1])
-    print(f'&&&&&&&&&&&&&&& SUM DIFF: {sum_diff}, AVG DIFF: {avg_diff}, LAST DIFF: {last_diff}')
+    last_diff = diff_pix(relevant_pixs[-2], relevant_pixs[-1])
+    print(f'Anomaly detection: SUM DIFF: {sum_diff}, AVG DIFF: {avg_diff}, LAST DIFF: {last_diff}')
 
     if last_diff > avg_diff*diff_rate or last_diff < avg_diff/diff_rate:  # TODO
         return True
