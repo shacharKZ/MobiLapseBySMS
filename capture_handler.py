@@ -57,9 +57,9 @@ def take_a_pic(curr_object_num: int, curr_picture_num: int, session_timestamp_st
     generated_image = cv2.imwrite(img_path, frame)
 
     if len(prev_imgs) == 0:
-        crop_img_path = crop_and_adjust_img_to_img(None, generated_image)
+        crop_img_path = crop_and_adjust_img_to_img(None, img_path)
     else:
-        crop_img_path = crop_and_adjust_img_to_img(prev_imgs[-1], generated_image)
+        crop_img_path = crop_and_adjust_img_to_img(prev_imgs[-1], img_path)
     prev_imgs.append(crop_img_path)
 
     x = threading.Thread(target=upload_image, args=(
