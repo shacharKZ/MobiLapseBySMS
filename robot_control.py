@@ -6,6 +6,7 @@ import QTR_8RC as ir
 import time
 from datetime import datetime
 from capture_handler import take_a_pic
+from anomaly_detection import check_anomaly_last_cap
 
 # 0 to suppress, 1 to print debuggin messages
 DEBUG = 0
@@ -25,7 +26,8 @@ def stop_line(curr_object_num: int, curr_object_angle: str, curr_picture_num: in
     time.sleep(1.5)
     print('curr obj is:', curr_picture_num)
     take_a_pic(curr_object_num, curr_picture_num, session_timestamp, prev_imgs)
-
+    if check_anomaly_last_cap(prev_imgs):
+        vid.make_gesture(1)  # TODO replace with REST CALL
     time.sleep(3)
 
 

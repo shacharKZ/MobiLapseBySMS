@@ -1,6 +1,5 @@
 import os
 import threading
-
 import cv2
 
 from datetime import datetime
@@ -14,7 +13,6 @@ max_img_num = 5+4  # 5 as for actual len and 4 for ".png"
 def crop_and_adjust_img_to_img(prev_img_path, target_img_path) -> str:
     margin = 71
     if prev_img_path is None or prev_img_path == '':
-        print('^^^^^^^^^^^^^ PREV IS NONE')
         # first img just crop into its center
         ref_img = cv2.imread(target_img_path, cv2.IMREAD_COLOR)
         img_final_color = ref_img[margin: -margin,  margin:-margin]
@@ -23,7 +21,6 @@ def crop_and_adjust_img_to_img(prev_img_path, target_img_path) -> str:
         cv2.imwrite(crop_img_name, img_final_color)
         return crop_img_name
 
-    print('^^^^^^^^^^^^^ PREV IS NOT NONE')
     # loading the imgs in gray for the coming matching method
     img_to_crop = cv2.imread(target_img_path, cv2.IMREAD_GRAYSCALE)
     ref_img = cv2.imread(prev_img_path, cv2.IMREAD_GRAYSCALE)
@@ -71,6 +68,9 @@ def take_a_pic(curr_object_num: int, curr_picture_num: int, session_timestamp_st
     print('created thread', x.ident)
     # upload_image(target_dir + pic_label, target_path + os.path.sep + pic_label)
     return crop_img_path
+
+
+
 
 
 
