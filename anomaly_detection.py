@@ -34,7 +34,7 @@ def check_anomaly_last_cap(imgs: [str], threshold=100) -> bool:
     number_of_prev_imgs = 4
     if len(imgs) < number_of_prev_imgs:
         return False
-    relevant_pixs = [pixelate_rgb(curr_img) for curr_img in imgs[-number_of_prev_imgs:]]
+    relevant_pixs = [pixelate_rgb(cv2.imread(c_img, cv2.IMREAD_GRAYSCALE)) for c_img in imgs[-number_of_prev_imgs:]]
 
     sum_diff = 0
     prev_img = relevant_pixs[0]
