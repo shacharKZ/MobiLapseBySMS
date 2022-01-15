@@ -25,6 +25,7 @@ def stop_line(curr_object_num: int, curr_object_angle: str, curr_picture_num: in
     time.sleep(1.5)
     print('curr obj is:', curr_picture_num)
     take_a_pic(curr_object_num, curr_picture_num, session_timestamp, prev_imgs)
+
     time.sleep(3)
 
 
