@@ -9,7 +9,7 @@ max_color = None
 last_status_arr = [0, 0, 0, 0, 0, 0, 0, 0]
 last_status_str = '00000000'
 init_min_color = 75
-init_max_color = 222
+init_max_color = 200
 
 
 def setup_IR():
@@ -76,7 +76,7 @@ def check_above_line():
         res_str = "11111111"
         return res_str
     elif max(res) > 2*min(res):
-        threshold = max(res)*0.8
+        min_color = max(res)*0.8
 
     res_str = ""
     for color in res:

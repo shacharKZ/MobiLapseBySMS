@@ -1,4 +1,4 @@
-# from cv2 import PROJ_SPHERICAL_EQRECT  # TODO what is that??
+# from cv2 import PROJ_SPHERICAL_EQRECT  # TODO what is that?? should we remove it?
 import motor
 import car_dir as dir
 import video_dir as vid
@@ -12,7 +12,7 @@ from anomaly_detection import check_anomaly_last_cap
 DEBUG = 0
 
 wall_speed = 30  # when connected to the power source directly
-battery_speed = 48  # when connected to batteries only
+battery_speed = 50  # when connected to batteries only
 
 # speed_power = wall_speed
 speed_power = battery_speed
@@ -57,21 +57,21 @@ actions_dir = {
 }
 
 
-def test_dir1():  # TODO for debugging only
-    ir.setup_IR()
-    dir.setup_direction()
-    dir.home()
+# def test_dir1():  # TODO for debugging only
+#     ir.setup_IR()
+#     dir.setup_direction()
+#     dir.home()
 
-    # while True:
-    for itt in range(3000):
-        ir.check_above_line()
-        print(f"{itt}:\t {ir.last_status_str}  ---> ", end="")
-        if ir.last_status_str in actions_dir:
-            print(f"{actions_dir[ir.last_status_str]}")
-            action_to_exe, params = actions_dir[ir.last_status_str]
-        else:
-            print("action not set", ir.last_status_str)
-        time.sleep(1)
+#     # while True:
+#     for itt in range(3000):
+#         ir.check_above_line()
+#         print(f"{itt}:\t {ir.last_status_str}  ---> ", end="")
+#         if ir.last_status_str in actions_dir:
+#             print(f"{actions_dir[ir.last_status_str]}")
+#             action_to_exe, params = actions_dir[ir.last_status_str]
+#         else:
+#             print("action not set", ir.last_status_str)
+#         time.sleep(1)
 
 
 def follow_line(num_objects: int = 4, object_angle_list=None, session_timestamp: str = 'tmpRun'):
