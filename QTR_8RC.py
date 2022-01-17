@@ -71,7 +71,7 @@ def check_above_line():
 
     last_status_arr = res
 
-    threshold = init_min_color
+    min_color = init_min_color
     if min(res) > init_min_color:
         res_str = "11111111"
         return res_str
@@ -80,7 +80,7 @@ def check_above_line():
 
     res_str = ""
     for color in res:
-        res_str += ('1' if color >= threshold else '0')
+        res_str += ('1' if color >= min_color else '0')
 
     last_status_str = res_str
     print(res, "<-------->", res_str)
@@ -88,6 +88,7 @@ def check_above_line():
 
 
 def adjust_thershold():
+    return  # TODO
     global led, sensors, min_color, max_color, init_max_color, init_max_color, last_status_arr, last_status_str
     for s in sensors:
         GPIO.setup(s, GPIO.OUT)
