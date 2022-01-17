@@ -12,7 +12,7 @@ from anomaly_detection import check_anomaly_last_cap
 DEBUG = 0
 
 wall_speed = 30  # when connected to the power source directly
-battery_speed = 50  # when connected to batteries only
+battery_speed = 48  # when connected to batteries only
 
 # speed_power = wall_speed
 speed_power = battery_speed
