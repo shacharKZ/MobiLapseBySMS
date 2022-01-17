@@ -11,11 +11,13 @@ last_status_str = '00000000'
 init_min_color = 80
 init_max_color = 222
 
+
 def setup_IR():
     global led, sensors, min_color, max_color, init_min_color, init_max_color, last_status_arr, last_status_str
     led = 16
     sensors = [37, 36, 33, 32, 31, 29, 22, 18]
-    min_color = init_min_color  # this value is changing a bit from time to time. try adjust it
+    # this value is changing a bit from time to time. try adjust it
+    min_color = init_min_color
     max_color = init_max_color
     # last_status = [0, 0, 0, 0, 0, 0, 0, 0]
     last_status_str = '00000000'
@@ -68,6 +70,7 @@ def check_above_line():
 
 
 def adjust_thershold():
+    return  # TODO !!!
     global led, sensors, min_color, max_color, init_max_color, init_max_color, last_status_arr, last_status_str
     for s in sensors:
         GPIO.setup(s, GPIO.OUT)
@@ -88,8 +91,9 @@ def adjust_thershold():
         min_color = min(init_min_color, color_list[-1] - 7)
     elif color_list[-1] < color_list[-2] + 15 and color_list[-2] > color_list[-3] + 40:
         min_color = min(init_min_color, color_list[-2] - 7)
-    
-    print(f'Adjust IR sensor threshold: new min={min_color}, new max={max_color}. color_list was:{color_list}')
+
+    print(
+        f'Adjust IR sensor threshold: new min={min_color}, new max={max_color}. color_list was:{color_list}')
 
 
 def check_color():
