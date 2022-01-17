@@ -104,6 +104,7 @@ def test2():
     home()
     time.sleep(1.5)
     for a in [TURN_10, TURN_15, TURN_25, TURN_35, TURN_45, TURN_60]:
+        print(f'turn left and then right with {a}')
         turn_left(a)
         time.sleep(2.5)
         turn_right(a)
