@@ -8,7 +8,7 @@ min_color = None  # this value is changing a bit from time to time. try adjust i
 max_color = None
 last_status_arr = [0, 0, 0, 0, 0, 0, 0, 0]
 last_status_str = '00000000'
-init_min_color = 80
+init_min_color = 75
 init_max_color = 222
 
 
@@ -23,6 +23,33 @@ def setup_IR():
     last_status_str = '00000000'
     GPIO.setmode(GPIO.BOARD)
     GPIO.setup(led, GPIO.OUT)
+
+
+# def check_above_line():
+#     global led, sensors, min_color, max_color, last_status_arr, last_status_str
+#     last_status_str = ""
+#     for s in sensors:
+#         GPIO.setup(s, GPIO.OUT)
+#         GPIO.output(s, GPIO.HIGH)
+
+#     time.sleep(0.01)
+
+#     for s in sensors:
+#         GPIO.setup(s, GPIO.IN)
+
+#     res = [0, 0, 0, 0, 0, 0, 0, 0]
+#     for _ in range(max_color):
+#         for index, s in enumerate(sensors):
+#             res[index] += GPIO.input(s)
+
+#     last_status_arr = res
+
+#     res_str = ""
+#     for color in res:
+#         res_str += ('1' if color >= min_color else '0')
+
+#     last_status_str = res_str
+#     return last_status_str
 
 
 def check_above_line():
@@ -44,11 +71,19 @@ def check_above_line():
 
     last_status_arr = res
 
+    threshold = init_min_color
+    if min(res) > init_min_color:
+        res_str = "11111111"
+        return res_str
+    elif max(res) > 2*min(res):
+        threshold = max(res)*0.8
+
     res_str = ""
     for color in res:
-        res_str += ('1' if color >= min_color else '0')
+        res_str += ('1' if color >= threshold else '0')
 
     last_status_str = res_str
+    print(res, "<-------->", res_str)
     return last_status_str
 
 
