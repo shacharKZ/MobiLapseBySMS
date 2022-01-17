@@ -19,7 +19,7 @@ speed_power = wall_speed
 
 
 def stop_line(curr_object_num: int, curr_object_angle: str, curr_picture_num: int, session_timestamp: str,
-              prev_imgs: list[str], num_of_non_anomaly):
+              prev_imgs: [str], num_of_non_anomaly):
     print("all 8 sensors see the line")
     print(f'Calling take a pic with angle {curr_object_angle}')
     motor.stop()
