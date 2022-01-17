@@ -105,6 +105,13 @@ def test2():
     time.sleep(1.5)
     for a in [TURN_10, TURN_15, TURN_25, TURN_35, TURN_45, TURN_60]:
         turn_left(a)
+        time.sleep(2.5)
+        turn_right(a)
+        time.sleep(4)
+
+    time.sleep(5)
+    for a in [TURN_10, TURN_15, TURN_25, TURN_35, TURN_45, TURN_60]:
+        turn_left(a)
         time.sleep(1.5)
 
     for a in [TURN_10, TURN_15, TURN_25, TURN_35, TURN_45, TURN_60]:
@@ -120,12 +127,12 @@ def test2():
 
 if __name__ == '__main__':
     setup_direction()
-    # test2()
+    test2()
     home()
-    time.sleep(1)
-    turn_right(TURN_60)
-    time.sleep(1)
-    turn_left(TURN_60)
+    # time.sleep(1)
+    # turn_right(TURN_60)
+    # time.sleep(1)
+    # turn_left(TURN_60)
 
     # for i in range(homePWM, leftPWM-100, -10):
     # 	print(i)
