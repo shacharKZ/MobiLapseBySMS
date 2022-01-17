@@ -3,7 +3,8 @@ import PCA9685 as servo
 import time  # Import necessary modules
 
 # TURN_15, TURN_25, TURN_35, TURN_45, TURN_60 = 30, 43, 70, 110, 170
-TURN_10, TURN_15, TURN_25, TURN_35, TURN_45, TURN_60 = 25, 30, 43, 70, 110, 170
+# TURN_10, TURN_15, TURN_25, TURN_35, TURN_45, TURN_60 = 25, 30, 43, 70, 110, 170
+TURN_10, TURN_15, TURN_25, TURN_35, TURN_45, TURN_60 = 25, 30, 43, 70, 110, 130
 pwm = servo.PWM()
 
 
@@ -105,9 +106,11 @@ def test2():
     time.sleep(1.5)
     for a in [TURN_10, TURN_15, TURN_25, TURN_35, TURN_45, TURN_60]:
         print(f'turn left and then right with {a}')
-        turn_left(a)
+        # turn_left(a)
+        turn(a)
         time.sleep(2.5)
         turn_right(a)
+        turn(-a)
         time.sleep(4)
     print("!!")
 
