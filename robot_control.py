@@ -14,8 +14,8 @@ DEBUG = 0
 wall_speed = 30  # when connected to the power source directly
 battery_speed = 50  # when connected to batteries only
 
-# speed_power = wall_speed
-speed_power = battery_speed
+speed_power = wall_speed
+# speed_power = battery_speed
 
 
 def stop_line(curr_object_num: int, curr_object_angle: str, curr_picture_num: int, session_timestamp: str,
