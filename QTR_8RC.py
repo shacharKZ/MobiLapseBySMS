@@ -9,7 +9,7 @@ max_color = None
 last_status_arr = [0, 0, 0, 0, 0, 0, 0, 0]
 last_status_str = '00000000'
 # init_min_color = 80  # TODO
-init_min_color = 100
+init_min_color = 90
 init_max_color = 222
 
 
