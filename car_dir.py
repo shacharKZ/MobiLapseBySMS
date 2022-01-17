@@ -122,6 +122,8 @@ if __name__ == '__main__':
     setup_direction()
     # test2()
     home()
+    time.sleep(1)
+    turn_right(TURN_60)
 
     # for i in range(homePWM, leftPWM-100, -10):
     # 	print(i)
