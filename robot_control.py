@@ -11,15 +11,15 @@ from anomaly_detection import check_anomaly_last_cap
 # 0 to suppress, 1 to print debuggin messages
 DEBUG = 0
 
-wall_speed = 33  # when connected to the power source directly
+wall_speed = 34  # when connected to the power source directly
 battery_speed = 50  # when connected to batteries only
 
-# speed_power =S wall_speed
-speed_power = battery_speed
+speed_power = wall_speed
+# speed_power = battery_speed
 
 
 def stop_line(curr_object_num: int, curr_object_angle: str, curr_picture_num: int, session_timestamp: str,
-              prev_imgs: [str], num_of_non_anomaly):
+              prev_imgs: list[str], num_of_non_anomaly):
     print("all 8 sensors see the line")
     print(f'Calling take a pic with angle {curr_object_angle}')
     motor.stop()
@@ -144,8 +144,8 @@ def follow_line(num_objects: int = 4, object_angle_list=None, session_timestamp:
                 # We encountered a stop line so we need to take a picture
                 # Sending the number of the current picture of the current object to the image capture function
                 prev_exe_angle = 0
-                stop_res = stop_line(curr_object + 1, object_angle_list[curr_object], picture_progress_list[curr_object]
-                                     , session_timestamp, img_dic[curr_object + 1], anomaly_dic[curr_object + 1])
+                stop_res = stop_line(curr_object + 1, object_angle_list[curr_object], picture_progress_list[curr_object],
+                                     session_timestamp, img_dic[curr_object + 1], anomaly_dic[curr_object + 1])
                 if stop_res:
                     anomaly_dic[curr_object + 1] = 0
                 else:
