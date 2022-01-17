@@ -69,13 +69,16 @@ def adjust_thershold():
             color_list[index] += GPIO.input(s)
 
     color_list.sort()
-    if color_list[-1] > color_list[-2] + 40:
+    debug_code = 0
+    if color_list[-1] > color_list[-2] + 30:
         min_color = min(init_min_color, color_list[-1] - 7)
-    elif color_list[-1] < color_list[-2] + 15 and color_list[-2] > color_list[-3] + 40:
+        debug_code = 1
+    elif color_list[-1] < color_list[-2] + 15 and color_list[-2] > color_list[-3] + 30:
         min_color = min(init_min_color, color_list[-2] - 7)
+        debug_code = 2
 
     print(
-        f'Adjust IR sensor threshold: new min={min_color}, new max={max_color}. color_list was:{color_list}')
+        f'Adjust IR sensor threshold: new min={min_color}, new max={max_color}. color_list was:{color_list} (code={debug_code})')
 
 
 def check_color():
