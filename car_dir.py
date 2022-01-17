@@ -111,10 +111,13 @@ def test2():
         time.sleep(4)
     print("!!")
 
+    home()
     time.sleep(5)
     for a in [TURN_10, TURN_15, TURN_25, TURN_35, TURN_45, TURN_60]:
         turn_left(a)
         time.sleep(1.5)
+
+    print("!!")
 
     for a in [TURN_10, TURN_15, TURN_25, TURN_35, TURN_45, TURN_60]:
         turn_right(a)
