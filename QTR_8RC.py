@@ -8,7 +8,8 @@ min_color = None  # this value is changing a bit from time to time. try adjust i
 max_color = None
 last_status_arr = [0, 0, 0, 0, 0, 0, 0, 0]
 last_status_str = '00000000'
-init_min_color = 80
+# init_min_color = 80  # TODO
+init_min_color = 100
 init_max_color = 222
 
 
