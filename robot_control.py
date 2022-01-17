@@ -1,4 +1,4 @@
-from cv2 import PROJ_SPHERICAL_EQRECT  # TODO what is that??
+# from cv2 import PROJ_SPHERICAL_EQRECT  # TODO what is that??
 import motor
 import car_dir as dir
 import video_dir as vid
@@ -19,7 +19,7 @@ speed_power = battery_speed
 
 
 def stop_line(curr_object_num: int, curr_object_angle: str, curr_picture_num: int, session_timestamp: str,
-              prev_imgs: [str], num_of_non_anomaly):
+              prev_imgs: list, num_of_non_anomaly):
     print("all 8 sensors see the line")
     print(f'Calling take a pic with angle {curr_object_angle}')
     motor.stop()
@@ -34,40 +34,6 @@ def stop_line(curr_object_num: int, curr_object_angle: str, curr_picture_num: in
     return detected_anomaly
 
 
-# # option 1 (old version. used until 6.1.22)
-# actions_dir = {
-#     # '00000000': (print, "car don't see the line", 1),
-#     '00011000': (0, 1),
-#     '00001000': (0, 1),
-#     '00010000': (0, 1),
-#     '00111100': (0, 1),
-#     # '10111101': (0, 1),
-#     # '10011001': (0, 1),
-#     # '10010001': (0, 1),
-#     # '10001001': (0, 1),
-#     '11111111': (0, 1),
-
-#     '00001100': (-dir.TURN_15, 1),
-#     '00000100': (-dir.TURN_15, 1),
-#     '00000110': (-dir.TURN_25, 1),
-#     '00000010': (-dir.TURN_25, 1),
-#     '00000111': (-dir.TURN_35, 1.2),
-#     '00000011': (-dir.TURN_35, 1.2),
-#     '00000001': (-dir.TURN_45, 1.35),
-
-#     '00110000': (dir.TURN_15, 1),
-#     '00100000': (dir.TURN_15, 1),
-#     '01100000': (dir.TURN_25, 1),
-#     '01000000': (dir.TURN_25, 1),
-#     '11100000': (dir.TURN_35, 1.2),
-#     '11000000': (dir.TURN_35, 1.2),
-#     '10000000': (dir.TURN_45, 1.35),
-# }
-
-
-# option 2: bias to one direction. two reason for that:
-# 1) due to different speed of the wheels (one if faster then the other)
-# 2) center the car on the 5th ir sensor (insted of the 4th+5th ones)
 actions_dir = {
     '00001000': (0, 1),  # staight forward. bias to the left
     '11111111': (0, 1),  # this is never been use (only for improving codeing)

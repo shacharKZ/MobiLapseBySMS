@@ -2,14 +2,13 @@
 import RPi.GPIO as GPIO
 import time
 
-led = 16  # TODO currently unsupported
+# led = 16  # currently unsupported led pin
 sensors = [37, 36, 33, 32, 31, 29, 22, 18]
 min_color = None  # this value is changing a bit from time to time. try adjust it
 max_color = None
 last_status_arr = [0, 0, 0, 0, 0, 0, 0, 0]
 last_status_str = '00000000'
-# init_min_color = 80  # TODO
-init_min_color = 90
+init_min_color = 80
 init_max_color = 222
 
 
@@ -25,23 +24,6 @@ def setup_IR():
     GPIO.setmode(GPIO.BOARD)
     GPIO.setup(led, GPIO.OUT)
 
-
-# def check_above_line():
-#     global led, sensors, min_color, max_color, last_status, last_status_str
-#     last_status_str = ""
-#     for index, s in enumerate(sensors):
-#         GPIO.setup(s, GPIO.OUT)
-#         GPIO.output(s, GPIO.HIGH)
-#         time.sleep(0.01)
-#         GPIO.setup(s, GPIO.IN)
-#         counter = 0
-#         while GPIO.input(s) and counter < min_color:
-#             counter += 1
-#             # GPIO.output(led, GPIO.HIGH)
-#         GPIO.output(led, GPIO.LOW)
-#         # last_status[index] =  int(counter == min_color)
-#         last_status_str += '1' if counter == min_color else '0'
-#     return last_status_str
 
 def check_above_line():
     global led, sensors, min_color, max_color, last_status_arr, last_status_str
@@ -71,7 +53,6 @@ def check_above_line():
 
 
 def adjust_thershold():
-    return  # TODO !!!
     global led, sensors, min_color, max_color, init_max_color, init_max_color, last_status_arr, last_status_str
     for s in sensors:
         GPIO.setup(s, GPIO.OUT)
@@ -112,11 +93,6 @@ def check_color():
         GPIO.output(led, GPIO.LOW)
         res.append(counter)
     return res
-
-
-# def all_above_line():
-#     global last_status
-#     return last_status == [1, 1, 1, 1, 1, 1, 1, 1]
 
 
 class IR_array_sensor:
@@ -192,8 +168,5 @@ def op5():
 
 
 if __name__ == '__main__':
-    # op1_5()
-    # op2()
-    # op3()
     # op4()
     op5()
