@@ -84,10 +84,10 @@ def check_above_line():
     elif max(res) < 60:
         if max(res) >= 2.6*min(res):
             min_color = max(res)*0.9
-            possible_stop_line = max(res)*0.9
+            possible_stop_line = max(res)*0.8
     elif max(res) > 2*min(res):
         min_color = max(res)*0.9
-        possible_stop_line = max(res)*0.9
+        possible_stop_line = max(res)*0.85
 
     res_str = ""
     for color in res:
