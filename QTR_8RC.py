@@ -73,7 +73,8 @@ def check_above_line():
 
     last_status_arr = res
 
-    min_color = init_min_color
+    # min_color = init_min_color  # TODO
+    min_color = possible_stop_line
     # if min(res) > min(init_min_color, possible_stop_line):
     if min(res) > possible_stop_line:  # TODO
         res_str = "11111111"
