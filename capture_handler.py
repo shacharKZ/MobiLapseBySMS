@@ -40,7 +40,7 @@ def crop_and_adjust_img_to_img(prev_img_path, target_img_path) -> str:
     return crop_img_name
 
 
-def take_a_pic(curr_object_num: int, curr_picture_num: int, session_timestamp_string: str, prev_imgs: list[str]):
+def take_a_pic(curr_object_num: int, curr_picture_num: int, session_timestamp_string: str, prev_imgs: list):
     cap = cv2.VideoCapture(0)
     ret, frame = cap.read()
     target_dir = f'object{curr_object_num}CaptureSession-{session_timestamp_string}'
