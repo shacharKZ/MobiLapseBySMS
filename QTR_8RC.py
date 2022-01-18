@@ -73,10 +73,24 @@ def check_above_line():
 
     last_status_arr = res
 
-    # min_color = init_min_color  # TODO
-    min_color = possible_stop_line
-    # if min(res) > min(init_min_color, possible_stop_line):
-    if min(res) > possible_stop_line:  # TODO
+    # # min_color = init_min_color  # TODO
+    # min_color = possible_stop_line
+    # # if min(res) > min(init_min_color, possible_stop_line):
+    # if min(res) > possible_stop_line:  # TODO
+    #     res_str = "11111111"
+    # print(
+    #     f'all ir sensors sees the line with possible_stop_line {possible_stop_line}')
+    #     return res_str
+    # elif max(res) < 70:
+    #     if max(res) >= 2.6*min(res):
+    #         min_color = max(res)*0.9
+    #         possible_stop_line = max(res)*0.8
+    # elif max(res) > 2*min(res):
+    #     min_color = max(res)*0.9
+    #     possible_stop_line = max(res)*0.85
+
+    min_color = init_min_color
+    if min(res) > init_min_color:
         res_str = "11111111"
         print(
             f'all ir sensors sees the line with possible_stop_line {possible_stop_line}')
@@ -86,8 +100,7 @@ def check_above_line():
             min_color = max(res)*0.9
             possible_stop_line = max(res)*0.8
     elif max(res) > 2*min(res):
-        min_color = max(res)*0.9
-        possible_stop_line = max(res)*0.85
+        min_color = max(res)*0.8
 
     res_str = ""
     for color in res:
