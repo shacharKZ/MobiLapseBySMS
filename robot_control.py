@@ -74,14 +74,16 @@ actions_dir = {
 #         time.sleep(1)
 
 
-def follow_line(num_objects: int = 4, object_angle_list=None, session_timestamp: str = 'tmpRun'):
+def follow_line(num_objects: int = 4, object_angle_list=None, session_timestamp: str = 'tmpRun', speed: int = 50):
+    speed_power = speed
+    print(f'Robot speed will now be: {speed_power}')
     if object_angle_list is None:
         object_angle_list = ['HARD_RIGHT',
                              'HARD_RIGHT', 'HARD_RIGHT', 'HARD_RIGHT']
     print('Starting follow line')
     img_dic = {}
     anomaly_dic = {}
-    for obj_n in range(1, num_objects+1):
+    for obj_n in range(1, num_objects + 1):
         img_dic[obj_n] = []
         anomaly_dic[obj_n] = 0
     curr_object = 0
@@ -110,7 +112,8 @@ def follow_line(num_objects: int = 4, object_angle_list=None, session_timestamp:
                 # We encountered a stop line so we need to take a picture
                 # Sending the number of the current picture of the current object to the image capture function
                 prev_exe_angle = 0
-                stop_res = stop_line(curr_object + 1, object_angle_list[curr_object], picture_progress_list[curr_object],
+                stop_res = stop_line(curr_object + 1, object_angle_list[curr_object],
+                                     picture_progress_list[curr_object],
                                      session_timestamp, img_dic[curr_object + 1], anomaly_dic[curr_object + 1])
                 if stop_res:
                     anomaly_dic[curr_object + 1] = 0
@@ -139,7 +142,7 @@ def follow_line(num_objects: int = 4, object_angle_list=None, session_timestamp:
                 count_const_not_on_line += 1
                 continue
             else:
-                motor.setSpeed(int(speed_power*speed_factor))
+                motor.setSpeed(int(speed_power * speed_factor))
                 dir.turn_with_angle(exe_angle)
                 prev_exe_angle = exe_angle
                 count_const_not_on_line = 0
