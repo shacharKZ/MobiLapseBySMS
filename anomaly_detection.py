@@ -4,6 +4,8 @@ import numpy as np
 import cv2
 from firebase_admin import db
 
+from db_handler import update_anomaly_for_object_in_db
+
 
 def pixelate_img(img, window=32, normalize=False):
     n, m = img.shape
@@ -51,16 +53,7 @@ def check_anomaly_last_cap(imgs: [str], num_of_non_anomaly, diff_rate=1.3, curr_
     print(f'Anomaly detection: avg pixelate diff: {avg_diff}, last pixelate diff: {last_diff}')
 
     if last_diff > avg_diff * diff_rate or last_diff < avg_diff / diff_rate:  # TODO
-        update_anomaly_in_db(curr_object_num)
+        update_anomaly_for_object_in_db(curr_object_num)
         return True
 
     return False
-
-
-def update_anomaly_in_db(curr_object_num: int):
-    print('getting DB reference')
-    ref = db.reference(f'/AnomalyData/{curr_object_num + 1}')
-    data = {"Detected": True,
-            "lastUpdated": str(datetime.datetime.now())}
-    ref.set(data)
-    print(f'Update anomaly data: {data}')

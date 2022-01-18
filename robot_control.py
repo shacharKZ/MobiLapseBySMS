@@ -1,4 +1,6 @@
 # from cv2 import PROJ_SPHERICAL_EQRECT  # TODO what is that?? should we remove it?
+import requests
+
 import motor
 import car_dir as dir
 import video_dir as vid
@@ -9,6 +11,8 @@ from capture_handler import take_a_pic
 from anomaly_detection import check_anomaly_last_cap
 
 # 0 to suppress, 1 to print debuggin messages
+from db_handler import write_robot_error_to_db
+
 DEBUG = 0
 
 wall_speed = 30  # when connected to the power source directly
@@ -16,6 +20,7 @@ battery_speed = 50  # when connected to batteries only
 
 # speed_power = wall_speed
 speed_power = battery_speed
+
 
 def stop_line(curr_object_num: int, curr_object_angle: str, curr_picture_num: int, session_timestamp: str,
               prev_imgs: list, num_of_non_anomaly):
@@ -153,12 +158,20 @@ def follow_line(num_objects: int = 4, object_angle_list=None, session_timestamp:
             if count_const_not_on_line > 432:
                 motor.stop()
                 dir.home()
-                vid.make_gesture(4)
-                break  # TODO !!!! Zombie mode  !!!!
+                # vid.make_gesture(4)
+                write_robot_error_to_db("Robot can't find the line")
+                break
         time.sleep(0.000002)
 
     motor.stop()
     while True:  # TODO !!!! Zombie mode  !!!!
+        body = {
+            "numObjects": num_objects,
+            "command": 'stop'
+        }
+        print('Asking API to kill robot_control thread')
+        print(f'Sending request with data {body}')
+        res = requests.post('http://localhost:5000/convert', json=body)
         time.sleep(5)
 
 

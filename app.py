@@ -10,6 +10,7 @@ from flask import Flask, request
 from flask_cors import CORS, cross_origin
 
 from config import STORAGE_BUCKET, ROOT_CAPTURES_FOLDER_PATH, API_REQUEST_DATETIME_FORMAT, FIREBASE_RT_DB_URL
+from db_handler import write_api_address_to_db
 from filesystem_handler import create_capture_folders
 from robot_control import follow_line
 
@@ -38,7 +39,6 @@ def get_command_from_app_in_get():
     return {'message': 'all good from get capture!'}, 200
 
 
-# TODO: upload each photo when it is captured, not when getting the order to finish capture
 @app.post('/capture')
 @cross_origin()
 def get_command_from_app():
@@ -88,18 +88,6 @@ def send_convert_request_to_server(num_objects: int, session_timestamp: str):
         print('Conversion finished successfully!')
     else:
         print(f'An error has occurred, status code is {res.status_code}')
-
-
-def write_api_address_to_db():
-    print('getting DB reference')
-    ref = db.reference('/RobotData')
-    s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-    s.connect(("8.8.8.8", 80))
-    local_ip = s.getsockname()[0]
-    s.close()
-    ref.set({"ROBOT_IP": local_ip,
-             "lastUpdated": str(datetime.datetime.now())})
-    print(f'added IP {local_ip} to firebase DB')
 
 
 if __name__ == '__main__':
