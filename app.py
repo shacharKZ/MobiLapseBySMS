@@ -11,9 +11,8 @@ from config import STORAGE_BUCKET, ROOT_CAPTURES_FOLDER_PATH, API_REQUEST_DATETI
 from db_handler import update_robot_state_in_db, reset_db_state_before_robot_api_start, \
     reset_db_state_before_capture_start_and_set_capture_state, reset_anomalies, update_anomaly_for_object_in_db
 from filesystem_handler import create_capture_folders
-from robot_control import follow_line
-
-from stop import stop_all_robot_actions
+# from robot_control import follow_line
+# from stop import stop_all_robot_actions
 
 app = Flask(__name__)
 cors = CORS(app)
@@ -56,6 +55,7 @@ def get_command_from_app():
                                                 args=(num_objects, object_angle_list, CURR_SESSION_TIMESTAMP, speed))
         ACTIVE_THREAD.start()
     elif data['command'] == 'stop':
+        print('Received stop command')
         ACTIVE_THREAD.terminate()
         stop_all_robot_actions()
         # upload_new_captures(num_objects, CURR_SESSION_TIMESTAMP)

@@ -55,14 +55,17 @@ def write_api_address_to_db():
 
 
 def update_robot_state_in_db(state: int):
-    if not DB_UPDATES:
-        return
-    print('getting DB reference')
-    ref = db.reference('/ROBOT_STATE')
-    print('got DB ref')
-    print(f'Setting state {state}')
-    ref.set(state)
-    print(f'Set robot state as {state} in DB')
+    try:
+        if not DB_UPDATES:
+            return
+        print('getting DB reference')
+        ref = db.reference('/ROBOT_STATE')
+        print('got DB ref')
+        print(f'Setting state {state}')
+        ref.set(state)
+        print(f'Set robot state as {state} in DB')
+    except Exception as e:
+        print(f'Exception: {str(e)}')
 
 
 def update_anomaly_for_object_in_db(curr_object_num: int):
