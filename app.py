@@ -8,7 +8,8 @@ from flask import Flask, request
 from flask_cors import CORS, cross_origin
 
 from config import STORAGE_BUCKET, ROOT_CAPTURES_FOLDER_PATH, API_REQUEST_DATETIME_FORMAT, FIREBASE_RT_DB_URL
-from db_handler import update_robot_state_in_db, reset_db_state_before_robot_start
+from db_handler import update_robot_state_in_db, reset_db_state_before_robot_api_start, \
+    reset_db_state_before_capture_start_and_set_capture_state
 from filesystem_handler import create_capture_folders
 from robot_control import follow_line
 
@@ -49,7 +50,7 @@ def get_command_from_app():
     if num_objects == None:
         num_objects = len(object_angle_list)
     if data['command'] == 'start':
-        update_robot_state_in_db(1)
+        reset_db_state_before_capture_start_and_set_capture_state()
         CURR_SESSION_TIMESTAMP = create_capture_folders(num_objects)
         ACTIVE_THREAD = multiprocessing.Process(target=follow_line,
                                                 args=(num_objects, object_angle_list, CURR_SESSION_TIMESTAMP, speed))
@@ -92,6 +93,6 @@ def send_convert_request_to_server(num_objects: int, session_timestamp: str):
 
 if __name__ == '__main__':
     print('API NOW RUNNING')
-    reset_db_state_before_robot_start()
+    reset_db_state_before_robot_api_start()
     app.run(debug=True, host='0.0.0.0')
     # get_command_from_app({'command': 'start', 'num_objects': 3})

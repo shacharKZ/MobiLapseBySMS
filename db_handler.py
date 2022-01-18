@@ -4,7 +4,7 @@ import datetime
 from firebase_admin import db
 
 
-def reset_db_state_before_robot_start():
+def reset_db_state_before_robot_api_start():
     """
     Resets the DB before the robot begins running
     The function will write the new robot IP to the DB
@@ -14,6 +14,17 @@ def reset_db_state_before_robot_start():
     """
     write_api_address_to_db()
     update_robot_state_in_db(0)
+    clear_robot_error_in_db()
+    reset_anomalies()
+
+def reset_db_state_before_capture_start_and_set_capture_state():
+    """
+    Resets the DB before the robot begins a new capture
+    The function will clear errors from the previous runs
+    The function will reset the robot state so the app can control it
+    The app will clear previous anomalies
+    """
+    update_robot_state_in_db(1)
     clear_robot_error_in_db()
     reset_anomalies()
 
