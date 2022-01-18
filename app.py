@@ -95,5 +95,7 @@ def send_convert_request_to_server(num_objects: int, session_timestamp: str):
 if __name__ == '__main__':
     print('API NOW RUNNING')
     write_api_address_to_db()
+    # Resetting robot state in case there was an error and unexpected stop last run
+    update_robot_state_in_db(0)
     app.run(debug=True, host='0.0.0.0')
     # get_command_from_app({'command': 'start', 'num_objects': 3})
