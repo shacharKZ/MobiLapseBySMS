@@ -59,6 +59,8 @@ def update_robot_state_in_db(state: int):
         return
     print('getting DB reference')
     ref = db.reference('/ROBOT_STATE')
+    print('got DB ref')
+    print(f'Setting state {state}')
     ref.set(state)
     print(f'Set robot state as {state} in DB')
 
