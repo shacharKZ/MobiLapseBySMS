@@ -15,6 +15,13 @@ def write_api_address_to_db():
              "lastUpdated": str(datetime.datetime.now())})
     print(f'added IP {local_ip} to firebase DB')
 
+def update_robot_state_in_db(state: int):
+    print('getting DB reference')
+    ref = db.reference('/ROBOT_STATE')
+    ref.set(state)
+    print(f'Set robot state as {state} in DB')
+
+
 
 def update_anomaly_for_object_in_db(curr_object_num: int):
     print('getting DB reference')

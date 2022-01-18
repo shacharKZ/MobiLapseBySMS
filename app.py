@@ -10,7 +10,7 @@ from flask import Flask, request
 from flask_cors import CORS, cross_origin
 
 from config import STORAGE_BUCKET, ROOT_CAPTURES_FOLDER_PATH, API_REQUEST_DATETIME_FORMAT, FIREBASE_RT_DB_URL
-from db_handler import write_api_address_to_db
+from db_handler import write_api_address_to_db, update_robot_state_in_db
 from filesystem_handler import create_capture_folders
 from robot_control import follow_line
 
@@ -51,6 +51,7 @@ def get_command_from_app():
     if num_objects == None:
         num_objects = len(object_angle_list)
     if data['command'] == 'start':
+        update_robot_state_in_db(1)
         CURR_SESSION_TIMESTAMP = create_capture_folders(num_objects)
         ACTIVE_THREAD = multiprocessing.Process(target=follow_line,
                                                 args=(num_objects, object_angle_list, CURR_SESSION_TIMESTAMP, speed))
@@ -60,6 +61,7 @@ def get_command_from_app():
         stop_all_robot_actions()
         # upload_new_captures(num_objects, CURR_SESSION_TIMESTAMP)
         send_convert_request_to_server(num_objects, CURR_SESSION_TIMESTAMP)
+        update_robot_state_in_db(0)
     message = "Finished processing " + data['command'] + " action"
     return {'message': message}, 200
 
