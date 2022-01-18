@@ -171,7 +171,7 @@ def follow_line(num_objects: int = 4, object_angle_list=None, session_timestamp:
         }
         print('Asking API to kill robot_control thread')
         print(f'Sending request with data {body}')
-        res = requests.post('http://localhost:5000/convert', json=body)
+        res = requests.post('http://localhost:5000/capture', json=body)
         time.sleep(5)
 
 
