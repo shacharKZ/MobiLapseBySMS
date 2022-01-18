@@ -3,6 +3,8 @@ import datetime
 
 from firebase_admin import db
 
+from config import DB_UPDATES
+
 
 def reset_db_state_before_robot_api_start():
     """
@@ -12,6 +14,8 @@ def reset_db_state_before_robot_api_start():
     The function will reset the robot state so the app can control it
     The app will clear previous anomalies
     """
+    if not DB_UPDATES:
+        return
     write_api_address_to_db()
     update_robot_state_in_db(0)
     clear_robot_error_in_db()
@@ -24,6 +28,8 @@ def reset_db_state_before_capture_start_and_set_capture_state():
     The function will reset the robot state so the app can control it
     The app will clear previous anomalies
     """
+    if not DB_UPDATES:
+        return
     update_robot_state_in_db(1)
     clear_robot_error_in_db()
     reset_anomalies()
@@ -54,6 +60,8 @@ def write_api_address_to_db():
 
 
 def update_robot_state_in_db(state: int):
+    if not DB_UPDATES:
+        return
     print('getting DB reference')
     ref = db.reference('/ROBOT_STATE')
     ref.set(state)

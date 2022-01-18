@@ -16,3 +16,5 @@ default_app = firebase_admin.initialize_app(credential=None, options={'storageBu
 print('FIREBASE ready!')
 
 CAMERA_PATH = f'{os.sep}dev{os.sep}v4l{os.sep}by-id{os.sep}usb-USB2.0_UVC_VGA_USB2.0_UVC_VGA-video-index'
+
+DB_UPDATES = False
