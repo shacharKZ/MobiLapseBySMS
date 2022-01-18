@@ -31,7 +31,7 @@ def stop_line(curr_object_num: int, curr_object_angle: str, curr_picture_num: in
     time.sleep(1.5)
     print('curr obj is:', curr_picture_num)
     take_a_pic(curr_object_num, curr_picture_num, session_timestamp, prev_imgs)
-    detected_anomaly = check_anomaly_last_cap(prev_imgs, num_of_non_anomaly, curr_object_num)
+    detected_anomaly = check_anomaly_last_cap(prev_imgs, num_of_non_anomaly, curr_object_num=curr_object_num)
     # if detected_anomaly:
     #     vid.make_gesture(1)
     time.sleep(3)
