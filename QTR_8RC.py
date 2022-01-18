@@ -4,12 +4,13 @@ import time
 
 # led = 16  # currently unsupported led pin
 sensors = [37, 36, 33, 32, 31, 29, 22, 18]
-min_color = None  # this value is changing a bit from time to time. try adjust it
-max_color = None
 last_status_arr = [0, 0, 0, 0, 0, 0, 0, 0]
 last_status_str = '00000000'
 init_min_color = 75
 init_max_color = 200
+# this value is changing a bit from time to time. try adjust it
+min_color = init_min_color
+max_color = init_max_color
 possible_stop_line = init_min_color
 
 
@@ -73,7 +74,8 @@ def check_above_line():
     last_status_arr = res
 
     min_color = init_min_color
-    if min(res) > min(init_min_color, possible_stop_line):
+    # if min(res) > min(init_min_color, possible_stop_line):
+    if min(res) > possible_stop_line:  # TODO
         res_str = "11111111"
         return res_str
     elif max(res) > 2*min(res):
@@ -85,7 +87,7 @@ def check_above_line():
         res_str += ('1' if color >= min_color else '0')
 
     last_status_str = res_str
-    print(res, "<-------->", res_str)
+    print(res, "<-------->", res_str)  # TODO for debug only
     return last_status_str
 
 
