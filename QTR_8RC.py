@@ -77,6 +77,8 @@ def check_above_line():
     # if min(res) > min(init_min_color, possible_stop_line):
     if min(res) > possible_stop_line:  # TODO
         res_str = "11111111"
+        print(
+            f'all ir sensors sees the line with possible_stop_line {possible_stop_line}')
         return res_str
     elif max(res) > 2*min(res):
         min_color = max(res)*0.8
@@ -87,7 +89,8 @@ def check_above_line():
         res_str += ('1' if color >= min_color else '0')
 
     last_status_str = res_str
-    print(res, "<-------->", res_str)  # TODO for debug only
+    # TODO for debug only
+    print(res, "<-------->", res_str, f'--> min is {min_color}')
     return last_status_str
 
 
