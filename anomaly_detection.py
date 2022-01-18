@@ -59,7 +59,7 @@ def check_anomaly_last_cap(imgs: [str], num_of_non_anomaly, diff_rate=1.3, curr_
 
 def update_anomaly_in_db(curr_object_num: int):
     print('getting DB reference')
-    ref = db.reference(f'/AnomalyData/{curr_object_num}')
+    ref = db.reference(f'/AnomalyData/{curr_object_num + 1}')
     data = {"Detected": True,
             "lastUpdated": str(datetime.datetime.now())}
     ref.set(data)
