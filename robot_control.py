@@ -116,9 +116,9 @@ def follow_line(num_objects: int = 4, object_angle_list=None, session_timestamp:
                 # We encountered a stop line so we need to take a picture
                 # Sending the number of the current picture of the current object to the image capture function
                 prev_exe_angle = 0
-                print('$$$$$$$$$$$$$$$$$$$$$')
-                print(f'Calling stop line, curr_object: {curr_object}, curr_object+1: {curr_object + 1}')
-                print('$$$$$$$$$$$$$$$$$$$$$')
+                # print('$$$$$$$$$$$$$$$$$$$$$')
+                # print(f'Calling stop line, curr_object: {curr_object}, curr_object+1: {curr_object + 1}')
+                # print('$$$$$$$$$$$$$$$$$$$$$')
                 stop_res = stop_line(curr_object + 1, object_angle_list[curr_object],
                                      picture_progress_list[curr_object],
                                      session_timestamp, img_dic[curr_object + 1], anomaly_dic[curr_object + 1])
