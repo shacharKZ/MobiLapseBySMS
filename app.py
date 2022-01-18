@@ -9,10 +9,11 @@ from flask_cors import CORS, cross_origin
 
 from config import STORAGE_BUCKET, ROOT_CAPTURES_FOLDER_PATH, API_REQUEST_DATETIME_FORMAT, FIREBASE_RT_DB_URL
 from db_handler import update_robot_state_in_db, reset_db_state_before_robot_api_start, \
-    reset_db_state_before_capture_start_and_set_capture_state, reset_anomalies, update_anomaly_for_object_in_db
+    reset_db_state_before_capture_start_and_set_capture_state, reset_anomalies, update_anomaly_for_object_in_db, \
+    write_robot_error_to_db
 from filesystem_handler import create_capture_folders
-# from robot_control import follow_line
-# from stop import stop_all_robot_actions
+from robot_control import follow_line
+from stop import stop_all_robot_actions
 
 app = Flask(__name__)
 cors = CORS(app)
@@ -58,6 +59,9 @@ def get_command_from_app():
         print('Received stop command')
         ACTIVE_THREAD.terminate()
         stop_all_robot_actions()
+        if 'error' in data:
+            # Adding error message on stop
+            write_robot_error_to_db(data['error'])
         # upload_new_captures(num_objects, CURR_SESSION_TIMESTAMP)
         send_convert_request_to_server(num_objects, CURR_SESSION_TIMESTAMP)
         update_robot_state_in_db(0)

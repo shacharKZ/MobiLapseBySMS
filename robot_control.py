@@ -159,7 +159,6 @@ def follow_line(num_objects: int = 4, object_angle_list=None, session_timestamp:
                 motor.stop()
                 dir.home()
                 # vid.make_gesture(4)
-                write_robot_error_to_db("Robot can't find the line")
                 break
         time.sleep(0.000002)
 
@@ -167,7 +166,8 @@ def follow_line(num_objects: int = 4, object_angle_list=None, session_timestamp:
     while True:  # TODO !!!! Zombie mode  !!!!
         body = {
             "numObjects": num_objects,
-            "command": 'stop'
+            "command": 'stop',
+            "error": "Robot can't find the line"
         }
         print('Asking API to kill robot_control thread')
         print(f'Sending request with data {body}')
