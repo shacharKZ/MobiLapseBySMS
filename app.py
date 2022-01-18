@@ -9,7 +9,7 @@ from flask_cors import CORS, cross_origin
 
 from config import STORAGE_BUCKET, ROOT_CAPTURES_FOLDER_PATH, API_REQUEST_DATETIME_FORMAT, FIREBASE_RT_DB_URL
 from db_handler import update_robot_state_in_db, reset_db_state_before_robot_api_start, \
-    reset_db_state_before_capture_start_and_set_capture_state
+    reset_db_state_before_capture_start_and_set_capture_state, reset_anomalies, update_anomaly_for_object_in_db
 from filesystem_handler import create_capture_folders
 from robot_control import follow_line
 
