@@ -34,14 +34,13 @@ def crop_and_adjust_img_to_img(prev_img_path, target_img_path) -> str:
     # save a copy of the img (with color) with crop according to the location we found
     tmp_index = target_img_path.index('.png')
     img_to_crop_color = cv2.imread(target_img_path, cv2.IMREAD_COLOR)
-    img_final_color = img_to_crop_color[top_left[1]
-                                        :top_left[1]+height, top_left[0]: top_left[0]+weight]
+    img_final_color = img_to_crop_color[top_left[1]:top_left[1]+height, top_left[0]: top_left[0]+weight]
     crop_img_name = target_img_path[:tmp_index] + '_crop.png'
     cv2.imwrite(crop_img_name, img_final_color)
     return crop_img_name
 
 
-def take_a_pic(curr_object_num: int, curr_picture_num: int, session_timestamp_string: str, prev_imgs: [str]):
+def take_a_pic(curr_object_num: int, curr_picture_num: int, session_timestamp_string: str, prev_imgs: list[str]):
     cap = cv2.VideoCapture(0)
     ret, frame = cap.read()
     target_dir = f'object{curr_object_num}CaptureSession-{session_timestamp_string}'
@@ -53,7 +52,7 @@ def take_a_pic(curr_object_num: int, curr_picture_num: int, session_timestamp_st
     if not ret:
         return False
     img_path = target_path + os.path.sep + pic_label
-    generated_image = cv2.imwrite(img_path, frame)
+    generated_res = cv2.imwrite(img_path, frame)
 
     if len(prev_imgs) == 0:
         crop_img_path = crop_and_adjust_img_to_img(None, img_path)
@@ -68,9 +67,3 @@ def take_a_pic(curr_object_num: int, curr_picture_num: int, session_timestamp_st
     print('created thread', x.ident)
     # upload_image(target_dir + pic_label, target_path + os.path.sep + pic_label)
     return crop_img_path
-
-
-
-
-
-
