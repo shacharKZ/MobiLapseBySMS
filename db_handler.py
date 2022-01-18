@@ -70,9 +70,10 @@ def update_robot_state_in_db(state: int):
 
 def update_anomaly_for_object_in_db(curr_object_num: int):
     print('getting DB reference')
+    print(f'Received object number: {curr_object_num}')
     ref = db.reference(f'/AnomalyData')
     data = {"Detected": True,
-            "index": curr_object_num + 1,
+            "index": curr_object_num,
             "lastUpdated": str(datetime.datetime.now())}
     ref.set(data)
     print(f'Update anomaly data: {data}')
