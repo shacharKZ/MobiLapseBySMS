@@ -1,16 +1,14 @@
 import datetime
 import multiprocessing
 import os
-import socket
 import time
 
-from firebase_admin import db
 import requests
 from flask import Flask, request
 from flask_cors import CORS, cross_origin
 
 from config import STORAGE_BUCKET, ROOT_CAPTURES_FOLDER_PATH, API_REQUEST_DATETIME_FORMAT, FIREBASE_RT_DB_URL
-from db_handler import write_api_address_to_db, update_robot_state_in_db
+from db_handler import update_robot_state_in_db, reset_db_state_before_robot_start
 from filesystem_handler import create_capture_folders
 from robot_control import follow_line
 
@@ -94,8 +92,6 @@ def send_convert_request_to_server(num_objects: int, session_timestamp: str):
 
 if __name__ == '__main__':
     print('API NOW RUNNING')
-    write_api_address_to_db()
-    # Resetting robot state in case there was an error and unexpected stop last run
-    update_robot_state_in_db(0)
+    reset_db_state_before_robot_start()
     app.run(debug=True, host='0.0.0.0')
     # get_command_from_app({'command': 'start', 'num_objects': 3})
