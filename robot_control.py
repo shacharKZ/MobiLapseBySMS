@@ -6,11 +6,11 @@ import motor
 import car_dir as dir
 import video_dir as vid
 import QTR_8RC as ir
+import power_management as power
 import time
 from datetime import datetime
 from capture_handler import take_a_pic
 from anomaly_detection import check_anomaly_last_cap
-from power_management import check_voltage
 
 # 0 to suppress, 1 to print debuggin messages
 from db_handler import write_robot_error_to_db
@@ -99,6 +99,7 @@ def follow_line(num_objects: int = 4, object_angle_list=None, session_timestamp:
     motor.setup_motor()
     dir.setup_direction()
     vid.setup_vid()
+    power.setup_power_management()
     vid.home_x_y()
     motor.setSpeed(speed_power, print_flag=True)
     time.sleep(1)
@@ -167,7 +168,7 @@ def follow_line(num_objects: int = 4, object_angle_list=None, session_timestamp:
                 # vid.make_gesture(4)
                 break
         time.sleep(0.000002)
-        check_voltage()
+        power.check_voltage()
 
     motor.stop()
     while True:  # TODO !!!! Zombie mode  !!!!
