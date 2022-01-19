@@ -7,7 +7,8 @@ def check_voltage():
     temp_res = subprocess.getstatusoutput(f'vcgencmd get_throttled')
     print(temp_res)
     print(temp_res[-1])
-    print(temp_res[-4])
+    if len(temp_res) >= 4:
+        print('---->', temp_res[-4])
 
 
 if __name__ == '__main__':
