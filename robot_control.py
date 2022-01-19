@@ -38,6 +38,8 @@ def stop_line(curr_object_num: int, curr_object_angle: str, curr_picture_num: in
     # if detected_anomaly:
     #     vid.make_gesture(1)
     time.sleep(3)
+    print("!!!!!! check power after stop: ")
+    power.check_voltage()  # TODO
     return detected_anomaly
 
 
