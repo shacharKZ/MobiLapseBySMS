@@ -2,8 +2,8 @@ import subprocess
 import time
 
 const_under_voltage_msgs = 0  # TODO not usebale. remove later
-threshold_const_msg = 14
-last_voltage_len = 20
+threshold_const_msg = 24
+last_voltage_len = 30
 # True = detected a low voltage at the moment, False = did not detected a low voltage at the moment
 last_volt_results = [False] * last_voltage_len
 time_between_checking = 1
@@ -13,8 +13,8 @@ last_time_check = 0
 def setup_power_management():
     global const_under_voltage_msgs, threshold_const_msg, last_voltage_len, last_volt_results, time_between_checking, last_time_check
     const_under_voltage_msgs = 0
-    threshold_const_msg = 14
-    last_voltage_len = 20
+    threshold_const_msg = 24
+    last_voltage_len = 30
     last_volt_results = [False] * last_voltage_len
     time_between_checking = 1
     last_time_check = 0
@@ -27,16 +27,17 @@ def check_voltage():
         return  # not enough time between two checks
     temp_res = subprocess.getstatusoutput(f'vcgencmd get_throttled')
     print(temp_res)  # for debugging
-    # TODO consider to just check the last number instead
+    # # TODO consider to just check the last number instead
     error_code_str = temp_res[1][12:]  # only the throttled's code
-    print("error_code is: ", error_code_str)
-    if not error_code_str.isnumeric:
-        print("Faild to check power management. This module might not work or return false data!")
-        return
+    # print("error_code is: ", error_code_str)
+    # if not error_code_str.isnumeric:
+    #     print("Faild to check power management. This module might not work or return false data!")
+    #     return
 
-    error_code_num = int(error_code_str)
+    # error_code_num = int(error_code_str)
     del last_volt_results[0]
-    last_volt_results.append(error_code_num % 2 != 0)
+    last_volt_results.append(error_code_str == '50005')
+    # last_volt_results.append(error_code_num % 2 != 0)  # if we choosed to use numeric
     last_time_check = current_time
     if last_volt_results.count(True) > threshold_const_msg:
         # TODO send app msg "LOW VOLTAGE..."
