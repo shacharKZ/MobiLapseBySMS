@@ -79,12 +79,12 @@ def check_above_line():
         print(
             f'all ir sensors sees the line with possible_stop_line {min_color}')
         return res_str
-    elif max(res) < 70:
+    elif max(res) < 77:
         if max(res) >= 2.6*min(res) and max(res) > 40:
-            min_color = max(res)*0.9
+            min_color = max(res)*0.91
             # possible_stop_line = max(res)*0.8
     elif max(res) > 2*min(res):
-        min_color = max(res)*0.8
+        min_color = max(res)*0.83
 
     res_str = ""
     for color in res:
