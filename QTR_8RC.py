@@ -73,32 +73,16 @@ def check_above_line():
 
     last_status_arr = res
 
-    # # min_color = init_min_color  # TODO
-    # min_color = possible_stop_line
-    # # if min(res) > min(init_min_color, possible_stop_line):
-    # if min(res) > possible_stop_line:  # TODO
-    #     res_str = "11111111"
-    # print(
-    #     f'all ir sensors sees the line with possible_stop_line {possible_stop_line}')
-    #     return res_str
-    # elif max(res) < 70:
-    #     if max(res) >= 2.6*min(res):
-    #         min_color = max(res)*0.9
-    #         possible_stop_line = max(res)*0.8
-    # elif max(res) > 2*min(res):
-    #     min_color = max(res)*0.9
-    #     possible_stop_line = max(res)*0.85
-
     # min_color = init_min_color
     if min(res) > min_color:
         res_str = "11111111"
         print(
-            f'all ir sensors sees the line with possible_stop_line {possible_stop_line}')
+            f'all ir sensors sees the line with possible_stop_line {min_color}')
         return res_str
     elif max(res) < 70:
         if max(res) >= 2.6*min(res) and max(res) > 40:
             min_color = max(res)*0.9
-            possible_stop_line = max(res)*0.8
+            # possible_stop_line = max(res)*0.8
     elif max(res) > 2*min(res):
         min_color = max(res)*0.8
 
@@ -108,38 +92,38 @@ def check_above_line():
 
     last_status_str = res_str
     # TODO for debug only
-    # print(res, "<-------->", res_str, f'--> min is {min_color}')
+    print(res, "<-------->", res_str, f'--> min is {min_color}')
     return last_status_str
 
 
-def adjust_thershold():
-    return  # TODO
-    global led, sensors, min_color, max_color, init_max_color, init_max_color, last_status_arr, last_status_str
-    for s in sensors:
-        GPIO.setup(s, GPIO.OUT)
-        GPIO.output(s, GPIO.HIGH)
+# def adjust_thershold():
+#     return  # TODO
+#     global led, sensors, min_color, max_color, init_max_color, init_max_color, last_status_arr, last_status_str
+#     for s in sensors:
+#         GPIO.setup(s, GPIO.OUT)
+#         GPIO.output(s, GPIO.HIGH)
 
-    time.sleep(0.01)
+#     time.sleep(0.01)
 
-    for s in sensors:
-        GPIO.setup(s, GPIO.IN)
+#     for s in sensors:
+#         GPIO.setup(s, GPIO.IN)
 
-    color_list = [0, 0, 0, 0, 0, 0, 0, 0]
-    for _ in range(max_color):
-        for index, s in enumerate(sensors):
-            color_list[index] += GPIO.input(s)
+#     color_list = [0, 0, 0, 0, 0, 0, 0, 0]
+#     for _ in range(max_color):
+#         for index, s in enumerate(sensors):
+#             color_list[index] += GPIO.input(s)
 
-    color_list.sort()
-    debug_code = 0
-    if color_list[-1] > color_list[-2] + 30:
-        min_color = min(init_min_color, color_list[-1] - 7)
-        debug_code = 1
-    elif color_list[-1] < color_list[-2] + 15 and color_list[-2] > color_list[-3] + 30:
-        min_color = min(init_min_color, color_list[-2] - 7)
-        debug_code = 2
+#     color_list.sort()
+#     debug_code = 0
+#     if color_list[-1] > color_list[-2] + 30:
+#         min_color = min(init_min_color, color_list[-1] - 7)
+#         debug_code = 1
+#     elif color_list[-1] < color_list[-2] + 15 and color_list[-2] > color_list[-3] + 30:
+#         min_color = min(init_min_color, color_list[-2] - 7)
+#         debug_code = 2
 
-    print(
-        f'Adjust IR sensor threshold: new min={min_color}, new max={max_color}. color_list was:{color_list} (code={debug_code})')
+#     print(
+#         f'Adjust IR sensor threshold: new min={min_color}, new max={max_color}. color_list was:{color_list} (code={debug_code})')
 
 
 def check_color():

@@ -140,7 +140,7 @@ def follow_line(num_objects: int = 4, object_angle_list=None, session_timestamp:
                 # this size may be change according to the road we build
                 time.sleep(0.17)
                 # adjust the sensativity of the ir sensor according to the current light
-                ir.adjust_thershold()
+                # ir.adjust_thershold()  # TODO
 
                 # Incrementing the number of images for the current object
                 picture_progress_list[curr_object] += 1
@@ -169,7 +169,7 @@ def follow_line(num_objects: int = 4, object_angle_list=None, session_timestamp:
                 dir.home()
                 # vid.make_gesture(4)
                 break
-        time.sleep(0.000002)
+        time.sleep(0.0000015)
         power.check_voltage()
 
     motor.stop()
