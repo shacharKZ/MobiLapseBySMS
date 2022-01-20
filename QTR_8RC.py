@@ -96,7 +96,7 @@ def check_above_line():
 
     last_status_str = res_str
     # TODO for debug only
-    print(res, "<-------->", res_str, f'--> min is {min_color}')
+    # print(res, "<-------->", res_str, f'--> min is {min_color}')
     return last_status_str
 
 
