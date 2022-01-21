@@ -50,7 +50,7 @@ def check_voltage():
     print(temp_res2)  # for debugging
     board_temp = float(temp_res2[1][5:-2])
     print(board_temp)
-    if board_temp >= 43:
+    if board_temp >= 45:
         # TODO REST API CALL?
         print(f'Board overheat! maybe you should stop it!')
 
