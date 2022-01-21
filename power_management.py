@@ -42,7 +42,9 @@ def check_voltage():
     if last_volt_results.count(True) > threshold_const_msg:
         # TODO send app msg "LOW VOLTAGE..."
         print(f'detect low voltage!!!! VV ^^ VV ^^')
+
     print(f'debug power management: ', last_volt_results)
+    print(f'statics={last_volt_results.count(True)}/{last_voltage_len} ---> {last_volt_results.count(True)/last_voltage_len}')
 
 
 # def check_voltage():
