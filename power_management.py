@@ -49,10 +49,11 @@ def check_voltage():
     temp_res2 = subprocess.getstatusoutput(f'vcgencmd measure_temp')
     print(temp_res2)  # for debugging
     board_temp = float(temp_res2[1][5:-2])
-    print(board_temp)
-    if board_temp >= 45:
+    print(f'board temperature is {board_temp}')
+    if board_temp >= 53:  # TODO set threshold
         # TODO REST API CALL?
-        print(f'Board overheat! maybe you should stop it!')
+        print(
+            f'Board overheat! its current temperature is {board_temp}, maybe you should stop it!!!!')
 
 
 # def check_voltage():
