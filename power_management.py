@@ -6,7 +6,7 @@ threshold_const_msg = 24
 last_voltage_len = 30
 # True = detected a low voltage at the moment, False = did not detected a low voltage at the moment
 last_volt_results = [False] * last_voltage_len
-time_between_checking = 1
+time_between_checking = 0.5
 last_time_check = 0
 
 
@@ -16,7 +16,7 @@ def setup_power_management():
     threshold_const_msg = 24
     last_voltage_len = 30
     last_volt_results = [False] * last_voltage_len
-    time_between_checking = 1
+    time_between_checking = 0.5
     last_time_check = 0
 
 
