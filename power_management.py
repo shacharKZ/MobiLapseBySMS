@@ -46,6 +46,14 @@ def check_voltage():
     print(f'debug power management: ', last_volt_results)
     print(f'statics={last_volt_results.count(True)}/{last_voltage_len} ---> {last_volt_results.count(True)/last_voltage_len}')
 
+    temp_res2 = subprocess.getstatusoutput(f'vcgencmd measure_temp')
+    print(temp_res2)  # for debugging
+    board_temp = float(temp_res2[1][5:-2])
+    print(board_temp)
+    if board_temp >= 43:
+        # TODO REST API CALL?
+        print(f'Board overheat! maybe you should stop it!')
+
 
 # def check_voltage():
 #     global const_under_voltage_msgs, threshold_const_msg
