@@ -2,8 +2,8 @@ import subprocess
 import time
 
 const_under_voltage_msgs = 0  # TODO not usebale. remove later
-threshold_const_msg = 24
-last_voltage_len = 30
+threshold_const_msg = 85
+last_voltage_len = 100
 # True = detected a low voltage at the moment, False = did not detected a low voltage at the moment
 last_volt_results = [False] * last_voltage_len
 time_between_checking = 0.5
@@ -13,8 +13,8 @@ last_time_check = 0
 def setup_power_management():
     global const_under_voltage_msgs, threshold_const_msg, last_voltage_len, last_volt_results, time_between_checking, last_time_check
     const_under_voltage_msgs = 0
-    threshold_const_msg = 24
-    last_voltage_len = 30
+    threshold_const_msg = 85
+    last_voltage_len = 100
     last_volt_results = [False] * last_voltage_len
     time_between_checking = 0.5
     last_time_check = 0
