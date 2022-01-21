@@ -1,6 +1,8 @@
 import subprocess
 import time
 
+from db_handler import write_robot_warning_to_db
+
 const_under_voltage_msgs = 0  # TODO not usebale. remove later
 threshold_const_msg = 85
 last_voltage_len = 100
@@ -37,10 +39,10 @@ def check_voltage():
     # error_code_num = int(error_code_str)
     del last_volt_results[0]
     last_volt_results.append(error_code_str == '50005')
-    # last_volt_results.append(error_code_num % 2 != 0)  # if we choosed to use numeric
+    # last_volt_results.append(error_code_num % 2 != 0)  # if we choose to use numeric
     last_time_check = current_time
     if last_volt_results.count(True) > threshold_const_msg:
-        # TODO send app msg "LOW VOLTAGE..."
+        write_robot_warning_to_db('Robot battery is low, robot will shut down and battery might be damaged if not recharged soon.')
         print(f'detect low voltage!!!! VV ^^ VV ^^')
 
     print(f'debug power management: ', last_volt_results)
@@ -51,7 +53,7 @@ def check_voltage():
     board_temp = float(temp_res2[1][5:-2])
     print(f'board temperature is {board_temp}')
     if board_temp >= 55:  # TODO set threshold
-        # TODO REST API CALL?
+        write_robot_warning_to_db('Robot temperature is very high, consider stopping the robot and letting it cool.')
         print(
             f'Board overheat! its current temperature is {board_temp}, maybe you should stop it!!!!')
 

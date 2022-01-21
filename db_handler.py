@@ -18,6 +18,7 @@ def reset_db_state_before_robot_api_start():
         return
     write_api_address_to_db()
     update_robot_state_in_db(0)
+    clear_robot_warning_in_db()
     clear_robot_error_in_db()
     reset_anomalies()
 
@@ -77,6 +78,26 @@ def update_anomaly_for_object_in_db(curr_object_num: int):
             "lastUpdated": str(datetime.datetime.now())}
     ref.set(data)
     print(f'Update anomaly data: {data}')
+
+
+def write_robot_warning_to_db(alert_message: str):
+    print('getting DB reference')
+    ref = db.reference(f'/RobotWarning')
+    data = {"Detected": True,
+            "Warning": alert_message,
+            "lastUpdated": str(datetime.datetime.now())}
+    ref.set(data)
+    print(f'Update warning data: {data}')
+
+
+def clear_robot_warning_in_db():
+    print('getting DB reference')
+    ref = db.reference(f'/RobotWarning')
+    data = {"Detected": False,
+            "Warning": '',
+            "lastUpdated": str(datetime.datetime.now())}
+    ref.set(data)
+    print(f'Update warning data: {data}')
 
 
 def write_robot_error_to_db(error_message: str):
