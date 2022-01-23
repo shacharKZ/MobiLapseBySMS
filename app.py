@@ -14,6 +14,7 @@ from db_handler import update_robot_state_in_db, reset_db_state_before_robot_api
 from filesystem_handler import create_capture_folders
 from robot_control import follow_line
 from stop import stop_all_robot_actions
+import video_dir
 
 app = Flask(__name__)
 cors = CORS(app)
@@ -45,7 +46,8 @@ def get_command_from_app():
     data = request.get_json()
     print(data)
     num_objects = data.get('numObjects', None)
-    object_angle_list: list[str] = data.get('objectAngleList', ['HARD_RIGHT', 'HARD_RIGHT', 'HARD_RIGHT'])
+    object_angle_list: list[str] = data.get(
+        'objectAngleList', ['HARD_RIGHT', 'HARD_RIGHT', 'HARD_RIGHT'])
     speed = data.get('speed', 50)
     if num_objects == None:
         num_objects = len(object_angle_list)
@@ -72,12 +74,15 @@ def get_command_from_app():
 def upload_new_captures(num_objects: int, session_timestamp: str):
     curr_upload_dir_name = ''
     for i in range(1, num_objects + 1):
-        capture_dir_path = os.path.join(ROOT_CAPTURES_FOLDER_PATH, f'object{i}CaptureSession-{session_timestamp}')
+        capture_dir_path = os.path.join(
+            ROOT_CAPTURES_FOLDER_PATH, f'object{i}CaptureSession-{session_timestamp}')
         curr_upload_dir_name = f'object{i}CaptureSession-{session_timestamp}/'
         for file in os.listdir(capture_dir_path):
-            full_path = os.path.join(ROOT_CAPTURES_FOLDER_PATH, f'object{i}CaptureSession-{session_timestamp}', file)
+            full_path = os.path.join(
+                ROOT_CAPTURES_FOLDER_PATH, f'object{i}CaptureSession-{session_timestamp}', file)
             print(f'Uploading file {file} from path {full_path}')
-            print(f'Uploading to path robotImages/{curr_upload_dir_name}{file}')
+            print(
+                f'Uploading to path robotImages/{curr_upload_dir_name}{file}')
             # upload_image(curr_upload_dir_name + file, full_path)
 
 
@@ -88,14 +93,40 @@ def send_convert_request_to_server(num_objects: int, session_timestamp: str):
         "objects": num_objects,
         "datetime": session_timestamp
     }
-    res = requests.post('https://mobiapicr-4hioxusaea-ew.a.run.app:443/convert', json=body)
+    res = requests.post(
+        'https://mobiapicr-4hioxusaea-ew.a.run.app:443/convert', json=body)
     if res.status_code == 200:
         print('Conversion finished successfully!')
     else:
         print(f'An error has occurred, status code is {res.status_code}')
 
 
+def connect_wifi():
+    video_dir.setup_vid()
+    time.sleep(1)
+    for i in range(10):
+        try:
+            request = requests.get("http://www.google.com", timeout=7)
+            print("Connected to the Internet! let's rock!")
+            video_dir.home_x_y()
+            video_dir.move_increase_y()
+            time.sleep(0.2)
+            video_dir.move_increase_y()
+            time.sleep(0.5)
+            video_dir.move_decrease_y()
+            time.sleep(0.2)
+            video_dir.move_decrease_y()
+            return
+        except (requests.ConnectionError, requests.Timeout) as exception:
+            print("No internet connection yet...")
+            video_dir.make_gesture(1)
+
+        time.sleep(10)
+
+
 if __name__ == '__main__':
+    print("RUNNING")
+    connect_wifi()
     print('API NOW RUNNING')
     reset_db_state_before_robot_api_start()
     app.run(debug=True, host='0.0.0.0')
