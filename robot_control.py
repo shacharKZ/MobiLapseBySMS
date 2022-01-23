@@ -104,13 +104,13 @@ def follow_line(num_objects: int = 4, object_angle_list=None, session_timestamp:
     power.setup_power_management()
     vid.home_x_y()
     motor.setSpeed(speed_power, print_flag=True)
-    time.sleep(1)
+    time.sleep(0.5)
     motor.stop()
     dir.home()
     prev_exe_angle = 0  # last angle the car dir aim to. helps with "softer" directions change
     count_const_not_on_line = 0  # if more then few sec the car out of track: stop the car
 
-    time.sleep(4)
+    time.sleep(2)
     motor.forward()
 
     while True:
@@ -185,5 +185,27 @@ def follow_line(num_objects: int = 4, object_angle_list=None, session_timestamp:
         time.sleep(5)
 
 
+def start_up():
+    vid.setup_vid()
+    for _ in range(10):
+        try:
+            requests.get("http://www.google.com", timeout=7)
+            print("Connected to the Internet! let's rock!")
+            vid.home_x_y()
+            vid.move_increase_y()
+            time.sleep(0.2)
+            vid.move_increase_y()
+            time.sleep(0.5)
+            vid.move_decrease_y()
+            time.sleep(0.2)
+            vid.move_decrease_y()
+            follow_line()
+        except (requests.ConnectionError, requests.Timeout) as exception:
+            print("No internet connection yet...")
+            vid.make_gesture(1)
+
+        time.sleep(10)
+
+
 if __name__ == '__main__':
-    follow_line()
+    start_up()
