@@ -30,6 +30,8 @@ def setup_vid(busnum=None):
                 offset_y = int(line[11:-1])
                 # print 'offset_y =', offset_y
     except:
+        offset_x = -55
+        offset_y = 0
         pass
     Xmin = MinPulse + offset_x
     Xmax = MaxPulse + offset_x
