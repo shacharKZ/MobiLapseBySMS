@@ -33,7 +33,6 @@ def check_voltage():
         return  # not enough time between two checks
     temp_res = subprocess.getstatusoutput(f'vcgencmd get_throttled')
     print(temp_res)  # for debugging
-    # # TODO consider to just check the last number instead
     error_code_str = temp_res[1][12:]  # only the throttled's code
     # print("error_code is: ", error_code_str)
     # if not error_code_str.isnumeric:
@@ -50,13 +49,14 @@ def check_voltage():
             'Robot battery is low, robot will shut down and battery might be damaged if not recharged soon.')
         print(f'detect low voltage!!!! VV ^^ VV ^^')
 
-    print(f'debug power management: ', last_volt_results)
-    print(f'statics={last_volt_results.count(True)}/{last_voltage_len} ---> {last_volt_results.count(True)/last_voltage_len}')
+    # print(f'debug power management: ', last_volt_results)
+    print(
+        f'PM statics={last_volt_results.count(True)}/{last_voltage_len} ---> {last_volt_results.count(True)/last_voltage_len}')
 
     temp_res2 = subprocess.getstatusoutput(f'vcgencmd measure_temp')
-    print(temp_res2)  # for debugging
+    # print(temp_res2)  # for debugging
     board_temp = float(temp_res2[1][5:-2])
-    print(f'board temperature is {board_temp}')
+    # print(f'board temperature is {board_temp}')
     if board_temp >= 55 and current_time - last_time_alert_heat > time_between_alerting:  # TODO set threshold
         write_robot_warning_to_db(
             'Robot temperature is very high, consider stopping the robot and letting it cool.')
