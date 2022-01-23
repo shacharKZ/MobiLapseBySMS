@@ -126,7 +126,7 @@ def connect_wifi():
 
 if __name__ == '__main__':
     print("RUNNING")
-    connect_wifi()
+    # connect_wifi()
     print('API NOW RUNNING')
     reset_db_state_before_robot_api_start()
     app.run(debug=True, host='0.0.0.0')
