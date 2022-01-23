@@ -20,7 +20,7 @@ if __name__ == '__main__':
             time.sleep(0.2)
             vid.move_decrease_y()
             subprocess.call("python3 app.py", shell=True)
-            print("!!!")
+            print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
             exit()
         except (requests.ConnectionError, requests.Timeout) as exception:
             print("No internet connection yet...")

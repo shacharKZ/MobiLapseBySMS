@@ -66,23 +66,6 @@ actions_dir = {
 }
 
 
-# def test_dir1():  # TODO for debugging only
-#     ir.setup_IR()
-#     dir.setup_direction()
-#     dir.home()
-
-#     # while True:
-#     for itt in range(3000):
-#         ir.check_above_line()
-#         print(f"{itt}:\t {ir.last_status_str}  ---> ", end="")
-#         if ir.last_status_str in actions_dir:
-#             print(f"{actions_dir[ir.last_status_str]}")
-#             action_to_exe, params = actions_dir[ir.last_status_str]
-#         else:
-#             print("action not set", ir.last_status_str)
-#         time.sleep(1)
-
-
 def follow_line(num_objects: int = 4, object_angle_list=None, session_timestamp: str = 'tmpRun', speed: int = 50):
     speed_power = speed
     print(f'Robot speed will now be: {speed_power}')
@@ -122,9 +105,6 @@ def follow_line(num_objects: int = 4, object_angle_list=None, session_timestamp:
                 # We encountered a stop line so we need to take a picture
                 # Sending the number of the current picture of the current object to the image capture function
                 prev_exe_angle = 0
-                # print('$$$$$$$$$$$$$$$$$$$$$')
-                # print(f'Calling stop line, curr_object: {curr_object}, curr_object+1: {curr_object + 1}')
-                # print('$$$$$$$$$$$$$$$$$$$$$')
                 stop_res = stop_line(curr_object + 1, object_angle_list[curr_object],
                                      picture_progress_list[curr_object],
                                      session_timestamp, img_dic[curr_object + 1], anomaly_dic[curr_object + 1])
@@ -185,27 +165,5 @@ def follow_line(num_objects: int = 4, object_angle_list=None, session_timestamp:
         time.sleep(5)
 
 
-def start_up():
-    vid.setup_vid()
-    for _ in range(10):
-        try:
-            requests.get("http://www.google.com", timeout=7)
-            print("Connected to the Internet! let's rock!")
-            vid.home_x_y()
-            vid.move_increase_y()
-            time.sleep(0.2)
-            vid.move_increase_y()
-            time.sleep(0.5)
-            vid.move_decrease_y()
-            time.sleep(0.2)
-            vid.move_decrease_y()
-            follow_line()
-        except (requests.ConnectionError, requests.Timeout) as exception:
-            print("No internet connection yet...")
-            vid.make_gesture(1)
-
-        time.sleep(10)
-
-
 if __name__ == '__main__':
-    start_up()
+    follow_line()
