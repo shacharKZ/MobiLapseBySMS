@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-from MobiLapseBySMS.video_dir import home_x_y
 import PCA9685 as servo
 import time  # Import necessary modules
 
