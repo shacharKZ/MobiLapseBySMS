@@ -35,7 +35,7 @@ def diff_pix(flat_pix1, flat_pix2, threshold=100) -> int:
     return max(curr_diff, 100)
 
 
-def check_anomaly_last_cap(imgs: list, num_of_non_anomaly, diff_rate=1.3, curr_object_num=0) -> bool:
+def check_anomaly_last_cap(imgs: list, num_of_non_anomaly, diff_rate=1.5, curr_object_num=0) -> bool:
     number_of_prev_imgs = 3
     if len(imgs) < number_of_prev_imgs or num_of_non_anomaly < number_of_prev_imgs:
         print(f'Anomaly detection: skip this time since comparing last {number_of_prev_imgs} images but only had '
