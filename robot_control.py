@@ -51,18 +51,18 @@ actions_dir = {
     '00000100': (-dir.TURN_15, 1),
     '00000110': (-dir.TURN_25, 1),
     '00000010': (-dir.TURN_25, 1),
-    '00000111': (-dir.TURN_35, 1.135),  # this is bias to the left
-    '00000011': (-dir.TURN_35, 1.135),  # this is bias to the left
-    '00000001': (-dir.TURN_45, 1.2),  # this is bias to the left
+    '00000111': (-dir.TURN_35, 1.165),  # this is bias to the left
+    '00000011': (-dir.TURN_35, 1.165),  # this is bias to the left
+    '00000001': (-dir.TURN_45, 1.25),  # this is bias to the left
 
     '00010000': (dir.TURN_10, 1),  # this is bias to the left
     '00110000': (dir.TURN_15, 1),
     '00100000': (dir.TURN_15, 1),
     '01100000': (dir.TURN_25, 1),
     '01000000': (dir.TURN_25, 1),
-    '11100000': (dir.TURN_35, 1.15),
-    '11000000': (dir.TURN_35, 1.15),
-    '10000000': (dir.TURN_45, 1.225)
+    '11100000': (dir.TURN_35, 1.2),
+    '11000000': (dir.TURN_35, 1.2),
+    '10000000': (dir.TURN_45, 1.35)
 }
 
 
