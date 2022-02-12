@@ -46,9 +46,8 @@ def stop_line(curr_object_num: int, curr_object_angle: str, curr_picture_num: in
 
 
 def try_to_refind_the_line(prev_exe_angle) -> bool:
-    tmp_status = False
     motor.stop()
-    time.sleep(1.3)
+    time.sleep(1.5)
     exe_angle = dir.TURN_45
     if prev_exe_angle < 0:
         exe_angle = -dir.TURN_45
