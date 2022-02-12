@@ -147,7 +147,7 @@ def follow_line(num_objects: int = 4, object_angle_list=None, session_timestamp:
                 motor.setSpeed(int(speed_power * speed_factor))
                 dir.turn_with_angle(exe_angle)
                 possible_hard_turn = abs(
-                    prev_exe_angle) < dir.TURN_25 and exe_angle > dir.TURN_35
+                    prev_exe_angle) < dir.TURN_25 and exe_angle > abs(dir.TURN_35)
                 prev_exe_angle = exe_angle
                 last_time_saw_line = time.time()
         elif possible_hard_turn and time.time() - last_time_saw_line > 0.5:
