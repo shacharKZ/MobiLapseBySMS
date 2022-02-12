@@ -99,7 +99,8 @@ def follow_line(num_objects: int = 4, object_angle_list=None, session_timestamp:
     motor.stop()
     dir.home()
     prev_exe_angle = 0  # last angle the car dir aim to. helps with "softer" directions change
-    count_const_not_on_line = 0  # if more then few sec the car out of track: stop the car
+    # if more then few sec the car out of track: stop the car/try to find it
+    last_time_saw_line = time.time()
 
     time.sleep(2)
     motor.forward()
@@ -126,7 +127,7 @@ def follow_line(num_objects: int = 4, object_angle_list=None, session_timestamp:
                 motor.forward()
                 # sleep for a few seconds so we won't stop again on the stopping line
                 # this size may be change according to the road we build
-                time.sleep(0.21)
+                time.sleep(0.27)
                 # adjust the sensativity of the ir sensor according to the current light
                 # ir.adjust_thershold()  # TODO
 
@@ -134,52 +135,47 @@ def follow_line(num_objects: int = 4, object_angle_list=None, session_timestamp:
                 picture_progress_list[curr_object] += 1
                 # Updating the index of the next object to take an image for
                 curr_object = (curr_object + 1) % num_objects
+                last_time_saw_line = time.time()
             elif (prev_exe_angle < 0 and exe_angle > 0) or (prev_exe_angle > 0 and exe_angle < 0):
                 # in this case the turn was to "hard". might be a flake
                 if DEBUG:
-                    print('DID NOT TURN NOW!')
                     print(
-                        f'curr angle={exe_angle}, prev angle={prev_exe_angle}')
-                count_const_not_on_line += 1
+                        f'DID NOT TURN NOW: curr angle={exe_angle}, prev angle={prev_exe_angle}')
                 continue
             else:
                 motor.setSpeed(int(speed_power * speed_factor))
                 dir.turn_with_angle(exe_angle)
                 prev_exe_angle = exe_angle
-                count_const_not_on_line = 0
-        else:
-            if DEBUG:
-                print("DEBUG DIR EXE: ???", ir_status_str)
-            count_const_not_on_line += 1
-            # if the car more then few seconds out of the track: stop on goes into zombie mode
-            if count_const_not_on_line > 150:
-                tmp_status = 0
-                if abs(prev_exe_angle) >= dir.TURN_25:
-                    motor.stop()
-                    time.sleep(1.3)
-                    dir.turn_with_angle(-prev_exe_angle)
-                    motor.setSpeed(speed_power)
-                    motor.backward()
-                    time.sleep(1.2)
-                    motor.stop()
-                    time.sleep(1)
-                    exe_angle = dir.TURN_25
-                    if prev_exe_angle < 0:
-                        exe_angle = -dir.TURN_25
-                    dir.turn_with_angle(prev_exe_angle)
-                    motor.forward()
-                    starting_time_for_searching_line = time.time()
-                    while tmp_status == 0 and time.time() - starting_time_for_searching_line < 5:
-                        time.sleep(0.005)
-                        if ir.check_above_line() in actions_dir:
-                            tmp_status = -999
-                            count_const_not_on_line = 0
+                last_time_saw_line = time.time()
+        elif time.time() - last_time_saw_line > 3:
+            # if the car more then few seconds out of the track: stop the car and go into zombie mode
+            # but, before going into zombie mode, we try to find again the line by going back and forth
+            tmp_status = 0
+            if abs(prev_exe_angle) >= dir.TURN_25:
+                motor.stop()
+                time.sleep(1.3)
+                exe_angle = dir.TURN_45
+                if prev_exe_angle < 0:
+                    exe_angle = -dir.TURN_45
+                dir.turn_with_angle(-exe_angle)
+                motor.setSpeed(speed_power)
+                motor.backward()
+                time.sleep(1)
+                motor.stop()
+                time.sleep(1)
+                dir.turn_with_angle(prev_exe_angle)
+                motor.forward()
+                starting_time_for_searching_line = time.time()
+                while tmp_status == 0 and time.time() - starting_time_for_searching_line < 5:
+                    time.sleep(0.005)
+                    if ir.check_above_line() in actions_dir:
+                        tmp_status = -999
+                        last_time_saw_line = time.time()
 
-                if tmp_status == 0:
-                    motor.stop()
-                    dir.home()
-                    # vid.make_gesture(4)
-                    break
+            if tmp_status == 0:  # 0 meains that we didn't find the line
+                motor.stop()
+                dir.home()
+                break  # go to zombie mode
 
         time.sleep(0.0000015)
         power.check_voltage()
