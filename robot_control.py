@@ -152,7 +152,7 @@ def follow_line(num_objects: int = 4, object_angle_list=None, session_timestamp:
                 print("DEBUG DIR EXE: ???", ir_status_str)
             count_const_not_on_line += 1
             # if the car more then few seconds out of the track: stop on goes into zombie mode
-            if count_const_not_on_line > 432:
+            if count_const_not_on_line > 111:
                 motor.stop()
                 dir.home()
                 # vid.make_gesture(4)
