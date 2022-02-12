@@ -17,6 +17,7 @@ from db_handler import write_robot_error_to_db
 
 DEBUG = 0
 
+# this only use for debuging since when running the app - the speed is set by the user
 wall_speed = 30  # when connected to the power source directly
 battery_speed = 50  # when connected to batteries only
 
@@ -52,11 +53,11 @@ def try_to_refind_the_line(prev_exe_angle) -> bool:
     dir.turn_with_angle(-exe_angle_sign * dir.TURN_25)
     motor.setSpeed(speed_power*0.7)
     motor.backward()
-    time.sleep(0.7)
+    time.sleep(0.5)
     motor.stop()
     time.sleep(0.7)
     dir.turn_with_angle(exe_angle_sign*dir.TURN_25)
-    motor.setSpeed(speed_power)
+    motor.setSpeed(speed_power*0.7)
     motor.forward()
     starting_time_for_searching_line = time.time()
     while time.time() - starting_time_for_searching_line < 0.7:
