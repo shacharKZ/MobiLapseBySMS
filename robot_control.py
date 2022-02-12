@@ -156,20 +156,20 @@ def follow_line(num_objects: int = 4, object_angle_list=None, session_timestamp:
                 tmp_status = 0
                 if abs(prev_exe_angle) > dir.TURN_25:
                     motor.stop()
-                    time.sleep(0.7)
+                    time.sleep(1.3)
                     dir.turn_with_angle(-prev_exe_angle)
                     motor.backward()
-                    time.sleep(3)
+                    time.sleep(1.5)
                     motor.stop()
-                    time.sleep(0.7)
+                    time.sleep(1)
                     dir.turn_with_angle(prev_exe_angle)
                     motor.forward()
                     while 0 <= tmp_status < 77:
+                        time.sleep(0.0001)
                         tmp_status += 1
                         ir_status_str = ir.check_above_line()
                         if ir_status_str in actions_dir:
                             tmp_status = -999
-                        time.sleep(0.0001)
 
                 if tmp_status >= 0:
                     motor.stop()
@@ -182,6 +182,7 @@ def follow_line(num_objects: int = 4, object_angle_list=None, session_timestamp:
 
     motor.stop()
     while True:  # TODO !!!! Zombie mode  !!!!
+        vid.head_down()
         body = {
             "numObjects": num_objects,
             "command": 'stop',

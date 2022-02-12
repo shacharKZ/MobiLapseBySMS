@@ -108,14 +108,7 @@ def connect_wifi():
         try:
             request = requests.get("http://www.google.com", timeout=7)
             print("Connected to the Internet! let's rock!")
-            video_dir.home_x_y()
-            video_dir.move_increase_y()
-            time.sleep(0.2)
-            video_dir.move_increase_y()
-            time.sleep(0.5)
-            video_dir.move_decrease_y()
-            time.sleep(0.2)
-            video_dir.move_decrease_y()
+            video_dir.say_yes()
             return
         except (requests.ConnectionError, requests.Timeout) as exception:
             print("No internet connection yet...")
