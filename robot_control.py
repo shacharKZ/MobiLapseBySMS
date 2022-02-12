@@ -154,7 +154,7 @@ def follow_line(num_objects: int = 4, object_angle_list=None, session_timestamp:
             # if the car more then few seconds out of the track: stop on goes into zombie mode
             if count_const_not_on_line > 150:
                 tmp_status = 0
-                if abs(prev_exe_angle) > dir.TURN_25:
+                if abs(prev_exe_angle) >= dir.TURN_25:
                     motor.stop()
                     time.sleep(1.3)
                     dir.turn_with_angle(-prev_exe_angle)
