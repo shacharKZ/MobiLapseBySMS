@@ -165,6 +165,31 @@ def make_gesture(times=2):
     home_x_y()
 
 
+def say_yes():
+    home_x_y()
+    move_increase_y()
+    time.sleep(0.2)
+    move_increase_y()
+    time.sleep(0.5)
+    move_decrease_y()
+    time.sleep(0.2)
+    move_decrease_y()
+
+
+def head_down():
+    home_x_y()
+    move_increase_y()
+    time.sleep(0.2)
+    move_decrease_y()
+    time.sleep(0.2)
+    move_decrease_y()
+    time.sleep(0.2)
+    move_decrease_y()
+    time.sleep(0.2)
+    move_decrease_y()
+    time.sleep(0.2)
+
+
 def test():
     while True:
         home_x_y()
