@@ -160,9 +160,12 @@ def follow_line(num_objects: int = 4, object_angle_list=None, session_timestamp:
                     dir.turn_with_angle(-prev_exe_angle)
                     motor.setSpeed(speed_power)
                     motor.backward()
-                    time.sleep(1.5)
+                    time.sleep(1.2)
                     motor.stop()
                     time.sleep(1)
+                    exe_angle = dir.TURN_25
+                    if prev_exe_angle < 0:
+                        exe_angle = -dir.TURN_25
                     dir.turn_with_angle(prev_exe_angle)
                     motor.forward()
                     starting_time_for_searching_line = time.time()
