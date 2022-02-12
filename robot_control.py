@@ -171,12 +171,11 @@ def follow_line(num_objects: int = 4, object_angle_list=None, session_timestamp:
                     starting_time_for_searching_line = time.time()
                     while tmp_status == 0 and time.time() - starting_time_for_searching_line < 5:
                         time.sleep(0.005)
-                        tmp_status += 1
                         if ir.check_above_line() in actions_dir:
                             tmp_status = -999
                             count_const_not_on_line = 0
 
-                if tmp_status >= 0:
+                if tmp_status == 0:
                     motor.stop()
                     dir.home()
                     # vid.make_gesture(4)
