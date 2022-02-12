@@ -178,9 +178,9 @@ def say_yes():
 
 def head_down():
     home_x_y()
-    for _ in range(5):
+    for _ in range(7):
         move_decrease_y()
-        time.sleep(0.4)
+        time.sleep(0.5)
 
 
 def test():

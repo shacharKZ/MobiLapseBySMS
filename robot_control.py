@@ -165,8 +165,9 @@ def follow_line(num_objects: int = 4, object_angle_list=None, session_timestamp:
                     time.sleep(1)
                     dir.turn_with_angle(prev_exe_angle)
                     motor.forward()
-                    while 0 <= tmp_status < 77:
-                        time.sleep(0.0001)
+                    starting_time_for_searching_line = time.time()
+                    while tmp_status == 0 and time.time() - starting_time_for_searching_line < 5:
+                        time.sleep(0.005)
                         tmp_status += 1
                         if ir.check_above_line() in actions_dir:
                             tmp_status = -999
