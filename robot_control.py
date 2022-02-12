@@ -46,20 +46,20 @@ def stop_line(curr_object_num: int, curr_object_angle: str, curr_picture_num: in
 def try_to_refind_the_line(prev_exe_angle) -> bool:
     motor.stop()
     time.sleep(1)
-    exe_angle = dir.TURN_45
+    exe_angle_sign = 1
     if prev_exe_angle < 0:
-        exe_angle = -dir.TURN_45
-    dir.turn_with_angle(-exe_angle)
+        exe_angle_sign = -1
+    dir.turn_with_angle(-exe_angle_sign * dir.TURN_35)
     motor.setSpeed(speed_power*0.7)
     motor.backward()
     time.sleep(0.7)
     motor.stop()
     time.sleep(0.7)
-    dir.turn_with_angle(prev_exe_angle)
+    dir.turn_with_angle(exe_angle_sign*dir.TURN_35)
     motor.setSpeed(speed_power)
     motor.forward()
     starting_time_for_searching_line = time.time()
-    while time.time() - starting_time_for_searching_line < 5:
+    while time.time() - starting_time_for_searching_line < 2:
         time.sleep(0.005)
         if ir.check_above_line() in actions_dir:
             return True
