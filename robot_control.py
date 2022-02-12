@@ -1,6 +1,7 @@
 # TODO what is that?? should we remove it?
 from turtle import pos
 from cv2 import PROJ_SPHERICAL_EQRECT
+from pyrsistent import T
 import requests
 
 import motor
@@ -42,6 +43,29 @@ def stop_line(curr_object_num: int, curr_object_angle: str, curr_picture_num: in
     print("!!!!!! check power after stop: ")
     power.check_voltage()  # TODO
     return detected_anomaly
+
+
+def try_to_refind_the_line(prev_exe_angle) -> bool:
+    tmp_status = False
+    motor.stop()
+    time.sleep(1.3)
+    exe_angle = dir.TURN_45
+    if prev_exe_angle < 0:
+        exe_angle = -dir.TURN_45
+    dir.turn_with_angle(-exe_angle)
+    motor.setSpeed(speed_power)
+    motor.backward()
+    time.sleep(1)
+    motor.stop()
+    time.sleep(1)
+    dir.turn_with_angle(prev_exe_angle)
+    motor.forward()
+    starting_time_for_searching_line = time.time()
+    while tmp_status == 0 and time.time() - starting_time_for_searching_line < 5:
+        time.sleep(0.005)
+        if ir.check_above_line() in actions_dir:
+            return True
+    return False
 
 
 actions_dir = {
@@ -131,7 +155,6 @@ def follow_line(num_objects: int = 4, object_angle_list=None, session_timestamp:
                 # this size may be change according to the road we build
                 time.sleep(0.27)
                 # adjust the sensativity of the ir sensor according to the current light
-                # ir.adjust_thershold()  # TODO
 
                 # Incrementing the number of images for the current object
                 picture_progress_list[curr_object] += 1
@@ -156,35 +179,20 @@ def follow_line(num_objects: int = 4, object_angle_list=None, session_timestamp:
                 prev_exe_angle = exe_angle
                 last_time_saw_line = time.time()
         elif 0 < possible_hard_turn < 5 and time.time() - last_time_saw_line > 0.5:
+            # that looks like we are on a hard turn at the moment. we will try to adjust the car to the line
             motor.stop()
             time.sleep(5)
-            motor.forward()
+            if try_to_refind_the_line(prev_exe_angle):
+                last_time_saw_line = time.time()
+            possible_hard_turn = 0
+
         elif time.time() - last_time_saw_line > 3:
             # if the car more then few seconds out of the track: stop the car and go into zombie mode
             # but, before going into zombie mode, we try to find again the line by going back and forth
-            tmp_status = 0
-            if abs(prev_exe_angle) >= dir.TURN_25:
-                motor.stop()
-                time.sleep(1.3)
-                exe_angle = dir.TURN_45
-                if prev_exe_angle < 0:
-                    exe_angle = -dir.TURN_45
-                dir.turn_with_angle(-exe_angle)
-                motor.setSpeed(speed_power)
-                motor.backward()
-                time.sleep(1)
-                motor.stop()
-                time.sleep(1)
-                dir.turn_with_angle(prev_exe_angle)
-                motor.forward()
-                starting_time_for_searching_line = time.time()
-                while tmp_status == 0 and time.time() - starting_time_for_searching_line < 5:
-                    time.sleep(0.005)
-                    if ir.check_above_line() in actions_dir:
-                        tmp_status = -999
-                        last_time_saw_line = time.time()
-
-            if tmp_status == 0:  # 0 meains that we didn't find the line
+            if possible_hard_turn > 4 and try_to_refind_the_line(prev_exe_angle):
+                last_time_saw_line = time.time()
+                possible_hard_turn = 0
+            else:
                 motor.stop()
                 dir.home()
                 break  # go to zombie mode
