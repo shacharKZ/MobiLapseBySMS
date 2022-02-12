@@ -45,17 +45,18 @@ def stop_line(curr_object_num: int, curr_object_angle: str, curr_picture_num: in
 
 def try_to_refind_the_line(prev_exe_angle) -> bool:
     motor.stop()
-    time.sleep(1.5)
+    time.sleep(1)
     exe_angle = dir.TURN_45
     if prev_exe_angle < 0:
         exe_angle = -dir.TURN_45
     dir.turn_with_angle(-exe_angle)
-    motor.setSpeed(speed_power)
+    motor.setSpeed(speed_power*0.7)
     motor.backward()
-    time.sleep(1)
+    time.sleep(0.7)
     motor.stop()
-    time.sleep(1)
+    time.sleep(0.7)
     dir.turn_with_angle(prev_exe_angle)
+    motor.setSpeed(speed_power)
     motor.forward()
     starting_time_for_searching_line = time.time()
     while time.time() - starting_time_for_searching_line < 5:
@@ -177,8 +178,6 @@ def follow_line(num_objects: int = 4, object_angle_list=None, session_timestamp:
                 last_time_saw_line = time.time()
         elif 0 < possible_hard_turn < 5 and time.time() - last_time_saw_line > 0.5:
             # that looks like we are on a hard turn at the moment. we will try to adjust the car to the line
-            motor.stop()
-            time.sleep(5)
             if try_to_refind_the_line(prev_exe_angle):
                 last_time_saw_line = time.time()
             possible_hard_turn = 0
