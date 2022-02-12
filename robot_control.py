@@ -1,7 +1,5 @@
 # TODO what is that?? should we remove it?
-from turtle import pos
-from cv2 import PROJ_SPHERICAL_EQRECT
-from pyrsistent import T
+# from cv2 import PROJ_SPHERICAL_EQRECT
 import requests
 
 import motor
