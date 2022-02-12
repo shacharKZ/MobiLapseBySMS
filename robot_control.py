@@ -101,6 +101,7 @@ def follow_line(num_objects: int = 4, object_angle_list=None, session_timestamp:
     prev_exe_angle = 0  # last angle the car dir aim to. helps with "softer" directions change
     # if more then few sec the car out of track: stop the car/try to find it
     last_time_saw_line = time.time()
+    possible_hard_turn = False
 
     time.sleep(2)
     motor.forward()
@@ -145,8 +146,14 @@ def follow_line(num_objects: int = 4, object_angle_list=None, session_timestamp:
             else:
                 motor.setSpeed(int(speed_power * speed_factor))
                 dir.turn_with_angle(exe_angle)
+                possible_hard_turn = abs(
+                    prev_exe_angle) < dir.TURN_25 and exe_angle > dir.TURN_35
                 prev_exe_angle = exe_angle
                 last_time_saw_line = time.time()
+        elif possible_hard_turn and time.time() - last_time_saw_line > 0.5:
+            motor.stop()
+            time.sleep(5)
+            motor.forward()
         elif time.time() - last_time_saw_line > 3:
             # if the car more then few seconds out of the track: stop the car and go into zombie mode
             # but, before going into zombie mode, we try to find again the line by going back and forth
