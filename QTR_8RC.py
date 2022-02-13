@@ -11,11 +11,11 @@ last_status_arr = [0, 0, 0, 0, 0, 0, 0, 0]
 last_status_str = '00000000'
 min_color = 75
 max_color = 200
-last_time_saw_line = 0
+last_time_did_not_see_the_line = 0
 
 
 def setup_IR():
-    global led, sensors, min_color, max_color, last_status_arr, last_status_str, last_time_saw_line
+    global led, sensors, min_color, max_color, last_status_arr, last_status_str, last_time_did_not_see_the_line
     led = 16
     sensors = [37, 36, 33, 32, 31, 29, 22, 18]
     # this value is changing a bit from time to time. try adjust it
@@ -23,7 +23,7 @@ def setup_IR():
     max_color = 200
     # last_status = [0, 0, 0, 0, 0, 0, 0, 0]
     last_status_str = '00000000'
-    last_time_saw_line = time.time()
+    last_time_did_not_see_the_line = 0
     GPIO.setmode(GPIO.BOARD)
     GPIO.setup(led, GPIO.OUT)
 
@@ -56,7 +56,7 @@ def setup_IR():
 
 
 def check_above_line():
-    global led, sensors, min_color, max_color, last_status_arr, last_status_str, last_time_saw_line
+    global led, sensors, min_color, max_color, last_status_arr, last_status_str, last_time_did_not_see_the_line
     last_status_str = ""
     for s in sensors:
         GPIO.setup(s, GPIO.OUT)
@@ -83,28 +83,25 @@ def check_above_line():
             print(res)
         return res_str
     elif max(res) < 77:
-        if time.time() - last_time_saw_line > 0.7 and max(res) > 50 and max(res) > min(res) + 10:
-            min_color = max(res) * 0.92
-            last_time_saw_line = time.time()
-            print("DEBUG9")
-        elif max(res) > 2.6*min(res) and max(res) > 40:
+        if max(res) > 2.6*min(res) and max(res) > 40:
             if max(res) > 60:
                 min_color = max(res)*0.91
-                last_time_saw_line = time.time()
             else:
                 min_color = max(res)*0.95
-                last_time_saw_line = time.time()
     elif max(res) > 2*min(res):
         min_color = max(res)*0.83
-        last_time_saw_line = time.time()
+    elif time.time() - last_time_did_not_see_the_line < 0.7 and max(res) > min(res) + 10 > 55:
+        min_color = max(res)*0.93
 
     res_str = ""
     for color in res:
         res_str += ('1' if color >= min_color else '0')
 
+    if res_str == "00000000":
+        last_time_did_not_see_the_line = time.time()
+
     if debug_flag:
         print(res, "<-------->", res_str, f'--> curr min_color is {min_color}')
-
     last_status_str = res_str
     return last_status_str
 
