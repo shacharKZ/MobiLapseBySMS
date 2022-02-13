@@ -86,6 +86,7 @@ def check_above_line():
         if time.time() - last_time_saw_line > 0.7 and max(res) > 50 and max(res) > min(res) + 10:
             min_color = max(res) * 0.95
             last_time_saw_line = time.time()
+            print("DEBUG9")
         elif max(res) > 2.6*min(res) and max(res) > 40:
             if max(res) > 60:
                 min_color = max(res)*0.91
