@@ -11,10 +11,11 @@ last_status_arr = [0, 0, 0, 0, 0, 0, 0, 0]
 last_status_str = '00000000'
 min_color = 75
 max_color = 200
+last_time_saw_line = 0
 
 
 def setup_IR():
-    global led, sensors, min_color, max_color, last_status_arr, last_status_str
+    global led, sensors, min_color, max_color, last_status_arr, last_status_str, last_time_adjust_min_color
     led = 16
     sensors = [37, 36, 33, 32, 31, 29, 22, 18]
     # this value is changing a bit from time to time. try adjust it
@@ -22,6 +23,7 @@ def setup_IR():
     max_color = 200
     # last_status = [0, 0, 0, 0, 0, 0, 0, 0]
     last_status_str = '00000000'
+    last_time_saw_line = time.time()
     GPIO.setmode(GPIO.BOARD)
     GPIO.setup(led, GPIO.OUT)
 
@@ -81,14 +83,19 @@ def check_above_line():
             print(res)
         return res_str
     elif max(res) < 77:
-        if max(res) > 2.6*min(res) and max(res) > 40:
+        if time.time() - last_time_saw_line > 0.7 and max(res) > 50 and max(res) > min(res) + 10:
+            min_color = max(res) * 0.95
+            last_time_saw_line = time.time()
+        elif max(res) > 2.6*min(res) and max(res) > 40:
             if max(res) > 60:
                 min_color = max(res)*0.91
+                last_time_saw_line = time.time()
             else:
                 min_color = max(res)*0.95
-
+                last_time_saw_line = time.time()
     elif max(res) > 2*min(res):
         min_color = max(res)*0.83
+        last_time_saw_line = time.time()
 
     res_str = ""
     for color in res:
