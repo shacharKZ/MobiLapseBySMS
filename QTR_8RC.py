@@ -88,6 +88,8 @@ def check_above_line():
                 min_color = max(res)*0.91
             else:
                 min_color = max(res)*0.95
+        elif time.time() - last_time_did_not_see_the_line < 0.7 and max(res) > min(res) + 10 > 55:
+            min_color = max(res)*0.93
     elif max(res) > 2*min(res):
         min_color = max(res)*0.83
     elif time.time() - last_time_did_not_see_the_line < 0.7 and max(res) > min(res) + 10 > 55:
