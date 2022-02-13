@@ -11,10 +11,9 @@ import time
 from datetime import datetime
 from capture_handler import take_a_pic
 from anomaly_detection import check_anomaly_last_cap
-
-# 0 to suppress, 1 to print debuggin messages
 from db_handler import write_robot_error_to_db
 
+# 0 to suppress, 1 to print debuggin messages
 DEBUG = 0
 
 # this only use for debuging since when running the app - the speed is set by the user
@@ -177,7 +176,7 @@ def follow_line(num_objects: int = 4, object_angle_list=None, session_timestamp:
 
                 prev_exe_angle = exe_angle
                 last_time_saw_line = time.time()
-        elif 0 < possible_hard_turn < 5 and time.time() - last_time_saw_line > 0.5:
+        elif 0 < possible_hard_turn < 4 and time.time() - last_time_saw_line > 0.5:
             # that looks like we are on a hard turn at the moment. we will try to adjust the car to the line
             if try_to_refind_the_line(prev_exe_angle):
                 last_time_saw_line = time.time()
@@ -186,7 +185,7 @@ def follow_line(num_objects: int = 4, object_angle_list=None, session_timestamp:
         elif time.time() - last_time_saw_line > 3:
             # if the car more then few seconds out of the track: stop the car and go into zombie mode
             # but, before going into zombie mode, we try to find again the line by going back and forth
-            if possible_hard_turn > 4 and try_to_refind_the_line(prev_exe_angle):
+            if possible_hard_turn > 5 and try_to_refind_the_line(prev_exe_angle):
                 last_time_saw_line = time.time()
                 possible_hard_turn = 0
             else:
