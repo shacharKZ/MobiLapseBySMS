@@ -1,6 +1,9 @@
 # from _typeshed import Self
+from doctest import debug_script
 import RPi.GPIO as GPIO
 import time
+
+debug_flag = 1  # 1 to print debug. 0 to slient
 
 # led = 16  # currently unsupported led pin
 sensors = [37, 36, 33, 32, 31, 29, 22, 18]
@@ -72,9 +75,10 @@ def check_above_line():
     # min_color = init_min_color
     if min(res) > min_color:
         res_str = "11111111"
-        print(
-            f'all ir sensors sees the line with possible_stop_line {min_color}')
-        print(res)
+        if debug_flag:
+            print(
+                f'all ir sensors sees the line with possible_stop_line {min_color}')
+            print(res)
         return res_str
     elif max(res) < 77:
         if max(res) > 2.6*min(res) and max(res) > 40:
@@ -90,9 +94,10 @@ def check_above_line():
     for color in res:
         res_str += ('1' if color >= min_color else '0')
 
+    if debug_flag:
+        print(res, "<-------->", res_str, f'--> curr min_color is {min_color}')
+
     last_status_str = res_str
-    # TODO for debug only
-    # print(res, "<-------->", res_str, f'--> min is {min_color}')
     return last_status_str
 
 
