@@ -15,7 +15,7 @@ last_time_saw_line = 0
 
 
 def setup_IR():
-    global led, sensors, min_color, max_color, last_status_arr, last_status_str, last_time_adjust_min_color
+    global led, sensors, min_color, max_color, last_status_arr, last_status_str, last_time_saw_line
     led = 16
     sensors = [37, 36, 33, 32, 31, 29, 22, 18]
     # this value is changing a bit from time to time. try adjust it
@@ -56,7 +56,7 @@ def setup_IR():
 
 
 def check_above_line():
-    global led, sensors, min_color, max_color, last_status_arr, last_status_str
+    global led, sensors, min_color, max_color, last_status_arr, last_status_str, last_time_saw_line
     last_status_str = ""
     for s in sensors:
         GPIO.setup(s, GPIO.OUT)
