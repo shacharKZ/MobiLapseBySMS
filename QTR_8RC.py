@@ -48,17 +48,17 @@ def check_above_line():
     last_status_arr = res
 
     # min_color = init_min_color
-    if min(res) > min_color and time.time() - last_time_did_not_see_the_line > 0.7:
+    if max(res) > 2*min(res):
+        min_color = max(res)*0.83
+    elif 75 > max(res) > min(res) + 15:
+        min_color = max(res) - 5
+    elif min(res) > min_color and time.time() - last_time_did_not_see_the_line > 0.7:
         res_str = "11111111"
         if debug_flag:
             print(
                 f'all ir sensors sees the line with possible_stop_line {min_color}')
             print(res)
         return res_str
-    elif max(res) > 2*min(res):
-        min_color = max(res)*0.83
-    elif 75 > max(res) > min(res) + 15:
-        min_color = max(res) - 5
 
     # elif max(res) < 77:
     #     if max(res) > 2*min(res) and max(res) > 40:
