@@ -5,7 +5,7 @@ from db_handler import write_robot_warning_to_db
 
 debug_flag = 1  # 1 to print debug. 0 to slient
 
-threshold_const_msg = 84
+threshold_const_msg = 85
 last_voltage_len = 100
 # True = detected a low voltage at the moment, False = did not detected a low voltage at the moment
 last_volt_results = [False] * last_voltage_len
@@ -23,7 +23,7 @@ def setup_power_management():
     last_volt_results = [False] * last_voltage_len
     time_between_checking = 0.5
     last_time_check = 0
-    time_between_alerting = 25
+    time_between_alerting = 60
     last_time_alert_voltage = 0
     last_time_alert_heat = 0
 
@@ -49,6 +49,7 @@ def check_voltage():
     if last_volt_results.count(True) > threshold_const_msg and current_time - last_time_alert_voltage > time_between_alerting:
         write_robot_warning_to_db(
             'Robot battery is low, robot will shut down and battery might be damaged if not recharged soon.')
+        last_time_alert_voltage = current_time
         if debug_flag:
             print(f'detect low voltage!!!! VV ^^ VV ^^')
 
@@ -64,6 +65,7 @@ def check_voltage():
     if board_temp >= 55 and current_time - last_time_alert_heat > time_between_alerting:  # TODO set threshold
         write_robot_warning_to_db(
             'Robot temperature is very high, consider stopping the robot and letting it cool.')
+        last_time_alert_heat = current_time
         if debug_flag:
             print(
                 f'Board overheat! its current temperature is {board_temp}, maybe you should stop it!!!!')
