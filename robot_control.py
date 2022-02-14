@@ -59,12 +59,12 @@ def try_to_refind_the_line(prev_exe_angle) -> bool:
     dir.turn_with_angle(exe_angle_sign*dir.TURN_35)
     motor.setSpeed(speed_power*0.75)
     time.sleep(0.5)
-    motor.forward()
     starting_time_for_searching_line = time.time()
+    motor.forward()
     while time.time() - starting_time_for_searching_line < 1.3:
-        time.sleep(0.005)
         if ir.check_above_line() in actions_dir:
             return True
+        time.sleep(0.005)
     return False
 
 
