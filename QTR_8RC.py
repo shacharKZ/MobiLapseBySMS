@@ -55,10 +55,10 @@ def check_above_line():
     elif 90 > max(res) > min(res) + 20:  # a bit less good split
         min_color = max(res) - 6
     # this works but this is not the best possible split
-    elif 90 > max(res) > min(res)*1.3 and max(res) > 50:
-        min_color = max(res)//1.1
+    elif 75 > max(res) > min(res)*1.3 and max(res) > 50:
+        min_color = max(res)//1.05
     # this works but this is not the best possible split
-    elif 65 > max(res) > min(res) + 12 and max(res) > 30:
+    elif 60 > max(res) > min(res) + 10 and max(res) > 30:
         min_color = max(res) - 3
     elif min(res) > min_color and time.time() - last_time_did_not_see_the_line > 0.7:
         res_str = "11111111"
@@ -69,8 +69,9 @@ def check_above_line():
     else:  # if non of the prev if's wrok we we increase the prev threshold and try to use it
         # this help to use the previus data we collected while preventing too much bias
         min_color += 4
-        print(
-            f"did not adjust ir sensor. increase prev min_color to {min_color}")
+        if debug_flag:
+            print(
+                f"did not adjust ir sensor. increase prev min_color to {min_color}")
 
     # elif max(res) < 77:
     #     if max(res) > 2*min(res) and max(res) > 40:
@@ -92,6 +93,8 @@ def check_above_line():
     if res_str == '11111111' and time.time() - last_time_did_not_see_the_line < 0.5:
         res_str = '00000000'
         min_color += 5
+        if debug_flag:
+            print(f'is sensor case filp. increase min_color to {min_color}')
 
     if res_str == "00000000":
         last_time_did_not_see_the_line = time.time()
