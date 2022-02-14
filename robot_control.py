@@ -160,7 +160,7 @@ def follow_line(num_objects: int = 4, object_angle_list=None, session_timestamp:
                 curr_object = (curr_object + 1) % num_objects
                 last_time_saw_line = time.time()
                 possible_hard_turn = 0
-            elif (prev_exe_angle < 0 and exe_angle > 0) or (prev_exe_angle > 0 and exe_angle < 0):
+            elif (prev_exe_angle < -dir.TURN_15 and exe_angle > dir.TURN_15) or (prev_exe_angle > dir.TURN_15 and exe_angle < -dir.TURN_15):
                 # in this case the turn was to "hard". might be a flake
                 if DEBUG:
                     print(
