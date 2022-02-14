@@ -53,7 +53,7 @@ def check_above_line():
     if max(res) > 2*min(res):  # best possible split
         min_color = max(res)//1.2
     elif 120 > max(res) > 55 and max(res) > min(res)*1.25:  # a bit less good split
-        min_color = max(res) - 10
+        min_color = max(res)//1.1
     elif 80 > max(res) > 40 and max(res) > min(res)*1.15:  # a bit less good split
         min_color = max(res)//1.045
     elif 60 > max(res) > 30 and max(res) > min(res) + 7:  # an even less good split

@@ -14,7 +14,7 @@ from anomaly_detection import check_anomaly_last_cap
 from db_handler import write_robot_error_to_db
 
 # 0 to suppress, 1 to print debuggin messages
-DEBUG = 0
+DEBUG = 1
 
 # this only use for debuging since when running the app - the speed is set by the user
 wall_speed = 30  # when connected to the power source directly
