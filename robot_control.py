@@ -49,7 +49,7 @@ def try_to_refind_the_line(prev_exe_angle) -> bool:
     exe_angle_sign = 1
     if prev_exe_angle < 0:
         exe_angle_sign = -1
-    dir.turn_with_angle(-exe_angle_sign * dir.TURN_25)
+    dir.turn_with_angle(-exe_angle_sign * dir.TURN_35)
     motor.setSpeed(speed_power*0.7)
     motor.backward()
     time.sleep(0.5)
@@ -59,7 +59,7 @@ def try_to_refind_the_line(prev_exe_angle) -> bool:
     motor.setSpeed(speed_power*0.7)
     motor.forward()
     starting_time_for_searching_line = time.time()
-    while time.time() - starting_time_for_searching_line < 1:
+    while time.time() - starting_time_for_searching_line < 1.5:
         time.sleep(0.005)
         if ir.check_above_line() in actions_dir:
             return True
