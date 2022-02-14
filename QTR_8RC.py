@@ -52,6 +52,8 @@ def check_above_line():
     # min_color = init_min_color
     if max(res) > 2*min(res):  # best possible split
         min_color = max(res)//1.2
+    elif 120 > max(res) > min(res) + 40:  # a bit less good split
+        min_color = max(res) - 10
     elif 90 > max(res) > min(res) + 20:  # a bit less good split
         min_color = max(res) - 6
     # this works but this is not the best possible split
