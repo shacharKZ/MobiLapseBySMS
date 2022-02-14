@@ -10,7 +10,7 @@ sensors = [37, 36, 33, 32, 31, 29, 22, 18]
 last_status_arr = [0, 0, 0, 0, 0, 0, 0, 0]
 last_status_str = '00000000'
 min_color = 75
-max_color = 200
+max_color = 250
 last_time_did_not_see_the_line = 0
 
 
@@ -20,7 +20,7 @@ def setup_IR():
     sensors = [37, 36, 33, 32, 31, 29, 22, 18]
     # this value is changing a bit from time to time. try adjust it
     min_color = 70
-    max_color = 200
+    max_color = 250
     # last_status = [0, 0, 0, 0, 0, 0, 0, 0]
     last_status_str = '00000000'
     last_time_did_not_see_the_line = 0
@@ -61,6 +61,8 @@ def check_above_line():
                 f'all ir sensors sees the line with possible_stop_line {min_color}')
             print(res)
         return res_str
+    else:
+        print("did not adjust ir sensor")
 
     # elif max(res) < 77:
     #     if max(res) > 2*min(res) and max(res) > 40:
