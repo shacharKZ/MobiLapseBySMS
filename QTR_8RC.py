@@ -49,7 +49,7 @@ def check_above_line():
 
     # min_color = init_min_color
     if max(res) > 2*min(res):
-        min_color = max(res)*0.83
+        min_color = max(res)//1.2
     elif 75 > max(res) > min(res) + 15:
         min_color = max(res) - 5
     elif min(res) > min_color and time.time() - last_time_did_not_see_the_line > 0.7:
