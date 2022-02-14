@@ -11,7 +11,7 @@ last_status_arr = [0, 0, 0, 0, 0, 0, 0, 0]
 last_status_str = '00000000'
 prev_status_str = '00000000'
 min_color = 75
-max_color = 250
+max_color = 222
 last_time_did_not_see_the_line = 0
 
 
@@ -21,7 +21,7 @@ def setup_IR():
     sensors = [37, 36, 33, 32, 31, 29, 22, 18]
     # this value is changing a bit from time to time. try adjust it
     min_color = 70
-    max_color = 250
+    max_color = 222
     # last_status = [0, 0, 0, 0, 0, 0, 0, 0]
     last_status_str = '00000000'
     prev_status_str = '00000000'
@@ -52,16 +52,12 @@ def check_above_line():
     # min_color = init_min_color
     if max(res) > 2*min(res):  # best possible split
         min_color = max(res)//1.2
-    elif 120 > max(res) > min(res) + 40:  # a bit less good split
+    elif 120 > max(res) > min(res)*1.2 and min(res) > 50:  # a bit less good split
         min_color = max(res) - 10
-    elif 90 > max(res) > min(res) + 20:  # a bit less good split
-        min_color = max(res) - 6
-    # this works but this is not the best possible split
-    elif 75 > max(res) > min(res)*1.3 and max(res) > 50:
-        min_color = max(res)//1.04
-    # this works but this is not the best possible split
-    elif 60 > max(res) > min(res) + 10 and max(res) > 30:
-        min_color = max(res) - 2
+    elif 80 > max(res) > min(res)*1.15 and min(res) > 50:  # a bit less good split
+        min_color = max(res)//1.045
+    elif 60 > max(res) > min(res) + 7 and max(res) > 30:  # a bit less good split
+        min_color = max(res)-1
     elif min(res) > min_color and time.time() - last_time_did_not_see_the_line > 0.7:
         res_str = "11111111"
         if debug_flag:
@@ -70,10 +66,36 @@ def check_above_line():
         return res_str
     else:  # if non of the prev if's wrok we we increase the prev threshold and try to use it
         # this help to use the previus data we collected while preventing too much bias
-        min_color += 4
+        min_color += 1
         if debug_flag:
             print(
                 f"did not adjust ir sensor. increase prev min_color to {min_color}")
+
+    # # min_color = init_min_color
+    # if max(res) > 2*min(res):  # best possible split
+    #     min_color = max(res)//1.2
+    # elif 120 > max(res) > min(res) + 40:  # a bit less good split
+    #     min_color = max(res) - 10
+    # elif 90 > max(res) > min(res) + 20:  # a bit less good split
+    #     min_color = max(res) - 6
+    # # this works but this is not the best possible split
+    # elif 75 > max(res) > min(res)*1.3 and max(res) > 50:
+    #     min_color = max(res)//1.04
+    # # this works but this is not the best possible split
+    # elif 60 > max(res) > min(res) + 10 and max(res) > 30:
+    #     min_color = max(res) - 2
+    # elif min(res) > min_color and time.time() - last_time_did_not_see_the_line > 0.7:
+    #     res_str = "11111111"
+    #     if debug_flag:
+    #         print(f'all ir sensors sees the line with min_color {min_color}')
+    #         print(res)
+    #     return res_str
+    # else:  # if non of the prev if's wrok we we increase the prev threshold and try to use it
+    #     # this help to use the previus data we collected while preventing too much bias
+    #     min_color += 4
+    #     if debug_flag:
+    #         print(
+    #             f"did not adjust ir sensor. increase prev min_color to {min_color}")
 
     # elif max(res) < 77:
     #     if max(res) > 2*min(res) and max(res) > 40:
