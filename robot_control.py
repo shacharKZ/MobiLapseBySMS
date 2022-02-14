@@ -176,7 +176,7 @@ def follow_line(num_objects: int = 4, object_angle_list=None, session_timestamp:
 
                 prev_exe_angle = exe_angle
                 last_time_saw_line = time.time()
-        elif 0 < possible_hard_turn < 4 and time.time() - last_time_saw_line > 0.5:
+        elif 0 < possible_hard_turn < 4 and time.time() - last_time_saw_line > 0.3:
             # that looks like we are on a hard turn at the moment. we will try to adjust the car to the line
             if try_to_refind_the_line(prev_exe_angle):
                 last_time_saw_line = time.time()
