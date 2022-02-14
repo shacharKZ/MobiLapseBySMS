@@ -17,19 +17,19 @@ def Map(x, in_min, in_max, out_min, out_max):
 def setup_direction(busnum=None):
     global leftPWM, rightPWM, homePWM, pwm
     global left_15, left_30, left_45, right_15, right_30, right_45
-    print("setting up dir: ", end="")
+    print("car_dir: setting up dir: ", end="")
     leftPWM = 400
     homePWM = 450
     rightPWM = 500
-    # the offest is taken from the gile "config" (line 3 is the offest we looking for)
+    # the offest is taken from the file "config" (line 3 is the offest we looking for)
     offset = 0
     try:
         for line in open('config'):
             if line[0:8] == 'offset =':
                 offset = int(line[9:-1])
     except:
-        print('config error')
-    print(f'offset is: {offset}')
+        print('car_dir: config error')
+    print(f'car_dir: offset is: {offset}')
     leftPWM += offset
     homePWM += offset
     rightPWM += offset
@@ -128,11 +128,6 @@ def test2():
     for a in [TURN_10, TURN_15, TURN_25, TURN_35, TURN_45, TURN_60]:
         turn_right(a)
         time.sleep(1.5)
-
-    # turn_left(TURN_15)
-    # time.sleep(1.5)
-    # turn_right()
-    # time.sleep(1.5)
     home()
 
 
@@ -143,12 +138,4 @@ if __name__ == '__main__':
 
     test2()
     home()
-    # time.sleep(1)
-    # turn_right(TURN_60)
-    # time.sleep(1)
-    # turn_left(TURN_60)
-
-    # for i in range(homePWM, leftPWM-100, -10):
-    # 	print(i)
-    # 	time.sleep(1)
     print("done")

@@ -13,7 +13,7 @@ Motor1_A = 13  # pin13
 Motor1_B = 15  # pin15
 
 # ===========================================================================
-# Set channel 4 and 5 of the servo driver IC to generate PWM, thus 
+# Set channel 4 and 5 of the servo driver IC to generate PWM, thus
 # controlling the speed of the car
 # ===========================================================================
 # EN_M0    = 4  # servo driver IC CH4
@@ -70,7 +70,7 @@ def setup_motor(busnum=None):
 
 
 # ===========================================================================
-# Control the DC motor to make it rotate clockwise, so the car will 
+# Control the DC motor to make it rotate clockwise, so the car will
 # move forward.
 # ===========================================================================
 
@@ -122,8 +122,8 @@ def stop():
 
 
 # ===========================================================================
-# The first parameter(status) is to control the state of the car, to make it 
-# stop or run. The parameter(direction) is to control the car's direction 
+# The first parameter(status) is to control the state of the car, to make it
+# stop or run. The parameter(direction) is to control the car's direction
 # (move forward or backward).
 # ===========================================================================
 def ctrl(status, direction=1):
@@ -157,5 +157,3 @@ if __name__ == '__main__':
     setSpeed(50)
     forward()
     test()
-    # backward()
-    stop()

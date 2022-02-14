@@ -2,11 +2,11 @@
 import PCA9685 as servo
 import time  # Import necessary modules
 
-MinPulse = 200  # original that was 200. we changed it
-MaxPulse = 700  # original that was 700. we changed it
+MinPulse = 200  # original that was 200. we change it from time to time
+MaxPulse = 700  # original that was 700. we change it from time to time
 
-Current_x = 0  # original that was 0. we changed it
-Current_y = 0  # original that was 0. we changed it
+Current_x = 0  # original that was 0. we change it from time to time
+Current_y = 0  # original that was 0. we change it from time to time
 
 ANGLE_T0_DIR_DICT = {
     'HARD_RIGHT': (-180, 0),
@@ -19,8 +19,8 @@ ANGLE_T0_DIR_DICT = {
 
 def setup_vid(busnum=None):
     global Xmin, Ymin, Xmax, Ymax, home_x, home_y, pwm
-    offset_x = 0  # original that was 0. we changed it
-    offset_y = 0  # original that was 0. we changed it
+    offset_x = 0  # original that was 0. we change it from time to time
+    offset_y = 0  # original that was 0. we change it from time to time
     try:
         for line in open('config'):
             if line[0:8] == 'offset_x':
@@ -37,11 +37,7 @@ def setup_vid(busnum=None):
     Xmax = MaxPulse + offset_x
     Ymin = MinPulse + offset_y
     Ymax = MaxPulse + offset_y
-    # print("!!!", (Xmax + Xmin)/2, Ymin+80)
-    # print("???x?", offset_x, "???y?", offset_y)
-    # print('max are: Xmax', Xmax, ', Ymax', Ymax)
-    # print('min are: Xmin', Xmin, ', Ymin', Ymin)
-    # print('max are: Xmax', Xmax, ', Ymax', Ymax)
+
     home_x = (Xmax + Xmin) / 2
     home_y = Ymin + 50
     if busnum == None:
@@ -63,9 +59,9 @@ def move_decrease_x():
     if Current_x > Xmax:
         Current_x = Xmax
     pwm.write(14, 0, Current_x)
-    # ==========================================================================================
 
 
+# ==========================================================================================
 # Control the servo connected to channel 14 of the servo control board to make the camera
 # turning towards the negative direction of the x axis.
 # ==========================================================================================

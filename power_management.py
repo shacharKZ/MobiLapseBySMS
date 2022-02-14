@@ -3,6 +3,8 @@ import time
 
 from db_handler import write_robot_warning_to_db
 
+debug_flag = 1  # 1 to print debug. 0 to slient
+
 threshold_const_msg = 84
 last_voltage_len = 100
 # True = detected a low voltage at the moment, False = did not detected a low voltage at the moment
@@ -27,7 +29,7 @@ def setup_power_management():
 
 
 def check_voltage():
-    global threshold_const_msg, last_voltage_len, last_volt_results, time_between_checking, last_time_check, time_between_alerting, last_time_alert_voltage, last_time_alert_heat
+    global threshold_const_msg, last_voltage_len, last_volt_results, time_between_checking, last_time_check, time_between_alerting, last_time_alert_voltage, last_time_alert_heat, debug_flag
     current_time = time.time()
     if current_time - last_time_check < time_between_checking:
         return  # not enough time between two checks
@@ -47,11 +49,13 @@ def check_voltage():
     if last_volt_results.count(True) > threshold_const_msg and current_time - last_time_alert_voltage > time_between_alerting:
         write_robot_warning_to_db(
             'Robot battery is low, robot will shut down and battery might be damaged if not recharged soon.')
-        print(f'detect low voltage!!!! VV ^^ VV ^^')
+        if debug_flag:
+            print(f'detect low voltage!!!! VV ^^ VV ^^')
 
     # print(f'debug power management: ', last_volt_results)
-    print(
-        f'PM statics={last_volt_results.count(True)}/{last_voltage_len} ---> {last_volt_results.count(True)/last_voltage_len}')
+    if debug_flag:
+        print(
+            f'PM statics={last_volt_results.count(True)}/{last_voltage_len} ---> {last_volt_results.count(True)/last_voltage_len}')
 
     temp_res2 = subprocess.getstatusoutput(f'vcgencmd measure_temp')
     # print(temp_res2)  # for debugging
@@ -60,8 +64,9 @@ def check_voltage():
     if board_temp >= 55 and current_time - last_time_alert_heat > time_between_alerting:  # TODO set threshold
         write_robot_warning_to_db(
             'Robot temperature is very high, consider stopping the robot and letting it cool.')
-        print(
-            f'Board overheat! its current temperature is {board_temp}, maybe you should stop it!!!!')
+        if debug_flag:
+            print(
+                f'Board overheat! its current temperature is {board_temp}, maybe you should stop it!!!!')
 
 
 if __name__ == '__main__':

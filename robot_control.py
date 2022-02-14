@@ -197,7 +197,7 @@ def follow_line(num_objects: int = 4, object_angle_list=None, session_timestamp:
         power.check_voltage()
 
     motor.stop()
-    while True:  # TODO !!!! Zombie mode  !!!!
+    while True:
         vid.head_down()
         body = {
             "numObjects": num_objects,
