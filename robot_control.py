@@ -53,7 +53,7 @@ def try_to_refind_the_line(prev_exe_angle) -> bool:
     motor.setSpeed(speed_power*0.6)
     time.sleep(0.5)
     motor.backward()
-    time.sleep(0.7)
+    time.sleep(0.6)
     motor.stop()
     time.sleep(0.7)
     dir.turn_with_angle(exe_angle_sign*dir.TURN_35)
@@ -61,7 +61,7 @@ def try_to_refind_the_line(prev_exe_angle) -> bool:
     time.sleep(0.5)
     motor.forward()
     starting_time_for_searching_line = time.time()
-    while time.time() - starting_time_for_searching_line < 1.5:
+    while time.time() - starting_time_for_searching_line < 1.3:
         time.sleep(0.005)
         if ir.check_above_line() in actions_dir:
             return True
@@ -167,9 +167,10 @@ def follow_line(num_objects: int = 4, object_angle_list=None, session_timestamp:
                 if DEBUG:
                     print(
                         f'DID NOT TURN NOW: curr angle={exe_angle}, prev angle={prev_exe_angle}')
-                if (time.time() - last_time_saw_line > 1.2 or (time.time() - last_time_saw_line > 0.3 and 0 < possible_hard_turn < 5)) and try_to_refind_the_line(prev_exe_angle):
-                    last_time_saw_line = time.time()
-                    possible_hard_turn = 0
+                if (time.time() - last_time_saw_line > 1.2 or (time.time() - last_time_saw_line > 0.3 and 0 < possible_hard_turn < 5)):
+                    if try_to_refind_the_line(prev_exe_angle):
+                        last_time_saw_line = time.time()
+                        possible_hard_turn = 0
                 continue
             else:
                 motor.setSpeed(int(speed_power * speed_factor))
