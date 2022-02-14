@@ -50,9 +50,9 @@ def check_above_line():
     # min_color = init_min_color
     if max(res) > 2*min(res):
         min_color = max(res)//1.2
-    elif 90 > max(res) > min(res) + 15:
+    elif 90 > max(res) > min(res) + 20:
         min_color = max(res) - 6
-    elif 55 > max(res) > min(res) + 10:
+    elif 55 > max(res) > min(res) + 12 and max(res) > 30:
         min_color = max(res) - 3
     elif min(res) > min_color and time.time() - last_time_did_not_see_the_line > 0.7:
         res_str = "11111111"
@@ -85,7 +85,7 @@ def check_above_line():
         last_time_did_not_see_the_line = time.time()
 
     if debug_flag:
-        print(res, "<-------->", res_str, f'--> curr min_color is {min_color}')
+        print(res, "<----->", res_str, f'--> curr min_color is {min_color}')
     last_status_str = res_str
     return last_status_str
 
