@@ -9,13 +9,14 @@ debug_flag = 1  # 1 to print debug. 0 to slient
 sensors = [37, 36, 33, 32, 31, 29, 22, 18]
 last_status_arr = [0, 0, 0, 0, 0, 0, 0, 0]
 last_status_str = '00000000'
+prev_status_str = '00000000'
 min_color = 75
 max_color = 250
 last_time_did_not_see_the_line = 0
 
 
 def setup_IR():
-    global led, sensors, min_color, max_color, last_status_arr, last_status_str, last_time_did_not_see_the_line
+    global led, sensors, min_color, max_color, last_status_arr, last_status_str, last_time_did_not_see_the_line, prev_status_str
     led = 16
     sensors = [37, 36, 33, 32, 31, 29, 22, 18]
     # this value is changing a bit from time to time. try adjust it
@@ -23,13 +24,14 @@ def setup_IR():
     max_color = 250
     # last_status = [0, 0, 0, 0, 0, 0, 0, 0]
     last_status_str = '00000000'
+    prev_status_str = '00000000'
     last_time_did_not_see_the_line = 0
     GPIO.setmode(GPIO.BOARD)
     GPIO.setup(led, GPIO.OUT)
 
 
 def check_above_line():
-    global led, sensors, min_color, max_color, last_status_arr, last_status_str, last_time_did_not_see_the_line
+    global led, sensors, min_color, max_color, last_status_arr, last_status_str, last_time_did_not_see_the_line, prev_status_str
     last_status_str = ""
     for s in sensors:
         GPIO.setup(s, GPIO.OUT)
@@ -52,13 +54,12 @@ def check_above_line():
         min_color = max(res)//1.2
     elif 90 > max(res) > min(res) + 20:
         min_color = max(res) - 6
-    elif 55 > max(res) > min(res) + 12 and max(res) > 30:
+    elif 65 > max(res) > min(res) + 12 and max(res) > 30:
         min_color = max(res) - 3
     elif min(res) > min_color and time.time() - last_time_did_not_see_the_line > 0.7:
         res_str = "11111111"
         if debug_flag:
-            print(
-                f'all ir sensors sees the line with possible_stop_line {min_color}')
+            print(f'all ir sensors sees the line with min_color {min_color}')
             print(res)
         return res_str
     else:
@@ -90,6 +91,8 @@ def check_above_line():
 
     if debug_flag:
         print(res, "--->", res_str, f'---> curr min_color is {min_color}')
+
+    prev_status_str = last_status_str
     last_status_str = res_str
     return last_status_str
 
