@@ -171,6 +171,7 @@ def follow_line(num_objects: int = 4, object_angle_list=None, session_timestamp:
                     if try_to_refind_the_line(prev_exe_angle):
                         last_time_saw_line = time.time()
                         possible_hard_turn = 0
+                        prev_exe_angle = 0
                 continue
             else:
                 motor.setSpeed(int(speed_power * speed_factor))
@@ -187,6 +188,7 @@ def follow_line(num_objects: int = 4, object_angle_list=None, session_timestamp:
             if try_to_refind_the_line(prev_exe_angle):
                 last_time_saw_line = time.time()
             possible_hard_turn = 0
+            prev_exe_angle = 0
 
         elif time.time() - last_time_saw_line > 1.2:
             # if the car more then few seconds out of the track: stop the car and go into zombie mode
@@ -194,6 +196,7 @@ def follow_line(num_objects: int = 4, object_angle_list=None, session_timestamp:
             if possible_hard_turn > 5 and try_to_refind_the_line(prev_exe_angle):
                 last_time_saw_line = time.time()
                 possible_hard_turn = 0
+                prev_exe_angle = 0
             else:
                 motor.stop()
                 dir.home()
