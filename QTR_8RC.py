@@ -66,8 +66,11 @@ def check_above_line():
             print(f'all ir sensors sees the line with min_color {min_color}')
             print(res)
         return res_str
-    else:
-        print("did not adjust ir sensor")
+    else:  # if non of the prev if's wrok we we increase the prev threshold and try to use it
+        # this help to use the previus data we collected while preventing too much bias
+        min_color += 4
+        print(
+            f"did not adjust ir sensor. increase prev min_color to {min_color}")
 
     # elif max(res) < 77:
     #     if max(res) > 2*min(res) and max(res) > 40:
