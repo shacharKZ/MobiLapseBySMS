@@ -52,7 +52,7 @@ def try_to_refind_the_line(prev_exe_angle) -> bool:
     dir.turn_with_angle(-exe_angle_sign * dir.TURN_35)
     motor.setSpeed(speed_power*0.6)
     motor.backward()
-    time.sleep(0.5)
+    time.sleep(0.7)
     motor.stop()
     time.sleep(0.7)
     dir.turn_with_angle(exe_angle_sign*dir.TURN_35)
