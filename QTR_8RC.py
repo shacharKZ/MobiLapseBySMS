@@ -52,10 +52,10 @@ def check_above_line():
     # min_color = init_min_color
     if max(res) > 2*min(res):  # best possible split
         min_color = max(res)//1.2
-    elif 120 > max(res) > 55 and max(res) > min(res)*1.25:  # a bit less good split
-        min_color = max(res)//1.1
+    elif 120 > max(res) > 55 and max(res) > min(res)*1.3:  # a bit less good split
+        min_color = max(res)//1.035
     elif 80 > max(res) > 40 and max(res) > min(res)*1.15:  # a bit less good split
-        min_color = max(res)//1.045
+        min_color = max(res)//1.02
     elif 60 > max(res) > 30 and max(res) > min(res) + 7:  # an even less good split
         min_color = max(res)-1
     elif min(res) > min_color and time.time() - last_time_did_not_see_the_line > 0.7:
