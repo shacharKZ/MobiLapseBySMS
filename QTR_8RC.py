@@ -81,11 +81,15 @@ def check_above_line():
     for color in res:
         res_str += ('1' if color >= min_color else '0')
 
+    if res_str == '11111111' and time.time() - last_time_did_not_see_the_line < 0.5:
+        res_str = '00000000'
+        min_color += 5
+
     if res_str == "00000000":
         last_time_did_not_see_the_line = time.time()
 
     if debug_flag:
-        print(res, "<----->", res_str, f'--> curr min_color is {min_color}')
+        print(res, "--->", res_str, f'---> curr min_color is {min_color}')
     last_status_str = res_str
     return last_status_str
 
