@@ -55,6 +55,9 @@ def try_to_refind_the_line(prev_exe_angle) -> bool:
     time.sleep(0.2)
     while time.time() - starting_time_for_searching_line < 0.4:
         if ir.check_above_line() in actions_dir:
+            motor.stop()
+            time.sleep(0.5)
+            motor.forward()
             return True
         time.sleep(0.004)
     motor.stop()
@@ -138,6 +141,7 @@ def follow_line(num_objects: int = 4, object_angle_list=None, session_timestamp:
 
     time.sleep(2)
     motor.forward()
+    time.sleep(0.5)
 
     while True:
         ir_status_str = ir.check_above_line()
