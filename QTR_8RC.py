@@ -1,5 +1,3 @@
-# from _typeshed import Self
-from doctest import debug_script
 import RPi.GPIO as GPIO
 import time
 

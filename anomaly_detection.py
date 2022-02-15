@@ -2,7 +2,7 @@ import datetime
 
 import numpy as np
 import cv2
-from firebase_admin import db
+# from firebase_admin import db
 
 from db_handler import update_anomaly_for_object_in_db
 

@@ -1,5 +1,3 @@
-# TODO what is that?? should we remove it?
-# from cv2 import PROJ_SPHERICAL_EQRECT
 import requests
 
 import motor
@@ -50,17 +48,22 @@ def try_to_refind_the_line(prev_exe_angle) -> bool:
     if prev_exe_angle < 0:
         exe_angle_sign = -1
     dir.turn_with_angle(-exe_angle_sign * dir.TURN_35)
-    motor.setSpeed(speed_power*0.6)
+    motor.setSpeed(speed_power*0.55)
     time.sleep(0.5)
+    starting_time_for_searching_line = time.time()
     motor.backward()
-    time.sleep(0.6)
+    time.sleep(0.2)
+    while time.time() - starting_time_for_searching_line < 0.4:
+        if ir.check_above_line() in actions_dir:
+            return True
+        time.sleep(0.004)
     motor.stop()
     time.sleep(0.7)
-    if ir.check_above_line() in actions_dir:
-        dir.turn_with_angle(0)
-        motor.setSpeed(speed_power*0.75)
-        motor.forward()
-        return True
+    # if ir.check_above_line() in actions_dir:
+    #     dir.turn_with_angle(0)
+    #     motor.setSpeed(speed_power*0.75)
+    #     motor.forward()
+    #     return True
     dir.turn_with_angle(exe_angle_sign*dir.TURN_35)
     motor.setSpeed(speed_power*0.75)
     time.sleep(0.5)
@@ -69,7 +72,7 @@ def try_to_refind_the_line(prev_exe_angle) -> bool:
     while time.time() - starting_time_for_searching_line < 1.3:
         if ir.check_above_line() in actions_dir:
             return True
-        time.sleep(0.005)
+        time.sleep(0.004)
     return False
 
 
