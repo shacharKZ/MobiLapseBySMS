@@ -53,7 +53,7 @@ def try_to_refind_the_line(prev_exe_angle) -> bool:
     starting_time_for_searching_line = time.time()
     motor.backward()
     time.sleep(0.2)
-    while time.time() - starting_time_for_searching_line < 0.8:
+    while time.time() - starting_time_for_searching_line < 1.2:
         if ir.check_above_line() in actions_dir:
             time.sleep(0.42)
             motor.stop()
