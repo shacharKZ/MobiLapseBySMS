@@ -186,6 +186,8 @@ def follow_line(num_objects: int = 4, object_angle_list=None, session_timestamp:
                     print(
                         f'DID NOT TURN NOW: curr angle={exe_angle}, prev angle={prev_exe_angle}')
                 if (time.time() - last_time_saw_line > 1.2 or (time.time() - last_time_saw_line > 0.3 and 0 < possible_hard_turn < 5)):
+                    if DEBUG:
+                        print("POSSIBLE HARD TURN: try to refind the line")
                     if try_to_refind_the_line(prev_exe_angle):
                         last_time_saw_line = time.time()
                         possible_hard_turn = 0
