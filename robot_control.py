@@ -53,7 +53,7 @@ def try_to_refind_the_line(prev_exe_angle, check_while_rolling_back=True) -> boo
     starting_time_for_searching_line = time.time()
     motor.backward()
     time.sleep(0.2)
-    time_to_stop = 0.7
+    time_to_stop = 1.2
     if check_while_rolling_back:
         time_to_stop = 0.5
     while time.time() - starting_time_for_searching_line < time_to_stop:
@@ -203,6 +203,8 @@ def follow_line(num_objects: int = 4, object_angle_list=None, session_timestamp:
                 last_time_saw_line = time.time()
         elif 0 < possible_hard_turn < 5 and time.time() - last_time_saw_line > 0.2:
             # that looks like we are on a hard turn at the moment. we will try to adjust the car to the line
+            if DEBUG:
+                print("HARD TURN: try to refind the line")
             if try_to_refind_the_line(prev_exe_angle, check_while_rolling_back=False):
                 last_time_saw_line = time.time()
             possible_hard_turn = 0
