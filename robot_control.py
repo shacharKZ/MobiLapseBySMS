@@ -41,7 +41,7 @@ def stop_line(curr_object_num: int, curr_object_angle: str, curr_picture_num: in
     return detected_anomaly
 
 
-def try_to_refind_the_line(prev_exe_angle, check_while_rolling_back=True) -> bool:
+def try_to_refind_the_line(prev_exe_angle) -> bool:
     motor.stop()
     time.sleep(1)
     exe_angle_sign = 1
@@ -53,26 +53,16 @@ def try_to_refind_the_line(prev_exe_angle, check_while_rolling_back=True) -> boo
     starting_time_for_searching_line = time.time()
     motor.backward()
     time.sleep(0.2)
-    time_to_stop = 1.2
-    if check_while_rolling_back:
-        time_to_stop = 0.5
-    while time.time() - starting_time_for_searching_line < time_to_stop:
-        if check_while_rolling_back and ir.check_above_line() in actions_dir:
-            if not check_while_rolling_back:
-                time.sleep(0.2)
-            time.sleep(0.25)
+    while time.time() - starting_time_for_searching_line < 0.8:
+        if ir.check_above_line() in actions_dir:
+            time.sleep(0.42)
             motor.stop()
             time.sleep(0.5)
             motor.forward()
             return True
         time.sleep(0.004)
     motor.stop()
-    time.sleep(0.7)
-    if check_while_rolling_back == False and ir.check_above_line() in actions_dir:
-        dir.turn_with_angle(0)
-        motor.setSpeed(speed_power*0.75)
-        motor.forward()
-        return True
+    time.sleep(0.5)
     dir.turn_with_angle(exe_angle_sign*dir.TURN_35)
     motor.setSpeed(speed_power*0.75)
     time.sleep(0.5)
@@ -207,7 +197,7 @@ def follow_line(num_objects: int = 4, object_angle_list=None, session_timestamp:
             # that looks like we are on a hard turn at the moment. we will try to adjust the car to the line
             if DEBUG:
                 print("HARD TURN: try to refind the line")
-            if try_to_refind_the_line(prev_exe_angle, check_while_rolling_back=False):
+            if try_to_refind_the_line(prev_exe_angle):
                 last_time_saw_line = time.time()
             possible_hard_turn = 0
             prev_exe_angle = 0
