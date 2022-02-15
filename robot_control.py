@@ -41,7 +41,7 @@ def stop_line(curr_object_num: int, curr_object_angle: str, curr_picture_num: in
     return detected_anomaly
 
 
-def try_to_refind_the_line(prev_exe_angle) -> bool:
+def try_to_refind_the_line(prev_exe_angle, check_while_rolling_back=True) -> bool:
     motor.stop()
     time.sleep(1)
     exe_angle_sign = 1
@@ -54,7 +54,7 @@ def try_to_refind_the_line(prev_exe_angle) -> bool:
     motor.backward()
     time.sleep(0.2)
     while time.time() - starting_time_for_searching_line < 0.5:
-        if ir.check_above_line() in actions_dir:
+        if check_while_rolling_back and ir.check_above_line() in actions_dir:
             time.sleep(0.25)
             motor.stop()
             time.sleep(0.5)
@@ -63,11 +63,11 @@ def try_to_refind_the_line(prev_exe_angle) -> bool:
         time.sleep(0.004)
     motor.stop()
     time.sleep(0.7)
-    # if ir.check_above_line() in actions_dir:
-    #     dir.turn_with_angle(0)
-    #     motor.setSpeed(speed_power*0.75)
-    #     motor.forward()
-    #     return True
+    if check_while_rolling_back == False and ir.check_above_line() in actions_dir:
+        dir.turn_with_angle(0)
+        motor.setSpeed(speed_power*0.75)
+        motor.forward()
+        return True
     dir.turn_with_angle(exe_angle_sign*dir.TURN_35)
     motor.setSpeed(speed_power*0.75)
     time.sleep(0.5)
@@ -198,7 +198,7 @@ def follow_line(num_objects: int = 4, object_angle_list=None, session_timestamp:
                 last_time_saw_line = time.time()
         elif 0 < possible_hard_turn < 5 and time.time() - last_time_saw_line > 0.2:
             # that looks like we are on a hard turn at the moment. we will try to adjust the car to the line
-            if try_to_refind_the_line(prev_exe_angle):
+            if try_to_refind_the_line(prev_exe_angle, check_while_rolling_back=False):
                 last_time_saw_line = time.time()
             possible_hard_turn = 0
             prev_exe_angle = 0
