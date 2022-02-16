@@ -218,17 +218,18 @@ def follow_line(num_objects: int = 4, object_angle_list=None, session_timestamp:
         power.check_voltage()
 
     motor.stop()
+
+    body = {
+        "numObjects": num_objects,
+        "command": 'stop',
+        "error": "Robot can't find the line"
+    }
+    print('Asking API to kill robot_control thread')
+    print(f'Sending request with data {body}')
+    res = requests.post('http://localhost:5000/capture', json=body)
     while True:
         vid.head_down()
-        body = {
-            "numObjects": num_objects,
-            "command": 'stop',
-            "error": "Robot can't find the line"
-        }
-        print('Asking API to kill robot_control thread')
-        print(f'Sending request with data {body}')
-        res = requests.post('http://localhost:5000/capture', json=body)
-        time.sleep(5)
+        time.sleep(10)
 
 
 if __name__ == '__main__':
